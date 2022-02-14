@@ -1,12 +1,13 @@
 import configs.AndroidConfigs
 import extensions.implementation
+import extensions.internalModule
 import extensions.kapt
 
 plugins {
     id(Plugins.Android.Application)
     id(Plugins.Kotlin.Android)
     id(Plugins.Kotlin.Parcelize)
-    id(Plugins.Hilt)
+    //id(Plugins.Hilt)
     id(Plugins.Kotlin.Kapt)
 }
 
@@ -83,10 +84,11 @@ dependencies {
     configureBaseDependencies()
     configureBaseUiDependencies()
 
+    internalModule(InternalModules.core)
+
     implementation(Libraries.AndroidX.Ktx.Core)
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.Google.Material)
-    implementation(Libraries.Glide)
 
     //Hilt
     implementation(Libraries.Google.Hilt.Android)
