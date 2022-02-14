@@ -85,6 +85,7 @@ dependencies {
     configureBaseUiDependencies()
 
     internalModule(InternalModules.core)
+    internalModule(InternalModules.domain)
 
     implementation(Libraries.AndroidX.Ktx.Core)
     implementation(Libraries.AndroidX.AppCompat)
