@@ -10,7 +10,7 @@ fun Project.configureBaseDependencies() = dependencies {
     implementation(Libraries.Kotlin.Coroutines)
     implementation(Libraries.Kotlin.CoroutinesAndroid)
 
-    //add("coreLibraryDesugaring", Libraries.JavaDesugaring)
+    add("coreLibraryDesugaring", Libraries.JavaDesugaring)
 }
 
 fun Project.configureBaseUiDependencies() = dependencies {
@@ -34,6 +34,7 @@ fun Project.configureAsAndroidLibrary() {
         compileSdkVersion(AndroidConfigs.Sdk.Compile)
 
         defaultConfig {
+            multiDexEnabled = true
             minSdk = AndroidConfigs.Sdk.Min
             targetSdk = AndroidConfigs.Sdk.Target
             versionCode = Versions.App.Code
@@ -63,7 +64,7 @@ fun Project.configureAsAndroidLibrary() {
         }
 
         compileOptions {
-            //isCoreLibraryDesugaringEnabled = true
+            isCoreLibraryDesugaringEnabled = true
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         }

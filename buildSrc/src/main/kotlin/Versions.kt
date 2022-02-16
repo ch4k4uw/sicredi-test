@@ -19,6 +19,7 @@ object Versions {
         const val AppCompat = "1.3.1"
         const val Palette = "1.0.0"
         const val ConstraintLayout = "2.0.4"
+        const val Multidex = "2.0.1"
     }
     const val LifeCycle = "2.3.1"
     const val JavaDesugaring = "1.1.5"

@@ -15,6 +15,7 @@ android {
     compileSdk = AndroidConfigs.Sdk.Compile
 
     defaultConfig {
+        multiDexEnabled = true
         applicationId = AndroidConfigs.appId
         minSdk = AndroidConfigs.Sdk.Min
         targetSdk = AndroidConfigs.Sdk.Target
@@ -37,7 +38,7 @@ android {
     }
 
     compileOptions {
-        //isCoreLibraryDesugaringEnabled = true
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -88,9 +89,11 @@ dependencies {
     configureBaseDependencies()
     configureBaseUiDependencies()
 
+    //Internal modules
     internalModule(InternalModules.core)
     internalModule(InternalModules.domain)
 
+    //UI
     implementation(Libraries.AndroidX.Ktx.Core)
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.Google.Material)
@@ -98,6 +101,9 @@ dependencies {
     //Hilt
     implementation(Libraries.Google.Hilt.Android)
     kapt(Libraries.Google.Hilt.Compiler)
+
+    //Multidex
+    implementation(Libraries.AndroidX.Multidex)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:core:1.4.0")

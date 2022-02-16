@@ -19,6 +19,7 @@ object Libraries {
         }
         const val AppCompat = "androidx.appcompat:appcompat:${Versions.AndroidX.AppCompat}"
         const val Palette = "androidx.palette:palette:${Versions.AndroidX.Palette}"
+        const val Multidex = "androidx.multidex:multidex:${Versions.AndroidX.Multidex}"
     }
     object Google {
         const val Material = "com.google.android.material:material:${Versions.Google.Material}"
