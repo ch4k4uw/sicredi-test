@@ -3,6 +3,7 @@ package com.sicredi.core.ui.component
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -35,8 +36,8 @@ class AppAsyncImageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
     private var coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private var thumbnailLoadingJob: Job? = null
-    private var thumbnailLoadingState: ThumbnailLoadingState? = null
+    private var loadingJob: Job? = null
+    private var loadingState: ThumbnailLoadingState? = null
 
     var imageLoadingListener: AppAsyncImageLoadingListener? = null
 
@@ -45,11 +46,11 @@ class AppAsyncImageView @JvmOverloads constructor(
         uri: Uri,
         size: Int = AppAsyncImageViewDefaults.DefaultImageSize
     ) {
-        thumbnailLoadingState = ThumbnailLoadingState(uri = uri, size = size)
-        val currJob = thumbnailLoadingJob
+        loadingState = ThumbnailLoadingState(uri = uri, size = size)
+        val currJob = loadingJob
         if (currJob != null) {
             currJob.cancel()
-            thumbnailLoadingJob = null
+            loadingJob = null
         }
 
         notifyLoadingStarting()
@@ -58,7 +59,7 @@ class AppAsyncImageView @JvmOverloads constructor(
             AppCompatResources.getDrawable(context, AppAsyncImageViewDefaults.LoadingPlaceholder)
         )
 
-        thumbnailLoadingJob = coroutineScope.launch {
+        loadingJob = coroutineScope.launch {
             withContext(Dispatchers.Main) {
                 notifyLoadingStarted()
             }
@@ -69,7 +70,7 @@ class AppAsyncImageView @JvmOverloads constructor(
                 null
             }
             withContext(Dispatchers.Main) {
-                if (thumbnailLoadingJob?.isActive == true) {
+                if (loadingJob?.isActive == true) {
                     if (bitmap == null) {
                         setImageDrawable(
                             AppCompatResources
@@ -78,8 +79,7 @@ class AppAsyncImageView @JvmOverloads constructor(
                     } else {
                         setImageBitmap(bitmap)
                     }
-                    thumbnailLoadingJob = null
-                    thumbnailLoadingState = null
+                    loadingJob = null
                     if (bitmap == null) notifyLoadingError() else notifyLoadingSuccess()
                 }
             }
@@ -153,7 +153,7 @@ class AppAsyncImageView @JvmOverloads constructor(
         coroutineScope.cancel(message = "Saving state")
         return AppAsyncImageState(
             source = super.onSaveInstanceState(),
-            thumbnailLoading = thumbnailLoadingState
+            thumbnailLoading = loadingState
         )
     }
 
@@ -162,16 +162,26 @@ class AppAsyncImageView @JvmOverloads constructor(
             super.onRestoreInstanceState(state)
         } else {
             val source = state.source
-            thumbnailLoadingState = state.thumbnailLoading
+            loadingState = state.thumbnailLoading
 
             if (source != null) {
                 super.onRestoreInstanceState(state)
             }
-            val thumbnailLoadingState = thumbnailLoadingState
+            val thumbnailLoadingState = loadingState
             if (thumbnailLoadingState != null) {
                 loadImage(uri = thumbnailLoadingState.uri, size = thumbnailLoadingState.size)
             }
         }
+    }
+
+    override fun setImageDrawable(drawable: Drawable?) {
+        loadingState = null
+        super.setImageDrawable(drawable)
+    }
+
+    override fun setImageResource(resId: Int) {
+        loadingState = null
+        super.setImageResource(resId)
     }
 
     @Parcelize
