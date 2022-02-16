@@ -22,6 +22,12 @@ object Libraries {
         const val Palette = "androidx.palette:palette:${Versions.AndroidX.Palette}"
         const val Multidex = "androidx.multidex:multidex:${Versions.AndroidX.Multidex}"
         const val ArchCoreTesting = "androidx.arch.core:core-testing:${Versions.AndroidX.ArchCoreTesting}"
+        const val ActivityKtx = "androidx.activity:activity-ktx:${Versions.AndroidX.ActivityKtx}"
+        const val FragmentKtx = "androidx.fragment:fragment-ktx:${Versions.AndroidX.FragmentKtx}"
+        const val NavigationKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.AndroidX.NavigationKtx}"
+        const val NavigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.AndroidX.NavigationKtx}"
+        const val CollectionKtx = "androidx.collection:collection-ktx:${Versions.AndroidX.CollectionKtx}"
+        const val SwipeToRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.AndroidX.SwipeToRefresh}"
     }
     object Google {
         const val Material = "com.google.android.material:material:${Versions.Google.Material}"

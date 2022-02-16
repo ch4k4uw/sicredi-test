@@ -77,6 +77,10 @@ android {
         }
     }
 
+    kapt {
+        correctErrorTypes = true
+    }
+
 }
 
 configurations {
@@ -97,6 +101,12 @@ dependencies {
     implementation(Libraries.AndroidX.Ktx.Core)
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.Google.Material)
+    implementation(Libraries.AndroidX.ActivityKtx)
+    implementation(Libraries.AndroidX.FragmentKtx)
+    implementation(Libraries.AndroidX.NavigationKtx)
+    implementation(Libraries.AndroidX.NavigationUiKtx)
+    implementation(Libraries.AndroidX.CollectionKtx)
+    implementation(Libraries.AndroidX.SwipeToRefresh)
 
     //Hilt
     implementation(Libraries.Google.Hilt.Android)

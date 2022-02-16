@@ -7,13 +7,12 @@ import com.sicredi.core.network.infra.data.NetworkStatusImpl
 import com.sicredi.core.network.infra.data.factory.HttpClientFactoryImpl
 import com.sicredi.core.network.infra.service.HttpLoggerFactory
 import com.sicredi.core.network.infra.service.HttpServiceFactory
-import com.sicredi.core.network.infra.service.RequestHandlerInterceptor
+import com.sicredi.core.network.infra.service.RequestHandlerInterceptorFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module
@@ -30,14 +29,19 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRequestHandlerInterceptorFactory(): RequestHandlerInterceptorFactory =
+        RequestHandlerInterceptorFactory()
+
+    @Provides
+    @Singleton
     fun provideHttpClientFactory(
         networkStatus: NetworkStatus,
         httpLoggerFactory: HttpLoggerFactory,
-        requestInterceptorProvider: Provider<RequestHandlerInterceptor>
+        requestHandlerInterceptorFactory: RequestHandlerInterceptorFactory
     ): HttpClientFactory = HttpClientFactoryImpl(
         networkStatus = networkStatus,
         loggerFactory = httpLoggerFactory,
-        requestInterceptorProvider = requestInterceptorProvider
+        requestHandlerInterceptorFactory = requestHandlerInterceptorFactory
     )
 
     @Provides

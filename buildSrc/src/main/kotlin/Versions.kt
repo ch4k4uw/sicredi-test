@@ -21,6 +21,11 @@ object Versions {
         const val ConstraintLayout = "2.0.4"
         const val Multidex = "2.0.1"
         const val ArchCoreTesting = "2.1.0"
+        const val ActivityKtx = "1.4.0"
+        const val FragmentKtx = "1.4.0"
+        const val NavigationKtx = "2.3.5"
+        const val CollectionKtx = "1.1.0"
+        const val SwipeToRefresh = "1.1.0"
     }
     const val LifeCycle = "2.3.1"
     const val JavaDesugaring = "1.1.5"

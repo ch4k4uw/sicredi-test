@@ -15,6 +15,8 @@ fun Project.configureBaseDependencies() = dependencies {
 
     testImplementation(Libraries.MockK)
     testImplementation(Libraries.Kotlin.Coroutines)
+    testImplementation(Libraries.Kotlin.CoroutinesTest)
+    testImplementation(Libraries.AndroidX.ArchCoreTesting)
 }
 
 fun Project.configureBaseUiDependencies() = dependencies {
