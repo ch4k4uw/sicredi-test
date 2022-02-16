@@ -4,13 +4,19 @@ import org.gradle.kotlin.dsl.dependencies
 import extensions.implementation
 import org.gradle.api.JavaVersion
 import com.android.build.gradle.BaseExtension
+import extensions.testImplementation
 
 fun Project.configureBaseDependencies() = dependencies {
     implementation(Libraries.Kotlin.StdLib)
     implementation(Libraries.Kotlin.Coroutines)
     implementation(Libraries.Kotlin.CoroutinesAndroid)
 
-    //add("coreLibraryDesugaring", Libraries.JavaDesugaring)
+    add("coreLibraryDesugaring", Libraries.JavaDesugaring)
+
+    testImplementation(Libraries.MockK)
+    testImplementation(Libraries.Kotlin.Coroutines)
+    testImplementation(Libraries.Kotlin.CoroutinesTest)
+    testImplementation(Libraries.AndroidX.ArchCoreTesting)
 }
 
 fun Project.configureBaseUiDependencies() = dependencies {
@@ -34,6 +40,7 @@ fun Project.configureAsAndroidLibrary() {
         compileSdkVersion(AndroidConfigs.Sdk.Compile)
 
         defaultConfig {
+            multiDexEnabled = true
             minSdk = AndroidConfigs.Sdk.Min
             targetSdk = AndroidConfigs.Sdk.Target
             versionCode = Versions.App.Code
@@ -63,7 +70,7 @@ fun Project.configureAsAndroidLibrary() {
         }
 
         compileOptions {
-            //isCoreLibraryDesugaringEnabled = true
+            isCoreLibraryDesugaringEnabled = true
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         }

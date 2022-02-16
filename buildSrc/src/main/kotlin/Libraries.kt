@@ -2,6 +2,7 @@ object Libraries {
     object Kotlin {
         const val StdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.Kotlin.Gradle}"
         const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.Coroutines}"
+        const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.Kotlin.Coroutines}"
         const val CoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Kotlin.Coroutines}"
         const val CoroutinesPlayServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.Kotlin.CoroutinesPlayServices}"
     }
@@ -19,6 +20,14 @@ object Libraries {
         }
         const val AppCompat = "androidx.appcompat:appcompat:${Versions.AndroidX.AppCompat}"
         const val Palette = "androidx.palette:palette:${Versions.AndroidX.Palette}"
+        const val Multidex = "androidx.multidex:multidex:${Versions.AndroidX.Multidex}"
+        const val ArchCoreTesting = "androidx.arch.core:core-testing:${Versions.AndroidX.ArchCoreTesting}"
+        const val ActivityKtx = "androidx.activity:activity-ktx:${Versions.AndroidX.ActivityKtx}"
+        const val FragmentKtx = "androidx.fragment:fragment-ktx:${Versions.AndroidX.FragmentKtx}"
+        const val NavigationKtx = "androidx.navigation:navigation-fragment-ktx:${Versions.AndroidX.NavigationKtx}"
+        const val NavigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.AndroidX.NavigationKtx}"
+        const val CollectionKtx = "androidx.collection:collection-ktx:${Versions.AndroidX.CollectionKtx}"
+        const val SwipeToRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.AndroidX.SwipeToRefresh}"
     }
     object Google {
         const val Material = "com.google.android.material:material:${Versions.Google.Material}"
@@ -34,4 +43,5 @@ object Libraries {
     }
     const val LoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.LoggingInterceptor}"
     const val Timber = "com.jakewharton.timber:timber:${Versions.Timber}"
+    const val MockK = "io.mockk:mockk:${Versions.MockK}"
 }

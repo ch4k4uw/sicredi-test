@@ -1,6 +1,7 @@
 import extensions.implementation
 import extensions.internalModule
 import extensions.kapt
+import extensions.testImplementation
 
 plugins {
     id(Plugins.Android.LibraryModule)
@@ -10,6 +11,14 @@ plugins {
 }
 
 android {
+    buildTypes {
+        debug {
+            buildConfigField("String", "INSTACREDI_API_URL", "\"https://5f5a8f24d44d640016169133.mockapi.io/\"")
+        }
+        release {
+            buildConfigField("String", "INSTACREDI_API_URL", "\"https://5f5a8f24d44d640016169133.mockapi.io/\"")
+        }
+    }
 }
 
 dependencies {
