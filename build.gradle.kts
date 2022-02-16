@@ -25,6 +25,7 @@ subprojects {
         kotlinOptions {
             freeCompilerArgs = listOf(
                 "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             )
             jvmTarget = "1.8"
         }

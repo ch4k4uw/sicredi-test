@@ -3,9 +3,10 @@ package com.sicredi.core.data
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 
 @Singleton
-class AppDispatchers @Inject constructor() {
-    val io = Dispatchers.IO
-    val main = Dispatchers.Main
+open class AppDispatchers @Inject constructor() {
+    open val io: CoroutineContext = Dispatchers.IO
+    open val main: CoroutineContext = Dispatchers.Main
 }

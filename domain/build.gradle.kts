@@ -1,6 +1,7 @@
 import extensions.implementation
 import extensions.internalModule
 import extensions.kapt
+import extensions.testImplementation
 
 plugins {
     id(Plugins.Android.LibraryModule)

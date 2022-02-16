@@ -7,7 +7,7 @@ plugins {
     id(Plugins.Android.Application)
     id(Plugins.Kotlin.Android)
     id(Plugins.Kotlin.Parcelize)
-    //id(Plugins.Hilt)
+    id(Plugins.Hilt)
     id(Plugins.Kotlin.Kapt)
 }
 

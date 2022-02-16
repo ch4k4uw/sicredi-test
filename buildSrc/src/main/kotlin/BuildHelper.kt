@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.dependencies
 import extensions.implementation
 import org.gradle.api.JavaVersion
 import com.android.build.gradle.BaseExtension
+import extensions.testImplementation
 
 fun Project.configureBaseDependencies() = dependencies {
     implementation(Libraries.Kotlin.StdLib)
@@ -11,6 +12,9 @@ fun Project.configureBaseDependencies() = dependencies {
     implementation(Libraries.Kotlin.CoroutinesAndroid)
 
     add("coreLibraryDesugaring", Libraries.JavaDesugaring)
+
+    testImplementation(Libraries.MockK)
+    testImplementation(Libraries.Kotlin.Coroutines)
 }
 
 fun Project.configureBaseUiDependencies() = dependencies {
