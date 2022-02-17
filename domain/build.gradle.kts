@@ -24,11 +24,16 @@ android {
 dependencies {
     configureNetworkingDependencies()
 
+    //Internal modules
     internalModule(InternalModules.core)
 
     //Hilt
     implementation(Libraries.Google.Hilt.Android)
     kapt(Libraries.Google.Hilt.Compiler)
+
+    //Data store
+    implementation(Libraries.DataStore)
+    implementation(Libraries.DataStorePreferences)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

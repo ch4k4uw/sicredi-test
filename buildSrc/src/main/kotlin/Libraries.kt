@@ -44,4 +44,6 @@ object Libraries {
     const val LoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.LoggingInterceptor}"
     const val Timber = "com.jakewharton.timber:timber:${Versions.Timber}"
     const val MockK = "io.mockk:mockk:${Versions.MockK}"
+    const val DataStore = "androidx.datastore:datastore:${Versions.DataStore}"
+    const val DataStorePreferences = "androidx.datastore:datastore-preferences:${Versions.DataStore}"
 }

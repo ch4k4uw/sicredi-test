@@ -35,4 +35,5 @@ object Versions {
     const val LoggingInterceptor = "4.9.0"
     const val Timber = "5.0.1"
     const val MockK = "1.12.2"
+    const val DataStore = "1.0.0"
 }
