@@ -11,6 +11,10 @@
     <color name="amber_800">#FFFF8F00</color>
     <color name="light_green_300">#FFAED581</color>
     <color name="light_green_800">#FF558B2F</color>
+    <color name="gree_300">#FF81C784</color>
+    <color name="yellow_300">#FFFFF176</color>
+    <color name="red_300">#FFE57373</color>
+    <color name="gray_900">#FF212121</color>
 
     <color name="primary">@color/light_green_300</color>
     <color name="primaryVariant">@color/light_green_800</color>
@@ -20,6 +24,11 @@
     <color name="onSecondary">@color/black</color>
     <color name="error">#ffcf6679</color>
     <color name="onError">@color/black</color>
-    <color name="surface">#33ffffff</color>
+    <color name="surface">@color/gray_900</color>
     <color name="onSurface">#ffffffff</color>
+    
+    <color name="warningDialogGreenLine">@color/gree_300</color>
+    <color name="warningDialogYellowLine">@color/yellow_300</color>
+    <color name="warningDialogRedLine">@color/red_300</color>
+
 </resources>

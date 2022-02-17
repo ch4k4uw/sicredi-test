@@ -1,23 +1,21 @@
 package com.sicredi.instacredi
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.sicredi.core.ui.component.AppWarningFragment
+import com.sicredi.core.ui.component.AppWarningFragmentListener
 import com.sicredi.instacredi.databinding.ActivityMainBinding
 import com.sicredi.instacredi.feed.FeedViewModel
-import com.sicredi.instacredi.feed.interaction.FeedState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AppWarningFragmentListener {
     private lateinit var viewBinding: ActivityMainBinding
     private val feedViewModel: FeedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,68 +25,39 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launchWhenResumed {
-            feedViewModel.state.observe(this@MainActivity) { state ->
-                when (state) {
-                    FeedState.Loading -> {
-                        viewBinding.appImageDownload.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@MainActivity,
-                                com.sicredi.core.R.drawable.ic_downloading_gray900_24,
-                            )
-                        )
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            viewBinding.appImageDownload.imageTintList = ColorStateList.valueOf(
-                                Color.BLUE
-                            )
-                        }
-                    }
-                    is FeedState.FeedNotLoaded -> {
-                        viewBinding.appImageDownload.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@MainActivity,
-                                com.sicredi.core.R.drawable.ic_broken_image_gray900_24,
-                            )
-                        )
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            viewBinding.appImageDownload.imageTintList = ColorStateList.valueOf(
-                                Color.RED
-                            )
-                        }
-                    }
-                    is FeedState.FeedSuccessfulLoaded -> {
-                        viewBinding.appImageDownload.setImageDrawable(null)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            viewBinding.appImageDownload.imageTintList = null
-                        }
-                        Timber.i(state.eventHeads.toString())
-                        lifecycleScope.launch {
-                            delay(1000)
-                            feedViewModel.findDetail(id = state.eventHeads[0].id)
-                        }
-                    }
-                    is FeedState.EventDetailsNotLoaded -> {
-                        viewBinding.appImageDownload.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                this@MainActivity,
-                                com.sicredi.core.R.drawable.ic_broken_image_gray900_24,
-                            )
-                        )
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            viewBinding.appImageDownload.imageTintList = ColorStateList.valueOf(
-                                Color.RED
-                            )
-                        }
-                    }
-                    is FeedState.EventDetailsSuccessfulLoaded -> {
-                        viewBinding.appImageDownload.setImageDrawable(null)
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            viewBinding.appImageDownload.imageTintList = null
-                        }
-                        Timber.i(state.details.toString())
-                    }
-                }
-            }
-            feedViewModel.loadFeed()
+            AppWarningFragment.Builder()
+                .title("Test title")
+                .barColor(AppWarningFragment.BarColor.YELLOW)
+                .description("This is some random description put to test this dialog")
+                .primaryButtonText("Ok")
+                .secondaryButtonText("Cancel")
+                .build()
+                .show(supportFragmentManager, "confirmationTest")
         }
+    }
+
+    override fun onWarningFragmentButtonClick(
+        isPrimary: Boolean,
+        dialog: BottomSheetDialogFragment
+    ) {
+        if (dialog.tag == "confirmationTest") {
+            val buttonId = if (isPrimary) "primary" else "secondary"
+            Timber.i("Ok, I received the signal of \"$buttonId\" button")
+            lifecycleScope.launch {
+                delay(2000)
+                AppWarningFragment.Builder()
+                    .title("Test title 2")
+                    .barColor(AppWarningFragment.BarColor.YELLOW)
+                    .description("This is the other test.\nSo now, is it ok?")
+                    .primaryButtonText("Yes")
+                    .secondaryButtonText("No")
+                    .build()
+                    .show(supportFragmentManager, "confirmationTest_2")
+            }
+        } else {
+            val source = dialog.tag ?: "unknown"
+            Timber.i("Unexpected source: $source")
+        }
+        dialog.dismiss()
     }
 }

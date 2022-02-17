@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RobotoTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+
+    <style name="ShapeAppearanceBottomSheetDialog_Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_normal</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_normal</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="Theme.Core.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
+    </style>
+</resources>
