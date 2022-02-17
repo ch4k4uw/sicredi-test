@@ -24,6 +24,7 @@ object Versions {
         const val ActivityKtx = "1.4.0"
         const val FragmentKtx = "1.4.0"
         const val NavigationKtx = "2.3.5"
+        const val Navigation = "2.4.1"
         const val CollectionKtx = "1.1.0"
         const val SwipeToRefresh = "1.1.0"
     }

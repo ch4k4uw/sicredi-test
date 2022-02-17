@@ -10,6 +10,8 @@ class SetupAndroidModulePlugin : Plugin<Project> {
         target.run {
             plugins.apply(Plugins.Android.Library)
             plugins.apply(Plugins.Kotlin.Android)
+            plugins.apply(Plugins.Kotlin.Kapt)
+            plugins.apply(Plugins.Hilt)
             configureAsAndroidLibrary()
             configureBaseDependencies()
         }

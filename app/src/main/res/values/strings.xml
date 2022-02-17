@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Instacredi</string>
+    <string name="event_sharing">*%1s*\n\n%2s\n\n\nLocation: geo:%3f,%4f\nSee more: %5s</string>
 </resources>
