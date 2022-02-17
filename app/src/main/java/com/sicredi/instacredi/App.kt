@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -21,6 +22,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         setupTimber()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun setupTimber() {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="RobotoTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="RobotoButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/roboto_condensed_bold</item>
+    </style>
+</resources>

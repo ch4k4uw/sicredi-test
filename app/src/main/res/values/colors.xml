@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="amber_300">#FFFFD54F</color>
+    <color name="amber_800">#FFFF8F00</color>
+    <color name="light_green_300">#FFAED581</color>
+    <color name="light_green_800">#FF558B2F</color>
+
+    <color name="primary">@color/light_green_300</color>
+    <color name="primaryVariant">@color/light_green_800</color>
+    <color name="onPrimary">@color/black</color>
+    <color name="secondary">@color/amber_300</color>
+    <color name="secondaryVariant">@color/amber_800</color>
+    <color name="onSecondary">@color/black</color>
+    <color name="error">#ffcf6679</color>
+    <color name="onError">@color/black</color>
+    <color name="surface">#33ffffff</color>
+    <color name="onSurface">#ffffffff</color>
 </resources>
