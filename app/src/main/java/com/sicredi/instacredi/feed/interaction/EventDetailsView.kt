@@ -1,5 +1,7 @@
 package com.sicredi.instacredi.feed.interaction
 
+import android.content.Intent
+import android.net.Uri
 import com.sicredi.domain.feed.domain.entity.Event
 import java.time.LocalDateTime
 
@@ -25,3 +27,8 @@ val Event.asEventDetailView
         latitude = latitude,
         longitude = longitude,
     )
+
+val EventDetailsView.mapsIntent
+    get() = Intent(Intent.ACTION_VIEW, Uri.parse("geo:$latitude,$longitude")).apply {
+        `package` = "com.google.android.apps.maps"
+    }
