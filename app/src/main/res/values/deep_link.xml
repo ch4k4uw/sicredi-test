@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deep_link_scheme">sicredi</string>
+    <string name="deep_link_authority">social</string>
+    <string name="deep_link_merchant">instacredi</string>
+</resources>

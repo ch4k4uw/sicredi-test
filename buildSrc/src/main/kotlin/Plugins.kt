@@ -3,6 +3,7 @@ object Plugins {
         const val Application = "com.android.application"
         const val Library = "com.android.library"
         const val LibraryModule = "android-library-module"
+        const val NavigationSafeArgs = "androidx.navigation.safeargs.kotlin"
     }
     object Kotlin {
         const val Android = "kotlin-android"

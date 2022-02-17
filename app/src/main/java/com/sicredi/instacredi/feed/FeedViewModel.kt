@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
 import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.instacredi.feed.interaction.FeedState
-import com.sicredi.instacredi.feed.interaction.asEventDetailView
+import com.sicredi.instacredi.common.interaction.asEventDetailView
 import com.sicredi.instacredi.feed.interaction.asEventHeadViews
 import com.sicredi.instacredi.feed.uc.FindAllEvents
 import com.sicredi.instacredi.feed.uc.FindEventDetails

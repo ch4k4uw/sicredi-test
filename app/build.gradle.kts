@@ -9,6 +9,7 @@ plugins {
     id(Plugins.Kotlin.Parcelize)
     id(Plugins.Hilt)
     id(Plugins.Kotlin.Kapt)
+    id(Plugins.Android.NavigationSafeArgs)
 }
 
 android {

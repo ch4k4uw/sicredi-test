@@ -5,8 +5,6 @@ import extensions.kapt
 plugins {
     id(Plugins.Android.LibraryModule)
     id(Plugins.Kotlin.Parcelize)
-    id(Plugins.Hilt)
-    id(Plugins.Kotlin.Kapt)
 }
 
 android {

@@ -6,8 +6,6 @@ import extensions.testImplementation
 plugins {
     id(Plugins.Android.LibraryModule)
     id(Plugins.Kotlin.Parcelize)
-    id(Plugins.Hilt)
-    id(Plugins.Kotlin.Kapt)
 }
 
 android {

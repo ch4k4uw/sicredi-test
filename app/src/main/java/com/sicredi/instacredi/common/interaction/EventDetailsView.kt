@@ -1,20 +1,27 @@
-package com.sicredi.instacredi.feed.interaction
+package com.sicredi.instacredi.common.interaction
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Parcelable
 import com.sicredi.domain.feed.domain.entity.Event
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
+@Parcelize
 data class EventDetailsView(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val date: LocalDateTime,
-    val image: String,
-    val latitude: Double,
-    val longitude: Double,
-)
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val price: Double = 0.0,
+    val date: LocalDateTime = LocalDateTime.MIN,
+    val image: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
+) : Parcelable {
+    companion object {
+        val Empty = EventDetailsView()
+    }
+}
 
 val Event.asEventDetailView
     get() = EventDetailsView(

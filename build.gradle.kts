@@ -8,7 +8,7 @@ buildscript {
         classpath(Dependencies.Gradle)
         classpath(Dependencies.Kotlin)
         classpath(Dependencies.DaggerHilt)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+        classpath(Dependencies.ArchNavigation)
     }
 }
 
