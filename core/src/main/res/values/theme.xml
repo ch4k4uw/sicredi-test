@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.Core" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="l">true</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="buttonStyle">@style/RobotoButtonStyle</item>
         <item name="colorPrimary">@color/primary</item>
@@ -9,13 +12,30 @@
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSecondaryVariant">@color/secondaryVariant</item>
         <item name="colorOnSecondary">@color/onSecondary</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/onError</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/onSurface</item>
+        <item name="materialButtonStyle">@style/RoundedCornerButton</item>
+        <item name="materialButtonOutlinedStyle">@style/RoundedCornerOutlinedButton</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
+        <item name="collapsingToolbarLayoutStyle">@style/Widget.Design.CollapsingToolbar</item>
     </style>
-    <style name="Theme.Core.WarningBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+
+    <style name="Theme.Core.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight">
+        <item name="collapsingToolbarLayoutStyle">@style/CollapsingToolbar</item>
+        <item name="colorSurface">@color/primary</item>
+        <item name="colorOnSurface">@color/onPrimary</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
+    </style>
+
+    <style name="Theme.Core.WarningBottomSheetDialog">
         <item name="bottomSheetStyle">@style/Theme.Core.BottomSheetStyle</item>
     </style>
+
+    <style name="Theme.Core.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
+    </style>
+
+
 </resources>

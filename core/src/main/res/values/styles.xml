@@ -16,7 +16,28 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <style name="Theme.Core.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
+    <style name="ClickableImageView" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@null</item>
+    </style>
+
+    <style name="RoundedCornerButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">@dimen/size_xsmall</item>
+    </style>
+
+    <style name="RoundedCornerOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/size_xsmall</item>
+    </style>
+
+    <style name="CollapsingToolbar" parent="Widget.Design.CollapsingToolbar">
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.Core.CollapsingToolbar.Expanded</item>
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Core.CollapsingToolbar.Collapsed</item>
+    </style>
+
+    <style name="TextAppearance.Core.CollapsingToolbar.Expanded" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Core.CollapsingToolbar.Collapsed" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>
