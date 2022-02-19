@@ -41,7 +41,6 @@
             android:hint="@string/email_hint"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
-            android:textColor="@color/white"
             tools:text="pedro.motta@avenuecode.com"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -65,7 +64,6 @@
             android:hint="@string/password_hint"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:textColor="@color/white"
             tools:text="1234567"/>
 
     </com.google.android.material.textfield.TextInputLayout>

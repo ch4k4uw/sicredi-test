@@ -16,8 +16,8 @@
         <item name="colorOnError">@color/onError</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/onSurface</item>
-        <item name="materialButtonStyle">@style/RoundedCornerButton</item>
-        <item name="materialButtonOutlinedStyle">@style/RoundedCornerOutlinedButton</item>
+        <item name="materialRoundedButtonStyle">@style/RoundedCornerButton</item>
+        <item name="materialRoundedButtonOutlinedStyle">@style/RoundedCornerOutlinedButton</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
         <item name="collapsingToolbarLayoutStyle">@style/Widget.Design.CollapsingToolbar</item>
     </style>
@@ -30,12 +30,6 @@
     </style>
 
     <style name="Theme.Core.WarningBottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Theme.Core.BottomSheetStyle</item>
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
-
-    <style name="Theme.Core.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
-    </style>
-
-
 </resources>

@@ -16,6 +16,10 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
+    </style>
+
     <style name="ClickableImageView" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@null</item>
     </style>

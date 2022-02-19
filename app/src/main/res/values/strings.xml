@@ -8,4 +8,5 @@
     <string name="register_action">Register</string>
     <string name="name_hint">name</string>
     <string name="submit_action">Submit</string>
+    <string name="logout_action">Logout</string>
 </resources>
