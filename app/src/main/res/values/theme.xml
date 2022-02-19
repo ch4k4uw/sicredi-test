@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Instacredi" parent="Theme.Core">
+        <item name="buttonLayoutStyle">@style/ButtonLayout</item>
+    </style>
+
+    <style name="Theme.WarningBottomSheetDialog" parent="Theme.Core">
+        <item name="bottomSheetStyle">@style/BottomSheetEventOptions</item>
+    </style>
+</resources>
