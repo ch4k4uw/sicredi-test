@@ -1,63 +1,66 @@
 package com.sicredi.instacredi
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sicredi.core.ui.component.AppWarningFragment
-import com.sicredi.core.ui.component.AppWarningFragmentListener
+import com.sicredi.core.ui.component.dismissAppWarningFragment
+import com.sicredi.core.ui.component.showAppWarningFragment
 import com.sicredi.instacredi.databinding.ActivityMainBinding
-import com.sicredi.instacredi.feed.FeedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AppWarningFragmentListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
-    private val feedViewModel: FeedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
         }
 
-        lifecycleScope.launchWhenResumed {
-            AppWarningFragment.Builder()
-                .title("Test title")
-                .barColor(AppWarningFragment.BarColor.YELLOW)
-                .description("This is some random description put to test this dialog")
-                .primaryButtonText("Ok")
-                .secondaryButtonText("Cancel")
-                .build()
-                .show(supportFragmentManager, "confirmationTest")
-        }
-    }
-
-    override fun onWarningFragmentButtonClick(
-        isPrimary: Boolean,
-        dialog: BottomSheetDialogFragment
-    ) {
-        if (dialog.tag == "confirmationTest") {
+        supportFragmentManager.setFragmentResultListener(
+            "warning-dialog-test-1",
+            this
+        ) { _, result ->
+            val isPrimary = result[AppWarningFragment.Companion.Key.ActionId] ==
+                    AppWarningFragment.ACTION_PRIMARY
             val buttonId = if (isPrimary) "primary" else "secondary"
+
             Timber.i("Ok, I received the signal of \"$buttonId\" button")
+            supportFragmentManager.dismissAppWarningFragment()
             lifecycleScope.launch {
                 delay(2000)
-                AppWarningFragment.Builder()
-                    .title("Test title 2")
-                    .barColor(AppWarningFragment.BarColor.YELLOW)
-                    .description("This is the other test.\nSo now, is it ok?")
-                    .primaryButtonText("Yes")
-                    .secondaryButtonText("No")
-                    .build()
-                    .show(supportFragmentManager, "confirmationTest_2")
+                supportFragmentManager
+                    .showAppWarningFragment(requestKey = "warning-dialog-test-2") {
+                        title("Test title 2")
+                        barColor(AppWarningFragment.BarColor.RED)
+                        description("This is the other test.\nSo now, is it ok?")
+                        primaryButtonText("Yes")
+                        secondaryButtonText("No")
+                    }
             }
-        } else {
-            val source = dialog.tag ?: "unknown"
-            Timber.i("Unexpected source: $source")
         }
-        dialog.dismiss()
+
+        supportFragmentManager.setFragmentResultListener(
+            "warning-dialog-test-2",
+            this
+        ) { _, result ->
+            Timber.i("Result 2: $result")
+            supportFragmentManager.dismissAppWarningFragment()
+        }
+
+        lifecycleScope.launchWhenResumed {
+            supportFragmentManager
+                .showAppWarningFragment(requestKey = "warning-dialog-test-1") {
+                    title("Test title")
+                    barColor(AppWarningFragment.BarColor.YELLOW)
+                    description("This is some random description put to test this dialog")
+                    primaryButtonText("Ok")
+                    secondaryButtonText("Cancel")
+                }
+        }
     }
 }

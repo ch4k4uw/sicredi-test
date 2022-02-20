@@ -20,6 +20,9 @@
         <item name="materialRoundedButtonOutlinedStyle">@style/RoundedCornerOutlinedButton</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
         <item name="collapsingToolbarLayoutStyle">@style/Widget.Design.CollapsingToolbar</item>
+        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/AppShapeAppearance.LargeComponent</item>
     </style>
 
     <style name="Theme.Core.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight">
@@ -29,7 +32,8 @@
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
     </style>
 
-    <style name="Theme.Core.WarningBottomSheetDialog">
+    <style name="Theme.Core.WarningBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 </resources>

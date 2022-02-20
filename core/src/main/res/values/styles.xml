@@ -8,6 +8,24 @@
         <item name="android:fontFamily">@font/roboto_condensed_bold</item>
     </style>
 
+    <!-- share -->
+    <style name="AppShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">@dimen/radius_normal</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="AppShapeAppearance.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">@dimen/radius_normal</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="AppShapeAppearance.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerSize">@dimen/radius_normal</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+    <!-- end shape -->
+
+    <!-- warning-bottom-sheet -->
     <style name="ShapeAppearanceBottomSheetDialog_Rounded" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">@dimen/radius_normal</item>
@@ -16,9 +34,8 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <!--<item name="backgroundTint">?attr/colorPrimary</item>-->
-    </style>
+    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal" />
+    <!-- end warning-bottom-sheet -->
 
     <style name="ClickableImageView" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@null</item>
