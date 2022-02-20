@@ -4,6 +4,10 @@
         <item name="buttonLayoutStyle">@style/ButtonLayout</item>
     </style>
 
+    <style name="Theme.Instacredi.SplashScreen">
+        <item name="android:windowBackground">@drawable/bkg_splash</item>
+    </style>
+
     <style name="Theme.WarningBottomSheetDialog" parent="Theme.Core">
         <item name="bottomSheetStyle">@style/BottomSheetEventOptions</item>
     </style>
