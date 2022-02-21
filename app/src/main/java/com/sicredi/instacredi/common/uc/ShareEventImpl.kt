@@ -18,10 +18,13 @@ class ShareEventImpl @Inject constructor(
     private val eventRepository: EventRepository,
     private val appDispatchers: AppDispatchers
 ) : ShareEvent {
+    companion object {
+        private const val MaxTextLength = 512
+    }
     override suspend fun invoke(eventId: String): Flow<Intent> = flow {
         val details = eventRepository.find(id = eventId).single()
         val deepLink = object {
-            private val scheme = context.getString(R.string.deep_link_scheme)
+            private val scheme = context.getString(R.string.deep_link_https_scheme)
             private val authority = context.getString(R.string.deep_link_authority)
             private val merchant = context.getString(R.string.deep_link_merchant)
             operator fun invoke(): String =
@@ -36,7 +39,13 @@ class ShareEventImpl @Inject constructor(
         val text = context.getString(
             R.string.event_sharing,
             details.title,
-            details.description,
+            details.description.run {
+                if (length >= MaxTextLength) {
+                    substring(0..MaxTextLength) + "…"
+                } else {
+                    this
+                }
+            },
             details.latitude,
             details.longitude,
             deepLink()

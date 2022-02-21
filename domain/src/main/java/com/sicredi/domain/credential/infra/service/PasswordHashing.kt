@@ -1,10 +1,11 @@
 package com.sicredi.domain.credential.infra.service
 
+import android.os.Parcel
 import android.os.Parcelable
 import android.util.Base64
 import com.sicredi.domain.credential.infra.extensions.marshall
 import com.sicredi.domain.credential.infra.extensions.unmarshall
-import kotlinx.parcelize.Parcelize
+import timber.log.Timber
 import java.security.MessageDigest
 import java.util.*
 import javax.inject.Inject
@@ -14,12 +15,7 @@ import javax.inject.Singleton
 class PasswordHashing @Inject constructor() {
     companion object {
         private const val INTERACTION_CONT = 0xFFL
-        private val creator = PasswordLocal::class.java
-            .fields
-            .find { it.name == "CREATOR" }
-            ?.get(null)
-            ?.let { it as? Parcelable.Creator<*> }
-            ?: throw RuntimeException("${PasswordLocal::class.java.name}::CREATOR not found")
+        private val EmptyPasswordLocal = PasswordLocal()
     }
 
     private val md by lazy {
@@ -54,29 +50,53 @@ class PasswordHashing @Inject constructor() {
             ?.let { Base64.decode(it, Base64.NO_WRAP) }
             ?: ByteArray(0)
 
-        return creator.unmarshall(data = rawPasswordLocal, defaultValue = PasswordLocal.Empty)
+        return PasswordLocal.unmarshall(data = rawPasswordLocal, defaultValue = EmptyPasswordLocal)
             .let { passwordLocal ->
-                if (passwordLocal != PasswordLocal.Empty) {
+                if (passwordLocal != EmptyPasswordLocal) {
                     val hashedPassword = hash(
                         salt = passwordLocal.salt,
                         password = password,
                         interactions = passwordLocal.interactions,
                     )
+                    Timber.i("Comparing: \"$hashedPassword\" with \"${passwordLocal.password}\"")
                     hashedPassword == passwordLocal.password
                 } else {
+                    Timber.i("Password is empty")
                     false
                 }
             }
     }
 
-    @Parcelize
     private data class PasswordLocal(
         val salt: String = "",
         val interactions: Long = 0L,
         val password: String = ""
     ) : Parcelable {
-        companion object {
-            val Empty = PasswordLocal()
+        constructor(parcel: Parcel) : this(
+            salt = parcel.readString() ?: "",
+            interactions = parcel.readLong(),
+            password = parcel.readString() ?: ""
+        ) {
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(salt)
+            parcel.writeLong(interactions)
+            parcel.writeString(password)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<PasswordLocal> {
+            override fun createFromParcel(parcel: Parcel): PasswordLocal {
+                return PasswordLocal(parcel)
+            }
+
+            override fun newArray(size: Int): Array<PasswordLocal?> {
+                return arrayOfNulls(size)
+            }
         }
     }
 }

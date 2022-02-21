@@ -1,4 +1,4 @@
-package com.sicredi.instacredi.feed
+package com.sicredi.instacredi.common
 
 object ProfileBottomSheetConstants {
     object Key {

@@ -1,10 +1,12 @@
 package com.sicredi.domain.credential.infra.service
 
 import android.content.Context
+import android.os.Parcel
 import android.os.Parcelable
 import androidx.datastore.preferences.core.edit
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.domain.credential.infra.data.SettingsConstants
+import com.sicredi.domain.credential.infra.entity.EmptyUserLocal
 import com.sicredi.domain.credential.infra.entity.UserLocal
 import com.sicredi.domain.credential.infra.entity.toDomain
 import com.sicredi.domain.credential.infra.extensions.base64
@@ -12,7 +14,6 @@ import com.sicredi.domain.credential.infra.extensions.dataStore
 import com.sicredi.domain.credential.infra.extensions.marshall
 import com.sicredi.domain.credential.infra.extensions.unmarshall
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,26 +22,14 @@ class UserStorage @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     companion object {
-        private val userLocalCreator = UserLocal::class.java
-            .fields
-            .find { it.name == "CREATOR" }
-            ?.get(null)
-            ?.let { it as? Parcelable.Creator<*> }
-            ?: throw RuntimeException("${UserLocal::class.java.name}::CREATOR not found")
-
-        private val usersLocalCreator = UsersLocal::class.java
-            .fields
-            .find { it.name == "CREATOR" }
-            ?.get(null)
-            ?.let { it as? Parcelable.Creator<*> }
-            ?: throw RuntimeException("${UsersLocal::class.java.name}::CREATOR not found")
+        private val EmptyUsersLocal = UsersLocal(listOf())
     }
 
     internal suspend fun store(user: User, password: String? = null) {
         context.dataStore.edit { dataStore ->
-            var userLocal = UserLocal.fromDomain(user = user, password = password ?: "")
+            var userLocal = UserLocal(user = user, password = password ?: "")
             val usersLocal = decodeUsersLocal().let { usersLocal ->
-                if (usersLocal == UsersLocal.Empty) {
+                if (usersLocal == EmptyUsersLocal) {
                     UsersLocal(users = listOf(userLocal))
                 } else {
                     val existing = usersLocal.users.indexOfFirst { it.id == user.id }
@@ -69,9 +58,9 @@ class UserStorage @Inject constructor(
     }
 
     private suspend fun decodeUsersLocal(): UsersLocal {
-        return usersLocalCreator.unmarshall(
+        return UsersLocal.unmarshall(
             data = context.dataStore.base64.get(key = SettingsConstants.USERS),
-            defaultValue = UsersLocal.Empty
+            defaultValue = EmptyUsersLocal
         )
     }
 
@@ -86,9 +75,9 @@ class UserStorage @Inject constructor(
     }
 
     private suspend fun decodeUserLocal(): UserLocal {
-        return userLocalCreator.unmarshall(
+        return UserLocal.unmarshall(
             data = context.dataStore.base64.get(key = SettingsConstants.USER),
-            defaultValue = UserLocal.Empty
+            defaultValue = EmptyUserLocal
         )
     }
 
@@ -104,12 +93,29 @@ class UserStorage @Inject constructor(
     internal suspend fun findPasswordByEmail(email: String): String =
         decodeUsersLocal().users.find { it.email == email }?.password ?: ""
 
-    @Parcelize
     private data class UsersLocal(
         val users: List<UserLocal>
     ) : Parcelable {
-        companion object {
-            val Empty = UsersLocal(users = listOf())
+        constructor(parcel: Parcel) : this(parcel.createTypedArrayList(UserLocal) ?: listOf()) {
         }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeTypedList(users)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<UsersLocal> {
+            override fun createFromParcel(parcel: Parcel): UsersLocal {
+                return UsersLocal(parcel)
+            }
+
+            override fun newArray(size: Int): Array<UsersLocal?> {
+                return arrayOfNulls(size)
+            }
+        }
+
     }
 }

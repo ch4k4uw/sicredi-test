@@ -32,7 +32,7 @@ class SplashScreenActivity : AppCompatActivity() {
                 val data = intent.data
                 val eventId = data?.getQueryParameter("eventId")
                 if (eventId != null) {
-                    viewModel.findDetails(eventId = eventId)
+                    viewModel.findDetails(user = state.user, eventId = eventId)
                 } else {
                     startMainActivityForFeedFragment(user = state.user)
                 }
@@ -41,7 +41,9 @@ class SplashScreenActivity : AppCompatActivity() {
                 startMainActivityForSignInFragment()
             }
             is SplashScreenState.EventDetailsSuccessfulLoaded -> {
-                startMainActivityForEventDetails(eventDetails = state.eventDetails)
+                startMainActivityForEventDetails(
+                    user = state.user, eventDetails = state.eventDetails
+                )
             }
         }
     }

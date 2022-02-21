@@ -1,6 +1,7 @@
 package com.sicredi.instacredi.feed
 
 import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import com.sicredi.core.network.domain.data.AppHttpGenericException
 import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.instacredi.AppInstantTaskExecutorRule
@@ -8,6 +9,7 @@ import com.sicredi.instacredi.feed.interaction.FeedState
 import com.sicredi.instacredi.feed.stuff.EventsFixture
 import com.sicredi.instacredi.feed.uc.FindAllEvents
 import com.sicredi.instacredi.common.uc.FindEventDetails
+import com.sicredi.instacredi.common.uc.PerformLogout
 import io.mockk.MockKAnnotations
 import io.mockk.clearMocks
 import io.mockk.coEvery
@@ -30,6 +32,11 @@ class FeedViewModelTest {
     private lateinit var findEventDetails: FindEventDetails
 
     @RelaxedMockK
+    private lateinit var performLogout: PerformLogout
+
+    private var savedStateHandle = SavedStateHandle()
+
+    @RelaxedMockK
     private lateinit var viewModelObserver: Observer<FeedState>
 
     private lateinit var viewModel: FeedViewModel
@@ -38,8 +45,10 @@ class FeedViewModelTest {
     fun setup() {
         MockKAnnotations.init(this)
         viewModel = FeedViewModel(
+            savedStateHandle = savedStateHandle,
             findAllEvents = findAllEvents,
-            findEventDetails = findEventDetails
+            findEventDetails = findEventDetails,
+            performLogout = performLogout
         ).apply {
             state.observeForever(viewModelObserver)
         }
@@ -124,7 +133,7 @@ class FeedViewModelTest {
         verify(exactly = 1) { viewModelObserver.onChanged(FeedState.Loading) }
         verify(exactly = 1) {
             viewModelObserver.onChanged(
-                FeedState.EventDetailsNotLoaded(isMissingConnectivity = true)
+                FeedState.EventDetailsNotLoaded(isMissingConnectivity = true, id = "xxx")
             )
         }
 
@@ -135,7 +144,7 @@ class FeedViewModelTest {
         testRule.advanceUntilIdle()
         verify(exactly = 1) {
             viewModelObserver
-                .onChanged(FeedState.EventDetailsNotLoaded(isMissingConnectivity = false))
+                .onChanged(FeedState.EventDetailsNotLoaded(isMissingConnectivity = false, id = "xxx"))
         }
     }
 }

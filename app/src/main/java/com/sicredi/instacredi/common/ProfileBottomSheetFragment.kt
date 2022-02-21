@@ -1,4 +1,4 @@
-package com.sicredi.instacredi.feed
+package com.sicredi.instacredi.common
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,12 +9,30 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sicredi.instacredi.databinding.FragmentBottomSheetProfileBinding
+import com.sicredi.instacredi.event.EventDetailsViewModel
+import com.sicredi.instacredi.feed.FeedFragment
+import com.sicredi.instacredi.feed.FeedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
-    private val viewModel by viewModels<FeedViewModel>({requireParentFragment()})
     private lateinit var viewBinding: FragmentBottomSheetProfileBinding
+
+    private val logoutIntent: () -> Unit by lazy {
+        if (parentFragment is FeedFragment) {
+            viewModels<FeedViewModel>({requireParentFragment()}).value.let {
+                {
+                    it.logout()
+                }
+            }
+        } else {
+            viewModels<EventDetailsViewModel>({requireParentFragment()}).value.let {
+                {
+                    it.logout()
+                }
+            }
+        }
+    }
 
     private val name: String
         get() = arguments?.getString(ProfileBottomSheetConstants.Key.Name) ?: ""
@@ -44,7 +62,7 @@ class ProfileBottomSheetFragment : BottomSheetDialogFragment() {
     private fun setupListeners() {
         viewBinding.logoutAction.setOnClickListener {
             dismiss()
-            viewModel.logout()
+            logoutIntent()
         }
     }
 }

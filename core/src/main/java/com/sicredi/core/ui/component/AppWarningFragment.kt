@@ -23,8 +23,10 @@ class AppWarningFragment : BottomSheetDialogFragment() {
             internal const val SecondaryButtonText = "button.secondary.text"
             internal const val Icon = "icon"
             internal const val BarColor = "bar.color"
+            const val OptionParams = "option.params"
             const val ActionId = "result.action"
         }
+
         const val ACTION_PRIMARY = "primary"
         const val ACTION_SECONDARY = "secondary"
     }
@@ -50,9 +52,12 @@ class AppWarningFragment : BottomSheetDialogFragment() {
     private val barColor: BarColor
         get() = arguments?.getInt(Key.BarColor)?.let { BarColor.values()[it] } ?: BarColor.GREEN
 
+    private val optionParams: Bundle?
+        get() = arguments?.getBundle(Key.OptionParams)
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val bottomSheetDialogWithBehavior = LockedTopRoundedBottomSheetDialog(requireContext())
-        //isCancelable = primaryButtonText == null && secondaryButtonText == null
+        isCancelable = primaryButtonText == null && secondaryButtonText == null
         return bottomSheetDialogWithBehavior.setBehavior(super.onCreateDialog(savedInstanceState))
     }
 
@@ -66,7 +71,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
     }
 
     override fun getTheme(): Int =
-        R.style.Theme_Core_WarningBottomSheetDialog
+        R.style.Theme_Core_BottomSheetDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,7 +81,8 @@ class AppWarningFragment : BottomSheetDialogFragment() {
     private fun notifyButtonClick(isPrimary: Boolean) {
         parentFragmentManager.setFragmentResult(
             requestKey, bundleOf(
-                Key.ActionId to if (isPrimary) ACTION_PRIMARY else ACTION_SECONDARY
+                Key.ActionId to if (isPrimary) ACTION_PRIMARY else ACTION_SECONDARY,
+                Key.OptionParams to optionParams
             )
         )
     }
@@ -124,6 +130,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
         private var barColor: BarColor = BarColor.GREEN
         private var primaryButtonText: String? = null
         private var secondaryButtonText: String? = null
+        private var optionParams: Bundle? = null
 
         fun title(newTitle: String) = apply { this.title = newTitle }
 
@@ -137,6 +144,8 @@ class AppWarningFragment : BottomSheetDialogFragment() {
 
         fun barColor(newBarColor: BarColor) = apply { this.barColor = newBarColor }
 
+        fun optionParams(optionParams: Bundle) = apply { this.optionParams = optionParams }
+
         fun build() = AppWarningFragment().also { dialog ->
             dialog.arguments = bundleOf(
                 Companion.Key.RequestKey to requestKey,
@@ -146,6 +155,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
                 Companion.Key.BarColor to barColor.ordinal,
                 Companion.Key.PrimaryButtonText to primaryButtonText,
                 Companion.Key.SecondaryButtonText to secondaryButtonText,
+                Companion.Key.OptionParams to optionParams
             )
         }
 

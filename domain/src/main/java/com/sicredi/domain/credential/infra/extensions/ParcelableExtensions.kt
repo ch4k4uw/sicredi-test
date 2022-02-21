@@ -3,6 +3,7 @@ package com.sicredi.domain.credential.infra.extensions
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Base64
+import timber.log.Timber
 
 internal fun Parcelable.marshall(): String {
     val parcel = Parcel.obtain()
@@ -21,6 +22,7 @@ internal inline fun <reified T> Parcelable.Creator<*>.unmarshall(
     parcel.setDataPosition(0)
     val result = createFromParcel(parcel).let { it as T }
     parcel.recycle()
+    Timber.d(result.toString())
     result
 } else {
     defaultValue
