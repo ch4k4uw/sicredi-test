@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sicredi.instacredi">
 
     <application
@@ -11,13 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Instacredi">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".splash.SplashScreenActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/Theme.Instacredi.SplashScreen"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sicredi"
+                    android:host="social"
+                    android:pathPrefix="/instacredi" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
         </activity>
     </application>
 
