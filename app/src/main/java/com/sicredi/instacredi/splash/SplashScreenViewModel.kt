@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
+import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.domain.credential.domain.entity.User
+import com.sicredi.instacredi.common.interaction.asEventDetailView
 import com.sicredi.instacredi.common.interaction.asView
+import com.sicredi.instacredi.common.uc.FindEventDetails
 import com.sicredi.instacredi.common.uc.FindLoggedUser
 import com.sicredi.instacredi.splash.interaction.SplashScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
-    private val findLoggedUser: FindLoggedUser
+    private val findLoggedUser: FindLoggedUser,
+    private val findEventDetails: FindEventDetails
 ) : ViewModel() {
     private val mutableState = LiveEvent<SplashScreenState>()
     val state: LiveData<SplashScreenState> = mutableState
@@ -36,6 +40,23 @@ class SplashScreenViewModel @Inject constructor(
                     } else {
                         mutableState.value = SplashScreenState.ShowFeedScreen(user = user.asView)
                     }
+                }
+        }
+    }
+
+    fun findDetails(eventId: String) {
+        viewModelScope.launch {
+            findEventDetails(id = eventId)
+                .catch { cause ->
+                    Timber.e(cause)
+                    mutableState.value = SplashScreenState.EventDetailsNotLoaded(
+                        cause = cause
+                    )
+                }
+                .collect { eventDetails ->
+                    mutableState.value = SplashScreenState.EventDetailsSuccessfulLoaded(
+                        eventDetails = eventDetails.asEventDetailView
+                    )
                 }
         }
     }

@@ -116,6 +116,10 @@ dependencies {
     //Multidex
     implementation(Libraries.AndroidX.Multidex)
 
+    //Data store
+    implementation(Libraries.DataStore)
+    implementation(Libraries.DataStorePreferences)
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test:core:1.4.0")
     androidTestImplementation("androidx.test.ext:truth:1.4.0")

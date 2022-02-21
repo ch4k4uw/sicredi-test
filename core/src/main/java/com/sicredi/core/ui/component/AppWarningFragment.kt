@@ -140,7 +140,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
         fun build() = AppWarningFragment().also { dialog ->
             dialog.arguments = bundleOf(
                 Companion.Key.RequestKey to requestKey,
-                Companion.Key.Title to requestKey,
+                Companion.Key.Title to title,
                 Companion.Key.Description to description,
                 Companion.Key.Icon to icon,
                 Companion.Key.BarColor to barColor.ordinal,

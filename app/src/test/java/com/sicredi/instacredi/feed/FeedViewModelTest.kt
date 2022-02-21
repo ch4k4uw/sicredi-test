@@ -7,7 +7,7 @@ import com.sicredi.instacredi.AppInstantTaskExecutorRule
 import com.sicredi.instacredi.feed.interaction.FeedState
 import com.sicredi.instacredi.feed.stuff.EventsFixture
 import com.sicredi.instacredi.feed.uc.FindAllEvents
-import com.sicredi.instacredi.feed.uc.FindEventDetails
+import com.sicredi.instacredi.common.uc.FindEventDetails
 import io.mockk.MockKAnnotations
 import io.mockk.clearMocks
 import io.mockk.coEvery
@@ -94,7 +94,7 @@ class FeedViewModelTest {
     fun `it should fetch an event details`() {
         findEventDetails.setup()
 
-        viewModel.findDetail(id = "xxx")
+        viewModel.findDetails(id = "xxx")
         testRule.advanceUntilIdle()
 
         coVerify(exactly = 1) { findEventDetails.invoke(any()) }
@@ -117,7 +117,7 @@ class FeedViewModelTest {
     fun `it shouldn't fetch the event`() {
         findEventDetails.setup(exception = NoConnectivityException())
 
-        viewModel.findDetail(id = "xxx")
+        viewModel.findDetails(id = "xxx")
         testRule.advanceUntilIdle()
 
         coVerify(exactly = 1) { findEventDetails.invoke(any()) }
@@ -131,7 +131,7 @@ class FeedViewModelTest {
         clearMocks(findEventDetails)
 
         findEventDetails.setup(exception = AppHttpGenericException(code = 501))
-        viewModel.findDetail(id = "xxx")
+        viewModel.findDetails(id = "xxx")
         testRule.advanceUntilIdle()
         verify(exactly = 1) {
             viewModelObserver

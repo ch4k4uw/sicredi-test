@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
 import com.sicredi.domain.credential.domain.data.AppInvalidEmailException
+import com.sicredi.domain.credential.domain.data.AppInvalidNameException
 import com.sicredi.domain.credential.domain.data.AppInvalidPasswordException
 import com.sicredi.instacredi.common.interaction.asView
 import com.sicredi.instacredi.signup.interaction.SignUpState
@@ -29,6 +30,7 @@ class SignUpViewModel @Inject constructor(
                 .catch { cause ->
                     Timber.e(cause)
                     mutableState.value = SignUpState.UserNotSignedUp(
+                        invalidName = cause is AppInvalidNameException,
                         invalidEmail = cause is AppInvalidEmailException,
                         invalidPassword = cause is AppInvalidPasswordException
                     )

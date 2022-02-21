@@ -9,7 +9,7 @@ import com.sicredi.instacredi.feed.interaction.FeedState
 import com.sicredi.instacredi.common.interaction.asEventDetailView
 import com.sicredi.instacredi.feed.interaction.asEventHeadViews
 import com.sicredi.instacredi.feed.uc.FindAllEvents
-import com.sicredi.instacredi.feed.uc.FindEventDetails
+import com.sicredi.instacredi.common.uc.FindEventDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
@@ -40,7 +40,7 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun findDetail(id: String) {
+    fun findDetails(id: String) {
         mutableState.value = FeedState.Loading
         viewModelScope.launch {
             findEventDetails(id = id)

@@ -1,5 +1,7 @@
 package com.sicredi.instacredi.common.ioc
 
+import com.sicredi.instacredi.common.uc.FindEventDetails
+import com.sicredi.instacredi.common.uc.FindEventDetailsImpl
 import com.sicredi.instacredi.common.uc.FindLoggedUser
 import com.sicredi.instacredi.common.uc.FindLoggedUserImpl
 import com.sicredi.instacredi.common.uc.PerformLogout
@@ -26,4 +28,8 @@ abstract class CommonViewModelBindModule {
     @Binds
     @ViewModelScoped
     abstract fun bindShareEvent(impl: ShareEventImpl): ShareEvent
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindFindEventDetails(impl: FindEventDetailsImpl): FindEventDetails
 }

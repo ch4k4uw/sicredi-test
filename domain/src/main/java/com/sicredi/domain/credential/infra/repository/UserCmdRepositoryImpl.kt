@@ -3,6 +3,7 @@ package com.sicredi.domain.credential.infra.repository
 import com.sicredi.core.data.AppDispatchers
 import com.sicredi.domain.credential.domain.data.AppDuplicatedUserException
 import com.sicredi.domain.credential.domain.data.AppInvalidEmailException
+import com.sicredi.domain.credential.domain.data.AppInvalidNameException
 import com.sicredi.domain.credential.domain.data.AppInvalidPasswordException
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.domain.credential.domain.repository.UserCmdRepository
@@ -29,13 +30,20 @@ class UserCmdRepositoryImpl @Inject constructor(
     }.flowOn(appDispatchers.io)
 
     private suspend fun assertSignUpDataIntegrity(user: User, password: String) {
-        if (user.email.isBlank()) {
+        if (user.name.isBlank()) {
+            throw AppInvalidNameException
+        }
+        if (user.email.isBlank() || !isEmailValid(user.email)) {
             throw AppInvalidEmailException
         }
-        if (password.isBlank()) {
+        if (password.length <= 5) {
             throw AppInvalidPasswordException
         }
         assertUserNotExists(user = user)
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private suspend fun assertUserNotExists(user: User) {

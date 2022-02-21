@@ -2,6 +2,10 @@
 <resources>
     <style name="Theme.Instacredi" parent="Theme.Core">
         <item name="buttonLayoutStyle">@style/ButtonLayout</item>
+        <item name="android:activityOpenEnterAnimation">@anim/nav_default_enter_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/nav_default_exit_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/nav_default_pop_enter_anim</item>
+        <item name="android:activityCloseExitAnimation">@anim/nav_default_pop_exit_anim</item>
     </style>
 
     <style name="Theme.Instacredi.SplashScreen">
