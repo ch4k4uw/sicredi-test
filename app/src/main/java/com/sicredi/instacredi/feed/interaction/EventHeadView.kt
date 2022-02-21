@@ -1,8 +1,11 @@
 package com.sicredi.instacredi.feed.interaction
 
+import android.os.Parcelable
 import com.sicredi.domain.feed.domain.entity.Event
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
+@Parcelize
 data class EventHeadView(
     val id: String,
     val title: String,
@@ -11,7 +14,7 @@ data class EventHeadView(
     val image: String,
     val lat: Double,
     val long: Double
-)
+) : Parcelable
 
 val List<Event>.asEventHeadViews
     get() = map { it.asEventHeadView }
