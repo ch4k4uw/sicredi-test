@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sicredi.core.extensions.dismissAppWarningFragment
 import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.core.ui.component.hasAppWarningPrimaryAction
+import com.sicredi.core.ui.component.optionParams
 import com.sicredi.instacredi.common.extensions.gone
 import com.sicredi.instacredi.common.extensions.showError
 import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
@@ -53,44 +55,50 @@ class FeedFragment : Fragment() {
             profileAction.setOnClickListener {
                 handleProfileClick()
             }
+            val resultListener = FragmentResultListener { requestKey, bundle ->
+                if (bundle.hasAppWarningPrimaryAction) {
+                    if (requestKey.isFeedListing) {
+                        if (bundle.hasAppWarningPrimaryAction) viewModel.loadFeed()
+                    } else if (requestKey.isEventDetailing) {
+                        val id = bundle.optionParams
+                            ?.getString("id")
+                        if (id != null) {
+                            viewModel.findDetails(id)
+                        }
+                    }
+                }
+                dismissAppWarningFragment()
+            }
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.FeedGenericError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                if (bundle.hasAppWarningPrimaryAction) viewModel.loadFeed()
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.FeedConnectivityError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                if (bundle.hasAppWarningPrimaryAction) viewModel.loadFeed()
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.EventDetailsGenericError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                val id = bundle.getBundle(AppWarningFragment.Companion.Key.OptionParams)
-                    ?.getString("id")
-                if (id != null) {
-                    if (bundle.hasAppWarningPrimaryAction) viewModel.findDetails(id)
-                }
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.EventDetailsConnectivityError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                val id = bundle.getBundle(AppWarningFragment.Companion.Key.OptionParams)
-                    ?.getString("id")
-                if (id != null) {
-                    if (bundle.hasAppWarningPrimaryAction) viewModel.findDetails(id)
-                }
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
         }
     }
+
+    private val String.isFeedListing: Boolean
+        get() = this == FeedConstants.RequestKey.FeedGenericError ||
+                this == FeedConstants.RequestKey.FeedConnectivityError
+
+    private val String.isEventDetailing: Boolean
+        get() = this == FeedConstants.RequestKey.EventDetailsGenericError ||
+                this == FeedConstants.RequestKey.EventDetailsConnectivityError
 
     private fun navigateUp() {
         requireActivity().onBackPressedDispatcher.onBackPressed()

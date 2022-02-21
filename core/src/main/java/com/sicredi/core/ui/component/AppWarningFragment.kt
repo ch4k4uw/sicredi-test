@@ -180,3 +180,6 @@ fun FragmentManager.dismissAppWarningFragment(
 val Bundle.hasAppWarningPrimaryAction: Boolean
     get() = getString(AppWarningFragment.Companion.Key.ActionId) ==
             AppWarningFragment.ACTION_PRIMARY
+
+val Bundle.optionParams: Bundle?
+    get() = getBundle(AppWarningFragment.Companion.Key.OptionParams)
