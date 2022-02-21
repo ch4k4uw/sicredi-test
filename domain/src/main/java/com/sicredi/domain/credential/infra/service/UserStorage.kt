@@ -98,6 +98,12 @@ class UserStorage @Inject constructor(
 
     internal suspend fun findUsers(): List<User> = decodeUsersLocal().users.map { it.toDomain() }
 
+    internal suspend fun findUserByEmail(email: String): User =
+        decodeUsersLocal().users.find { it.email == email }?.toDomain() ?: User.Empty
+
+    internal suspend fun findPasswordByEmail(email: String): String =
+        decodeUsersLocal().users.find { it.email == email }?.password ?: ""
+
     @Parcelize
     private data class UsersLocal(
         val users: List<UserLocal>

@@ -23,8 +23,10 @@ class MainActivity : AppCompatActivity() {
     private val eventDetails: EventDetailsView?
         get() = intent.extras?.getParcelable(MainActivityConstants.Key.EventDetails)
 
-    private val destinationId: Int?
-        get() = intent.extras?.getInt(MainActivityConstants.Key.DestinationId)
+    private val destinationId: Int
+        get() = intent.extras?.getInt(
+            MainActivityConstants.Key.DestinationId, R.id.signInFragment
+        ) ?: R.id.signInFragment
 
     private val navHostFragment by navHostFragment(id = R.id.mainNavHostFragment)
 
@@ -35,12 +37,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         val eventDetails = eventDetails
+        val loggedUser = loggedUser
         val navDestination = object {
-            val id = destinationId ?: R.id.signInFragment
-            val args = if (eventDetails == null) null else NavArgument.Builder()
-                .setDefaultValue(eventDetails)
-                .setType(NavType.ParcelableType(EventDetailsView::class.java))
-                .build()
+            val id = destinationId
+            val args = when {
+                eventDetails != null -> NavArgument.Builder()
+                    .setDefaultValue(eventDetails)
+                    .setType(NavType.ParcelableType(EventDetailsView::class.java))
+                    .build()
+                loggedUser != null -> NavArgument.Builder()
+                    .setDefaultValue(loggedUser)
+                    .setType(NavType.ParcelableType(UserView::class.java))
+                    .build()
+                else -> null
+            }
         }
         navHostFragment.navController.apply {
             graph = navInflater.inflate(R.navigation.nav_graph).apply {

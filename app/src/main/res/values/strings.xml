@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Instacredi</string>
+    <string name="app_generic_error_title">Unexpected error</string>
+    <string name="app_generic_error_description">Our system cannot answer this request. Please try again later.</string>
+    <string name="app_generic_error_positive_action">Try Again</string>
+    <string name="app_generic_error_negative_action">Cancel</string>
+    <string name="app_no_connectivity_generic_error_title">Connectivity problem</string>
+    <string name="app_no_connectivity_generic_error_description">Sorry, we had a connectivity problem. please try again later.</string>
+    <string name="app_no_connectivity_generic_error_positive_action">OK</string>
+    <string name="app_no_connectivity_generic_error_negative_action">Cancel</string>
     <string name="event_sharing" formatted="false">*%1s*\n\n%2s\n\n\nLocation: geo:%3f,%4f\nSee more: %5s</string>
     <string name="please_wait_prompt">Please wait…</string>
     <string name="email_hint">email</string>
@@ -12,9 +20,10 @@
     <string name="logout_action">Logout</string>
     <string name="sign_in_invalid_user_or_pass_error_title">Sign-in</string>
     <string name="sign_in_invalid_user_or_pass_error_description">Invalid user or password.</string>
-    <string name="sign_in_invalid_user_or_pass_error_positive_action">Ok</string>
+    <string name="sign_in_invalid_user_or_pass_error_positive_action">OK</string>
     <string name="sign_up_invalid_name_error_prompt">Invalid name!</string>
     <string name="sign_up_invalid_email_error_prompt">Invalid email!</string>
+    <string name="sign_up_duplicated_email_error_prompt">E-mail already registered!</string>
     <string name="sign_up_invalid_password_error_prompt">Invalid password!</string>
     <string name="sign_up_passwords_must_match_error_prompt">password must match!</string>
 </resources>

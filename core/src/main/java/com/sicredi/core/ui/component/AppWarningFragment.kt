@@ -166,3 +166,7 @@ fun FragmentManager.dismissAppWarningFragment(
     (findFragmentByTag(tag) as? AppWarningFragment)
         ?.dismiss()
 }
+
+val Bundle.hasAppWarningPrimaryAction: Boolean
+    get() = getString(AppWarningFragment.Companion.Key.ActionId) ==
+            AppWarningFragment.ACTION_PRIMARY

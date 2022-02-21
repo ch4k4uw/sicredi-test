@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.sicredi.instacredi.feed.showProfileBottomSheetFragment
 
 fun Fragment.navHostFragment(navHostId: Int): Lazy<NavHostFragment> = lazy {
     return@lazy childFragmentManager.findFragmentById(navHostId) as NavHostFragment
@@ -18,4 +19,8 @@ fun Fragment.hideKeyboard() {
     val imm: InputMethodManager =
         context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view?.rootView?.windowToken, 0)
+}
+
+fun Fragment.showProfileBottomSheetFragment(name: String, email: String) {
+    childFragmentManager.showProfileBottomSheetFragment(name = name, email = email)
 }

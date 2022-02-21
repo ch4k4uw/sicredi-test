@@ -8,4 +8,5 @@ sealed class FeedState {
     data class FeedNotLoaded(val isMissingConnectivity: Boolean) : FeedState()
     data class EventDetailsSuccessfulLoaded(val details: EventDetailsView) : FeedState()
     data class EventDetailsNotLoaded(val isMissingConnectivity: Boolean) : FeedState()
+    object SuccessfulLoggedOut : FeedState()
 }

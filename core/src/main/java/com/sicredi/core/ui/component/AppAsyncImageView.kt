@@ -136,6 +136,10 @@ class AppAsyncImageView @JvmOverloads constructor(
                 }
             }
 
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                continuation.resumeWithException(Exception())
+            }
+
             override fun onLoadCleared(placeholder: Drawable?) {
                 continuation.resume(value = null)
             }
