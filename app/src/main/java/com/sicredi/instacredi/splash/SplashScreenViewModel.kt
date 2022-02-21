@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
 import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.domain.credential.domain.entity.User
+import com.sicredi.instacredi.common.interaction.UserView
 import com.sicredi.instacredi.common.interaction.asEventDetailView
 import com.sicredi.instacredi.common.interaction.asView
 import com.sicredi.instacredi.common.uc.FindEventDetails
@@ -44,7 +45,7 @@ class SplashScreenViewModel @Inject constructor(
         }
     }
 
-    fun findDetails(eventId: String) {
+    fun findDetails(user: UserView, eventId: String) {
         viewModelScope.launch {
             findEventDetails(id = eventId)
                 .catch { cause ->
@@ -55,6 +56,7 @@ class SplashScreenViewModel @Inject constructor(
                 }
                 .collect { eventDetails ->
                     mutableState.value = SplashScreenState.EventDetailsSuccessfulLoaded(
+                        user = user,
                         eventDetails = eventDetails.asEventDetailView
                     )
                 }

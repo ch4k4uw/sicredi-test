@@ -8,7 +8,7 @@
     <string name="app_no_connectivity_generic_error_description">Sorry, we had a connectivity problem. please try again later.</string>
     <string name="app_no_connectivity_generic_error_positive_action">OK</string>
     <string name="app_no_connectivity_generic_error_negative_action">Cancel</string>
-    <string name="event_sharing" formatted="false">*%1s*\n\n%2s\n\n\nLocation: geo:%3f,%4f\nSee more: %5s</string>
+    <string name="event_sharing" formatted="false">*%1s*\n\n%2s\n\n\nLocation: %3f, %4f\nSee more: %5s</string>
     <string name="please_wait_prompt">Please wait…</string>
     <string name="email_hint">email</string>
     <string name="password_hint">password</string>
@@ -26,4 +26,9 @@
     <string name="sign_up_duplicated_email_error_prompt">E-mail already registered!</string>
     <string name="sign_up_invalid_password_error_prompt">Invalid password!</string>
     <string name="sign_up_passwords_must_match_error_prompt">password must match!</string>
+    <string name="event_details_successful_checked_in_message_title">Event detail</string>
+    <string name="event_details_successful_checked_in_message_description">Successful checked-in.</string>
+    <string name="event_details_successful_checked_in_message_primary_button">OK</string>
+    <string name="event_options_check_in_action">Check-in</string>
+    <string name="event_options_share_action">Share</string>
 </resources>

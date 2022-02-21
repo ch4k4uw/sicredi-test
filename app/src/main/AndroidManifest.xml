@@ -29,6 +29,10 @@
                 <data android:scheme="sicredi"
                     android:host="social"
                     android:pathPrefix="/instacredi" />
+
+                <data android:scheme="https"
+                    android:host="social.app"
+                    android:pathPrefix="/instacredi" />
             </intent-filter>
         </activity>
         <activity

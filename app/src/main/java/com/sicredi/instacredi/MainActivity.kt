@@ -40,32 +40,38 @@ class MainActivity : AppCompatActivity() {
         val loggedUser = loggedUser
         val navDestination = object {
             val id = destinationId
-            val args = when {
-                eventDetails != null -> NavArgument.Builder()
-                    .setDefaultValue(eventDetails)
-                    .setType(NavType.ParcelableType(EventDetailsView::class.java))
-                    .build()
-                loggedUser != null -> NavArgument.Builder()
-                    .setDefaultValue(loggedUser)
-                    .setType(NavType.ParcelableType(UserView::class.java))
-                    .build()
-                else -> null
+            val args = arrayListOf<Pair<String, NavArgument>>().apply {
+                if (eventDetails != null) {
+                    val data = Pair(
+                        EventDetailsConstants.Key.Details,
+                        NavArgument.Builder()
+                            .setDefaultValue(eventDetails)
+                            .setType(NavType.ParcelableType(EventDetailsView::class.java))
+                            .build()
+                    )
+                    add(data)
+                }
+                if (loggedUser != null) {
+                    val key = if (eventDetails == null) {
+                        FeedConstants.Key.LoggedUser
+                    } else {
+                        EventDetailsConstants.Key.LoggedUser
+                    }
+                    val data = Pair(
+                        key,
+                        NavArgument.Builder()
+                            .setDefaultValue(loggedUser)
+                            .setType(NavType.ParcelableType(UserView::class.java))
+                            .build()
+                    )
+                    add(data)
+                }
             }
         }
         navHostFragment.navController.apply {
             graph = navInflater.inflate(R.navigation.nav_graph).apply {
                 startDestination = navDestination.id
-                if (navDestination.args != null) {
-                    if (loggedUser != null) {
-                        addArgument(
-                            FeedConstants.Key.LoggedUser, navDestination.args
-                        )
-                    } else {
-                        addArgument(
-                            EventDetailsConstants.Key.Details, navDestination.args
-                        )
-                    }
-                }
+                navDestination.args.forEach { addArgument(it.first, it.second) }
             }
         }
     }
@@ -84,11 +90,14 @@ fun AppCompatActivity.startMainActivityForSignInFragment() {
     startActivity(Intent(this, MainActivity::class.java))
 }
 
-fun AppCompatActivity.startMainActivityForEventDetails(eventDetails: EventDetailsView) {
+fun AppCompatActivity.startMainActivityForEventDetails(
+    user: UserView, eventDetails: EventDetailsView
+) {
     startActivity(
         Intent(this, MainActivity::class.java).apply {
             putExtra(MainActivityConstants.Key.DestinationId, R.id.eventDetailsFragment)
             putExtra(MainActivityConstants.Key.EventDetails, eventDetails)
+            putExtra(MainActivityConstants.Key.LoggedUser, user)
         }
     )
 }

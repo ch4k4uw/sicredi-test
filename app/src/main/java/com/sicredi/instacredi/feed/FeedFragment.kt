@@ -4,23 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sicredi.core.extensions.dismissAppWarningFragment
-import com.sicredi.core.extensions.showAppWarningFragment
 import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.core.ui.component.hasAppWarningPrimaryAction
-import com.sicredi.instacredi.R
+import com.sicredi.core.ui.component.optionParams
 import com.sicredi.instacredi.common.extensions.gone
+import com.sicredi.instacredi.common.extensions.showError
 import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentFeedBinding
 import com.sicredi.instacredi.feed.adapter.EventRecyclerView
+import com.sicredi.instacredi.feed.interaction.FeedErrorState
 import com.sicredi.instacredi.feed.interaction.FeedState
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
@@ -42,32 +44,61 @@ class FeedFragment : Fragment() {
         setupObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFeed()
+    }
+
     private fun setupListeners() {
         with(viewBinding) {
             toolbar.setNavigationOnClickListener { navigateUp() }
             profileAction.setOnClickListener {
                 handleProfileClick()
             }
+            val resultListener = FragmentResultListener { requestKey, bundle ->
+                if (bundle.hasAppWarningPrimaryAction) {
+                    if (requestKey.isFeedListing) {
+                        if (bundle.hasAppWarningPrimaryAction) viewModel.loadFeed()
+                    } else if (requestKey.isEventDetailing) {
+                        val id = bundle.optionParams
+                            ?.getString("id")
+                        if (id != null) {
+                            viewModel.findDetails(id)
+                        }
+                    }
+                }
+                dismissAppWarningFragment()
+            }
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.FeedGenericError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                if (bundle.hasAppWarningPrimaryAction) {
-                    viewModel.loadFeed()
-                }
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
             childFragmentManager.setFragmentResultListener(
                 FeedConstants.RequestKey.FeedConnectivityError,
-                viewLifecycleOwner
-            ) { _, bundle ->
-                if (bundle.hasAppWarningPrimaryAction) {
-                    viewModel.loadFeed()
-                }
-                dismissAppWarningFragment()
-            }
+                viewLifecycleOwner,
+                resultListener
+            )
+            childFragmentManager.setFragmentResultListener(
+                FeedConstants.RequestKey.EventDetailsGenericError,
+                viewLifecycleOwner,
+                resultListener
+            )
+            childFragmentManager.setFragmentResultListener(
+                FeedConstants.RequestKey.EventDetailsConnectivityError,
+                viewLifecycleOwner,
+                resultListener
+            )
         }
     }
+
+    private val String.isFeedListing: Boolean
+        get() = this == FeedConstants.RequestKey.FeedGenericError ||
+                this == FeedConstants.RequestKey.FeedConnectivityError
+
+    private val String.isEventDetailing: Boolean
+        get() = this == FeedConstants.RequestKey.EventDetailsGenericError ||
+                this == FeedConstants.RequestKey.EventDetailsConnectivityError
 
     private fun navigateUp() {
         requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -90,8 +121,9 @@ class FeedFragment : Fragment() {
             FeedState.Loading -> viewBinding.progressBarHolder.visible()
             FeedState.SuccessfulLoggedOut -> navigateToSignIn()
             is FeedState.FeedNotLoaded -> handleFeedNotLoaded(state)
+            is FeedState.EventDetailsNotLoaded -> handleFeedNotLoaded(state)
             is FeedState.FeedSuccessfulLoaded -> handleSuccessfulLoaded(state)
-            else -> Unit
+            is FeedState.EventDetailsSuccessfulLoaded -> handleEventDetailsSuccessfulLoaded(state)
         }
     }
 
@@ -101,58 +133,45 @@ class FeedFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun handleFeedNotLoaded(state: FeedState.FeedNotLoaded) {
+    private fun handleFeedNotLoaded(state: FeedErrorState) {
         viewBinding.progressBarHolder.gone()
         val isGeneric = !state.isMissingConnectivity
+        var optionParams: Bundle? = null
         val requestKey = if (isGeneric) {
-            FeedConstants.RequestKey.FeedGenericError
+            if (state is FeedState.EventDetailsNotLoaded) {
+                optionParams = bundleOf("id" to state.id)
+                FeedConstants.RequestKey.EventDetailsGenericError
+            } else {
+                FeedConstants.RequestKey.FeedGenericError
+            }
         } else {
-            FeedConstants.RequestKey.FeedConnectivityError
+            if (state is FeedState.EventDetailsNotLoaded) {
+                optionParams = bundleOf("id" to state.id)
+                FeedConstants.RequestKey.EventDetailsConnectivityError
+            } else {
+                FeedConstants.RequestKey.FeedConnectivityError
+            }
         }
-        val title = if (isGeneric) {
-            R.string.app_generic_error_title
-        } else {
-            R.string.app_no_connectivity_generic_error_title
-        }
-        val description = if (isGeneric) {
-            R.string.app_generic_error_description
-        } else {
-            R.string.app_no_connectivity_generic_error_description
-        }
-        val primaryLabel = if (isGeneric) {
-            R.string.app_generic_error_positive_action
-        } else {
-            R.string.app_no_connectivity_generic_error_positive_action
-        }
-        val secondaryLabel = if (isGeneric) {
-            R.string.app_generic_error_negative_action
-        } else {
-            R.string.app_no_connectivity_generic_error_negative_action
-        }
-        val icon = if (isGeneric) {
-            android.R.drawable.ic_menu_close_clear_cancel
-        } else {
-            android.R.drawable.stat_sys_warning
-        }
-        val color = if (isGeneric) {
-            AppWarningFragment.BarColor.RED
-        } else {
-            AppWarningFragment.BarColor.YELLOW
-        }
-        showAppWarningFragment(requestKey = requestKey) {
-            title(getString(title))
-            barColor(color)
-            icon(icon)
-            description(getString(description))
-            primaryButtonText(getString(primaryLabel))
-            secondaryButtonText(getString(secondaryLabel))
-        }
+        showError(
+            isGenericError = !state.isMissingConnectivity,
+            requestKey = requestKey,
+            optionParams = optionParams
+        )
     }
 
     private fun handleSuccessfulLoaded(state: FeedState.FeedSuccessfulLoaded) {
         viewBinding.progressBarHolder.gone()
         viewBinding.eventList.adapter = EventRecyclerView(events = state.eventHeads) { event ->
-            Timber.i(event.toString())
+            viewModel.findDetails(event.id)
         }
+    }
+
+    private fun handleEventDetailsSuccessfulLoaded(state: FeedState.EventDetailsSuccessfulLoaded) {
+        viewBinding.progressBarHolder.gone()
+        val action = FeedFragmentDirections.actionFeedFragmentToEventDetailsFragment(
+            state.details,
+            navArgs.loggedUser
+        )
+        findNavController().navigate(action)
     }
 }

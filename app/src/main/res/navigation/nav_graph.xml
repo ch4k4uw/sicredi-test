@@ -81,7 +81,24 @@
         <argument
             android:name="eventDetails"
             app:argType="com.sicredi.instacredi.common.interaction.EventDetailsView"
-            app:nullable="true" />
+            app:nullable="false" />
+
+        <argument
+            android:name="loggedUser"
+            app:argType="com.sicredi.instacredi.common.interaction.UserView"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_eventDetailsFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/feedFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+
     </fragment>
 
 </navigation>

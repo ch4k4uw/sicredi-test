@@ -1,16 +1,18 @@
 package com.sicredi.instacredi.feed
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
 import com.sicredi.core.network.domain.data.NoConnectivityException
-import com.sicredi.instacredi.feed.interaction.FeedState
 import com.sicredi.instacredi.common.interaction.asEventDetailView
-import com.sicredi.instacredi.feed.interaction.asEventHeadViews
-import com.sicredi.instacredi.feed.uc.FindAllEvents
 import com.sicredi.instacredi.common.uc.FindEventDetails
 import com.sicredi.instacredi.common.uc.PerformLogout
+import com.sicredi.instacredi.feed.interaction.EventHeadView
+import com.sicredi.instacredi.feed.interaction.FeedState
+import com.sicredi.instacredi.feed.interaction.asEventHeadViews
+import com.sicredi.instacredi.feed.uc.FindAllEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -21,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val findAllEvents: FindAllEvents,
     private val findEventDetails: FindEventDetails,
     private val performLogout: PerformLogout
@@ -28,26 +31,36 @@ class FeedViewModel @Inject constructor(
     private val mutableState = LiveEvent<FeedState>()
     val state: LiveData<FeedState> = mutableState
 
-    init {
-        viewModelScope.launch {
-            while (!mutableState.hasObservers()) yield()
-            loadFeed()
+    private var eventViews: List<EventHeadView>?
+        get() = savedStateHandle.get<Array<EventHeadView>>("events")?.toList()
+        set(events) {
+            if (events != null) {
+                savedStateHandle.set("events", events.toTypedArray())
+            }
         }
-    }
 
     fun loadFeed() {
         mutableState.value = FeedState.Loading
         viewModelScope.launch {
-            findAllEvents()
-                .catch { cause ->
-                    Timber.e(cause)
-                    mutableState.value = FeedState
-                        .FeedNotLoaded(isMissingConnectivity = cause is NoConnectivityException)
-                }
-                .collect { events ->
-                    mutableState.value = FeedState
-                        .FeedSuccessfulLoaded(eventHeads = events.asEventHeadViews)
-                }
+            if (eventViews == null) {
+                findAllEvents()
+                    .catch { cause ->
+                        Timber.e(cause)
+                        mutableState.value = FeedState
+                            .FeedNotLoaded(isMissingConnectivity = cause is NoConnectivityException)
+                    }
+                    .collect { events ->
+                        mutableState.value = FeedState
+                            .FeedSuccessfulLoaded(
+                                eventHeads = events.asEventHeadViews.apply { eventViews = this }
+                            )
+                    }
+            } else {
+                mutableState.value = FeedState
+                    .FeedSuccessfulLoaded(
+                        eventHeads = eventViews!!
+                    )
+            }
         }
     }
 
@@ -58,7 +71,8 @@ class FeedViewModel @Inject constructor(
                 .catch { cause ->
                     Timber.e(cause)
                     mutableState.value = FeedState.EventDetailsNotLoaded(
-                        isMissingConnectivity = cause is NoConnectivityException
+                        isMissingConnectivity = cause is NoConnectivityException,
+                        id = id
                     )
                 }
                 .collect { event ->

@@ -5,7 +5,9 @@ object FeedConstants {
         const val LoggedUser = "loggedUser"
     }
     object RequestKey {
-        const val FeedGenericError = "key.request.error.generic"
-        const val FeedConnectivityError = "key.request.error.connectivity"
+        const val FeedGenericError = "key.feed.request.error.generic"
+        const val FeedConnectivityError = "key.feed.request.error.connectivity"
+        const val EventDetailsGenericError = "key.event-details.request.error.generic"
+        const val EventDetailsConnectivityError = "key.event-details.request.error.connectivity"
     }
 }
