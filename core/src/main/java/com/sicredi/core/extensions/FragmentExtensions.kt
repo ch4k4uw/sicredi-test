@@ -6,13 +6,20 @@ import com.sicredi.core.ui.component.dismissAppWarningFragment
 import com.sicredi.core.ui.component.showAppWarningFragment
 
 fun Fragment.showAppWarningFragment(
-    requestKey: String = "warningFragment",
+    requestKey: String,
     tag: String = AppWarningFragment::class.simpleName!!,
     builder: AppWarningFragment.Builder.() -> AppWarningFragment.Builder
 ) {
     childFragmentManager.showAppWarningFragment(
         requestKey = requestKey, tag = tag, builder = builder
     )
+}
+
+fun Fragment.showAppWarningFragment(
+    tag: String = AppWarningFragment::class.simpleName!!,
+    builder: AppWarningFragment.Builder.() -> AppWarningFragment.Builder
+) {
+    childFragmentManager.showAppWarningFragment(tag = tag, builder = builder)
 }
 
 fun Fragment.dismissAppWarningFragment(

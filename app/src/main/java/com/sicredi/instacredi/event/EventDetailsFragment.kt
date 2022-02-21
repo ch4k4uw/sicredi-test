@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -60,35 +61,50 @@ class EventDetailsFragment : Fragment() {
             profileAction.setOnClickListener { handleProfileActionClick() }
             menuAction.setOnClickListener { handleMenuActionClick() }
         }
+        val resultListener = FragmentResultListener { requestKey, bundle ->
+            if (bundle.hasAppWarningPrimaryAction) {
+                if (requestKey.isCheckIn) {
+                    if (bundle.hasAppWarningPrimaryAction) viewModel.performCheckIn()
+                } else if (requestKey.isEventSharing) {
+                    viewModel.shareEvent()
+                }
+            }
+            dismissAppWarningFragment()
+        }
         childFragmentManager.setFragmentResultListener(
             EventDetailsConstants.RequestKey.CheckInGenericError,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.hasAppWarningPrimaryAction) viewModel.performCheckIn()
-            dismissAppWarningFragment()
-        }
+            viewLifecycleOwner,
+            resultListener
+        )
         childFragmentManager.setFragmentResultListener(
             EventDetailsConstants.RequestKey.CheckInConnectivityError,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.hasAppWarningPrimaryAction) viewModel.performCheckIn()
-            dismissAppWarningFragment()
-        }
+            viewLifecycleOwner,
+            resultListener
+        )
         childFragmentManager.setFragmentResultListener(
             EventDetailsConstants.RequestKey.EventSharingGenericError,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.hasAppWarningPrimaryAction) viewModel.shareEvent()
-            dismissAppWarningFragment()
-        }
+            viewLifecycleOwner,
+            resultListener
+        )
         childFragmentManager.setFragmentResultListener(
             EventDetailsConstants.RequestKey.EventSharingConnectivityError,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.hasAppWarningPrimaryAction) viewModel.shareEvent()
-            dismissAppWarningFragment()
-        }
+            viewLifecycleOwner,
+            resultListener
+        )
+        childFragmentManager.setFragmentResultListener(
+            AppWarningFragment.DEFAULT_REQUEST_KEY,
+            viewLifecycleOwner,
+            resultListener
+        )
     }
+
+    private val String.isCheckIn: Boolean
+        get() = this == EventDetailsConstants.RequestKey.CheckInGenericError ||
+                this == EventDetailsConstants.RequestKey.CheckInConnectivityError
+
+    private val String.isEventSharing: Boolean
+        get() = this == EventDetailsConstants.RequestKey.EventSharingGenericError ||
+                this == EventDetailsConstants.RequestKey.EventSharingConnectivityError
 
     private fun navigateUp() {
         requireActivity().onBackPressedDispatcher.onBackPressed()

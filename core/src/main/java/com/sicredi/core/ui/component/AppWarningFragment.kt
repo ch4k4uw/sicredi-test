@@ -27,6 +27,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
             const val ActionId = "result.action"
         }
 
+        const val DEFAULT_REQUEST_KEY = "warningFragment"
         const val ACTION_PRIMARY = "primary"
         const val ACTION_SECONDARY = "secondary"
     }
@@ -163,7 +164,7 @@ class AppWarningFragment : BottomSheetDialogFragment() {
 }
 
 fun FragmentManager.showAppWarningFragment(
-    requestKey: String,
+    requestKey: String = AppWarningFragment.DEFAULT_REQUEST_KEY,
     tag: String = AppWarningFragment::class.simpleName!!,
     builder: AppWarningFragment.Builder.() -> AppWarningFragment.Builder
 ) {
