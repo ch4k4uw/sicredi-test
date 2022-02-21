@@ -8,6 +8,7 @@ data class EventHeadView(
     val title: String,
     val date: LocalDateTime,
     val price: Double,
+    val image: String,
     val lat: Double,
     val long: Double
 )
@@ -21,6 +22,7 @@ val Event.asEventHeadView
         title = title,
         date = date,
         price = price,
+        image = image,
         lat = latitude,
         long = longitude
     )

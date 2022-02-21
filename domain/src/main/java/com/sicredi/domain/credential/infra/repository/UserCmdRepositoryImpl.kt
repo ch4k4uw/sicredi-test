@@ -62,14 +62,15 @@ class UserCmdRepositoryImpl @Inject constructor(
     }.flowOn(appDispatchers.io)
 
     override suspend fun signIn(email: String, password: String): Flow<User> = flow {
-        val currUser = userStorage.restore()
-        val currPass = userStorage.findPassword()
+        val currUser = userStorage.findUserByEmail(email = email)
+        val currPass = userStorage.findPasswordByEmail(email = email)
         val isValidUser = currUser != User.Empty
         val isRequiredUser = isValidUser && currUser.email == email.lowercase()
         val isPasswordNotBlank = isRequiredUser && currPass.isNotBlank()
         val isValidPassword = isPasswordNotBlank && passwordHashing
             .compare(password = password, hash = currPass)
         if (isValidPassword) {
+            userStorage.store(user = currUser)
             emit(currUser)
         } else {
             emit(User.Empty)

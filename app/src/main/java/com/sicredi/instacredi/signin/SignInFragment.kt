@@ -18,7 +18,9 @@ import com.sicredi.instacredi.common.extensions.gone
 import com.sicredi.instacredi.common.extensions.requestSelection
 import com.sicredi.instacredi.common.extensions.restoreLastLogin
 import com.sicredi.instacredi.common.extensions.sText
+import com.sicredi.instacredi.common.extensions.storeLastLogin
 import com.sicredi.instacredi.common.extensions.visible
+import com.sicredi.instacredi.common.interaction.UserView
 import com.sicredi.instacredi.databinding.FragmentSignInBinding
 import com.sicredi.instacredi.signin.interaction.SignInState
 import com.sicredi.instacredi.signin.interaction.SignInUserState
@@ -37,6 +39,10 @@ class SignInFragment : Fragment() {
         lifecycleScope.launchWhenResumed {
             viewBinding.email.sText = withContext(Dispatchers.IO) {
                 dataStore.restoreLastLogin()
+            }?.apply {
+                if (isNotBlank()) {
+                    viewBinding.password.requestSelection()
+                }
             }
         }
     }
@@ -88,15 +94,15 @@ class SignInFragment : Fragment() {
 
     private fun handleLoggedUser(state: SignInUserState) {
         viewBinding.progressBarHolder.gone()
-        storeLastLogin()
+        storeLastLogin(user = state.user)
         val action = SignInFragmentDirections
             .actionSignInFragmentToFeedFragment(state.user)
         findNavController().navigate(action)
     }
 
-    private fun storeLastLogin() {
+    private fun storeLastLogin(user: UserView) {
         lifecycleScope.launch(Dispatchers.IO) {
-            dataStore.restoreLastLogin()
+            dataStore.storeLastLogin(login = user.email)
         }
     }
 

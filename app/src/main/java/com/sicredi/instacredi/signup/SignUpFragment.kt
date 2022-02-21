@@ -111,13 +111,20 @@ class SignUpFragment : Fragment() {
         viewBinding.progressBarHolder.gone()
         viewBinding.submitAction.enable()
         if (state.invalidName) {
-            viewBinding.nameInputLayout.error = getString(R.string.sign_up_invalid_name_error_prompt)
+            viewBinding.nameInputLayout.error =
+                getString(R.string.sign_up_invalid_name_error_prompt)
         }
         if (state.invalidEmail) {
-            viewBinding.emailInputLayout.error = getString(R.string.sign_up_invalid_email_error_prompt)
+            viewBinding.emailInputLayout.error =
+                getString(R.string.sign_up_invalid_email_error_prompt)
+        }
+        if (state.duplicatedEmail) {
+            viewBinding.emailInputLayout.error =
+                getString(R.string.sign_up_duplicated_email_error_prompt)
         }
         if (state.invalidPassword) {
-            viewBinding.passwordInputLayout.error = getString(R.string.sign_up_invalid_password_error_prompt)
+            viewBinding.passwordInputLayout.error =
+                getString(R.string.sign_up_invalid_password_error_prompt)
         }
     }
 

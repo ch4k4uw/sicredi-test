@@ -10,9 +10,12 @@ import com.sicredi.instacredi.common.interaction.asEventDetailView
 import com.sicredi.instacredi.feed.interaction.asEventHeadViews
 import com.sicredi.instacredi.feed.uc.FindAllEvents
 import com.sicredi.instacredi.common.uc.FindEventDetails
+import com.sicredi.instacredi.common.uc.PerformLogout
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,9 +23,17 @@ import javax.inject.Inject
 class FeedViewModel @Inject constructor(
     private val findAllEvents: FindAllEvents,
     private val findEventDetails: FindEventDetails,
+    private val performLogout: PerformLogout
 ) : ViewModel() {
     private val mutableState = LiveEvent<FeedState>()
     val state: LiveData<FeedState> = mutableState
+
+    init {
+        viewModelScope.launch {
+            while (!mutableState.hasObservers()) yield()
+            loadFeed()
+        }
+    }
 
     fun loadFeed() {
         mutableState.value = FeedState.Loading
@@ -35,7 +46,7 @@ class FeedViewModel @Inject constructor(
                 }
                 .collect { events ->
                     mutableState.value = FeedState
-                        .FeedSuccessfulLoaded(eventHeads = events.asEventHeadViews )
+                        .FeedSuccessfulLoaded(eventHeads = events.asEventHeadViews)
                 }
         }
     }
@@ -54,6 +65,15 @@ class FeedViewModel @Inject constructor(
                     mutableState.value = FeedState
                         .EventDetailsSuccessfulLoaded(details = event.asEventDetailView)
                 }
+        }
+    }
+
+    fun logout() {
+        mutableState.value = FeedState.Loading
+        viewModelScope.launch {
+            performLogout()
+                .first()
+            mutableState.value = FeedState.SuccessfulLoggedOut
         }
     }
 }
