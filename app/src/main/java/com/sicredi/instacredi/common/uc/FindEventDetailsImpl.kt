@@ -1,7 +1,8 @@
-package com.sicredi.instacredi.feed.uc
+package com.sicredi.instacredi.common.uc
 
 import com.sicredi.domain.feed.domain.entity.Event
 import com.sicredi.domain.feed.domain.repository.EventRepository
+import com.sicredi.instacredi.common.uc.FindEventDetails
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

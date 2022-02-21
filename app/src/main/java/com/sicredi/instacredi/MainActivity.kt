@@ -1,66 +1,84 @@
 package com.sicredi.instacredi
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.sicredi.core.ui.component.AppWarningFragment
-import com.sicredi.core.ui.component.dismissAppWarningFragment
-import com.sicredi.core.ui.component.showAppWarningFragment
+import androidx.navigation.NavArgument
+import androidx.navigation.NavType
+import com.sicredi.instacredi.common.extensions.navHostFragment
+import com.sicredi.instacredi.common.interaction.EventDetailsView
+import com.sicredi.instacredi.common.interaction.UserView
 import com.sicredi.instacredi.databinding.ActivityMainBinding
+import com.sicredi.instacredi.event.EventDetailsConstants
+import com.sicredi.instacredi.feed.FeedConstants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
+
+    private val loggedUser: UserView?
+        get() = intent.extras?.getParcelable(MainActivityConstants.Key.LoggedUser)
+
+    private val eventDetails: EventDetailsView?
+        get() = intent.extras?.getParcelable(MainActivityConstants.Key.EventDetails)
+
+    private val destinationId: Int?
+        get() = intent.extras?.getInt(MainActivityConstants.Key.DestinationId)
+
+    private val navHostFragment by navHostFragment(id = R.id.mainNavHostFragment)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
         }
 
-        supportFragmentManager.setFragmentResultListener(
-            "warning-dialog-test-1",
-            this
-        ) { _, result ->
-            val isPrimary = result[AppWarningFragment.Companion.Key.ActionId] ==
-                    AppWarningFragment.ACTION_PRIMARY
-            val buttonId = if (isPrimary) "primary" else "secondary"
-
-            Timber.i("Ok, I received the signal of \"$buttonId\" button")
-            supportFragmentManager.dismissAppWarningFragment()
-            lifecycleScope.launch {
-                delay(2000)
-                supportFragmentManager
-                    .showAppWarningFragment(requestKey = "warning-dialog-test-2") {
-                        title("Test title 2")
-                        barColor(AppWarningFragment.BarColor.RED)
-                        description("This is the other test.\nSo now, is it ok?")
-                        primaryButtonText("Yes")
-                        secondaryButtonText("No")
+        val eventDetails = eventDetails
+        val navDestination = object {
+            val id = destinationId ?: R.id.signInFragment
+            val args = if (eventDetails == null) null else NavArgument.Builder()
+                .setDefaultValue(eventDetails)
+                .setType(NavType.ParcelableType(EventDetailsView::class.java))
+                .build()
+        }
+        navHostFragment.navController.apply {
+            graph = navInflater.inflate(R.navigation.nav_graph).apply {
+                startDestination = navDestination.id
+                if (navDestination.args != null) {
+                    if (loggedUser != null) {
+                        addArgument(
+                            FeedConstants.Key.LoggedUser, navDestination.args
+                        )
+                    } else {
+                        addArgument(
+                            EventDetailsConstants.Key.Details, navDestination.args
+                        )
                     }
+                }
             }
         }
-
-        supportFragmentManager.setFragmentResultListener(
-            "warning-dialog-test-2",
-            this
-        ) { _, result ->
-            Timber.i("Result 2: $result")
-            supportFragmentManager.dismissAppWarningFragment()
-        }
-
-        lifecycleScope.launchWhenResumed {
-            supportFragmentManager
-                .showAppWarningFragment(requestKey = "warning-dialog-test-1") {
-                    title("Test title")
-                    barColor(AppWarningFragment.BarColor.YELLOW)
-                    description("This is some random description put to test this dialog")
-                    primaryButtonText("Ok")
-                    secondaryButtonText("Cancel")
-                }
-        }
     }
+}
+
+fun AppCompatActivity.startMainActivityForFeedFragment(user: UserView) {
+    startActivity(
+        Intent(this, MainActivity::class.java).apply {
+            putExtra(MainActivityConstants.Key.DestinationId, R.id.feedFragment)
+            putExtra(MainActivityConstants.Key.LoggedUser, user)
+        }
+    )
+}
+
+fun AppCompatActivity.startMainActivityForSignInFragment() {
+    startActivity(Intent(this, MainActivity::class.java))
+}
+
+fun AppCompatActivity.startMainActivityForEventDetails(eventDetails: EventDetailsView) {
+    startActivity(
+        Intent(this, MainActivity::class.java).apply {
+            putExtra(MainActivityConstants.Key.DestinationId, R.id.eventDetailsFragment)
+            putExtra(MainActivityConstants.Key.EventDetails, eventDetails)
+        }
+    )
 }

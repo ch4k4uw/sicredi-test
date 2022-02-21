@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.sicredi.core.data.LiveEvent
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.instacredi.common.interaction.asView
-import com.sicredi.instacredi.signin.interaction.SignInState
 import com.sicredi.instacredi.common.uc.FindLoggedUser
+import com.sicredi.instacredi.signin.interaction.SignInState
 import com.sicredi.instacredi.signin.uc.PerformSignIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -23,6 +23,7 @@ class SignInViewModel @Inject constructor(
 ) : ViewModel() {
     private val mutableState = LiveEvent<SignInState>()
     val state: LiveData<SignInState> = mutableState
+
 
     init {
         viewModelScope.launch {
@@ -48,7 +49,11 @@ class SignInViewModel @Inject constructor(
                     mutableState.value = SignInState.UserNotSignedIn
                 }
                 .collect { user ->
-                    mutableState.value = SignInState.UserSuccessfulSignedIn(user = user.asView)
+                    if (user != User.Empty) {
+                        mutableState.value = SignInState.UserSuccessfulSignedIn(user = user.asView)
+                    } else {
+                        mutableState.value = SignInState.UserNotSignedIn
+                    }
                 }
         }
     }

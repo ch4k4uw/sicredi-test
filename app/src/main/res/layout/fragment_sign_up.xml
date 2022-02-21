@@ -10,6 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         app:title="@string/app_name"
         app:navigationIcon="@drawable/ic_arrow_back_24"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/name_hint"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:inputType="textCapWords"
             android:textColor="@color/white"
             tools:text="Pedro Motta"/>
 
@@ -84,6 +85,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password_hint"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            tools:text="123456"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordConfirmationInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:layout_marginHorizontal="@dimen/spacing_xxnormal"
+        app:errorEnabled="true"
+        app:errorIconTint="?attr/colorError"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password_confirmation_hint"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:textColor="@color/white"
