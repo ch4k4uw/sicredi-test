@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import com.sicredi.instacredi.common.extensions.navHostFragment
-import com.sicredi.instacredi.common.interaction.EventDetailsView
-import com.sicredi.instacredi.common.interaction.UserView
+import com.sicredi.presenter.common.interaction.EventDetailsView
+import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.instacredi.databinding.ActivityMainBinding
 import com.sicredi.instacredi.event.EventDetailsConstants
 import com.sicredi.instacredi.feed.FeedConstants

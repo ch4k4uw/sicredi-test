@@ -95,8 +95,7 @@ dependencies {
     configureBaseUiDependencies()
 
     //Internal modules
-    internalModule(InternalModules.core)
-    internalModule(InternalModules.domain)
+    internalModule(InternalModules.presenter)
 
     //UI
     implementation(Libraries.AndroidX.Ktx.Core)

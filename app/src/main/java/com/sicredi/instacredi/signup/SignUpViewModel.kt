@@ -8,7 +8,7 @@ import com.sicredi.domain.credential.domain.data.AppDuplicatedUserException
 import com.sicredi.domain.credential.domain.data.AppInvalidEmailException
 import com.sicredi.domain.credential.domain.data.AppInvalidNameException
 import com.sicredi.domain.credential.domain.data.AppInvalidPasswordException
-import com.sicredi.instacredi.common.interaction.asView
+import com.sicredi.presenter.common.interaction.asView
 import com.sicredi.instacredi.signup.interaction.SignUpState
 import com.sicredi.instacredi.signup.uc.PerformSignUp
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sicredi.core.extensions.asFormattedPrice
 import com.sicredi.core.ui.component.AppAsyncImageViewDefaults
 import com.sicredi.instacredi.databinding.ListitemFeedBinding
-import com.sicredi.instacredi.feed.interaction.EventHeadView
+import com.sicredi.presenter.feed.interaction.EventHeadView
 
 class EventViewHolder(
     private val viewBinding: ListitemFeedBinding,

@@ -1,6 +1,6 @@
 package com.sicredi.instacredi.signup.interaction
 
-import com.sicredi.instacredi.common.interaction.UserView
+import com.sicredi.presenter.common.interaction.UserView
 
 sealed class SignUpState {
     object Loading : SignUpState()

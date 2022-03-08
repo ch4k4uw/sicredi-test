@@ -20,8 +20,9 @@ import com.sicredi.instacredi.common.extensions.showError
 import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentEventDetailsBinding
-import com.sicredi.instacredi.event.interaction.EventDetailsErrorState
-import com.sicredi.instacredi.event.interaction.EventDetailsState
+import com.sicredi.presenter.event.EventDetailsViewModel
+import com.sicredi.presenter.event.interaction.EventDetailsErrorState
+import com.sicredi.presenter.event.interaction.EventDetailsState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

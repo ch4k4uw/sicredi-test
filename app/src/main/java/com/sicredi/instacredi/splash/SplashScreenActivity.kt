@@ -6,10 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sicredi.instacredi.databinding.ActivitySplashScreenBinding
-import com.sicredi.instacredi.splash.interaction.SplashScreenState
+import com.sicredi.presenter.splash.interaction.SplashScreenState
 import com.sicredi.instacredi.startMainActivityForEventDetails
 import com.sicredi.instacredi.startMainActivityForFeedFragment
 import com.sicredi.instacredi.startMainActivityForSignInFragment
+import com.sicredi.presenter.splash.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("CustomSplashScreen")

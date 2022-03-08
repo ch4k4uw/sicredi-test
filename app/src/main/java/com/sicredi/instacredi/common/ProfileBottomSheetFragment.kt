@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.sicredi.instacredi.databinding.FragmentBottomSheetProfileBinding
-import com.sicredi.instacredi.event.EventDetailsViewModel
+import com.sicredi.presenter.event.EventDetailsViewModel
 import com.sicredi.instacredi.feed.FeedFragment
-import com.sicredi.instacredi.feed.FeedViewModel
+import com.sicredi.presenter.feed.FeedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
