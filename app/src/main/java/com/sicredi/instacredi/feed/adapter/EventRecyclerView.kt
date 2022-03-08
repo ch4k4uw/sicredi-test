@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sicredi.instacredi.databinding.ListitemFeedBinding
-import com.sicredi.instacredi.feed.interaction.EventHeadView
+import com.sicredi.presenter.feed.interaction.EventHeadView
 
 class EventRecyclerView(
     private val events: List<EventHeadView>,

@@ -3,7 +3,7 @@ package com.sicredi.instacredi.event
 object EventDetailsConstants {
     object Key {
         const val LoggedUser = "loggedUser"
-        const val Details = "eventDetails"
+        const val Details = com.sicredi.presenter.event.EventDetailsConstants.Key.Details
     }
     object RequestKey {
         const val CheckInGenericError = "key.check-in.request.error.generic"

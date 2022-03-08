@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="event_sharing" formatted="false">*%1s*\n\n%2s\n\n\nLocation: %3f, %4f\nSee more: %5s</string>
+</resources>
