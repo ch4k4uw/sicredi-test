@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sicredi.core.extensions.dismissAppWarningFragment
-import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.core.ui.component.hasAppWarningPrimaryAction
 import com.sicredi.core.ui.component.optionParams
 import com.sicredi.instacredi.common.extensions.gone
@@ -20,8 +19,9 @@ import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentFeedBinding
 import com.sicredi.instacredi.feed.adapter.EventRecyclerView
-import com.sicredi.instacredi.feed.interaction.FeedErrorState
-import com.sicredi.instacredi.feed.interaction.FeedState
+import com.sicredi.presenter.feed.FeedViewModel
+import com.sicredi.presenter.feed.interaction.FeedErrorState
+import com.sicredi.presenter.feed.interaction.FeedState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

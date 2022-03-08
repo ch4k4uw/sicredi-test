@@ -16,7 +16,8 @@ import com.sicredi.instacredi.common.extensions.gone
 import com.sicredi.instacredi.common.extensions.sText
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentSignUpBinding
-import com.sicredi.instacredi.signup.interaction.SignUpState
+import com.sicredi.presenter.signup.interaction.SignUpState
+import com.sicredi.presenter.signup.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

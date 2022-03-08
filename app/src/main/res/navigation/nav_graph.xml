@@ -13,7 +13,7 @@
 
         <argument
             android:name="loggedUser"
-            app:argType="com.sicredi.instacredi.common.interaction.UserView"
+            app:argType="com.sicredi.presenter.common.interaction.UserView"
             app:nullable="false" />
 
         <action
@@ -80,12 +80,12 @@
         tools:layout="@layout/fragment_event_details">
         <argument
             android:name="eventDetails"
-            app:argType="com.sicredi.instacredi.common.interaction.EventDetailsView"
+            app:argType="com.sicredi.presenter.common.interaction.EventDetailsView"
             app:nullable="false" />
 
         <argument
             android:name="loggedUser"
-            app:argType="com.sicredi.instacredi.common.interaction.UserView"
+            app:argType="com.sicredi.presenter.common.interaction.UserView"
             app:nullable="false" />
 
         <action
