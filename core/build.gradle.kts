@@ -10,25 +10,37 @@ plugins {
 android {
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.Compose.Compose
     }
 }
 
 dependencies {
     configureBaseUiDependencies()
+    configureComposeDependencies()
     configureNetworkingDependencies()
-    implementation(Libraries.LoggingInterceptor)
-    implementation(Libraries.Glide)
-    api(Libraries.Timber)
 
-    //Hilt
-    implementation(Libraries.Google.Hilt.Android)
-    kapt(Libraries.Google.Hilt.Compiler)
-
-
+    // UI
+    api(Libraries.Compose.Icons)
+    api(Libraries.Compose.IconsExtended)
     implementation(Libraries.AndroidX.Ktx.Core)
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.Google.Material)
+
+    // Networking
+    implementation(Libraries.LoggingInterceptor)
+
+    // Image download
     implementation(Libraries.Glide)
+
+    // Logging
+    api(Libraries.Timber)
+
+    // Hilt
+    implementation(Libraries.Google.Hilt.Android)
+    kapt(Libraries.Google.Hilt.Compiler)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
