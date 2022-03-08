@@ -46,4 +46,28 @@ object Libraries {
     const val MockK = "io.mockk:mockk:${Versions.MockK}"
     const val DataStore = "androidx.datastore:datastore:${Versions.DataStore}"
     const val DataStorePreferences = "androidx.datastore:datastore-preferences:${Versions.DataStore}"
+    object Compose {
+        const val Runtime = "androidx.compose.runtime:runtime:${Versions.Compose.Compose}"
+        const val RuntimeLiveData = "androidx.compose.runtime:runtime-livedata:${Versions.Compose.Compose}"
+        const val Ui = "androidx.compose.ui:ui:${Versions.Compose.Compose}"
+        const val Material = "androidx.compose.material:material:${Versions.Compose.Compose}"
+        const val Icons = "androidx.compose.material:material-icons-core:${Versions.Compose.Icons}"
+        const val IconsExtended = "androidx.compose.material:material-icons-extended:${Versions.Compose.IconsExtended}"
+        const val UiTooling = "androidx.compose.ui:ui-tooling:${Versions.Compose.Compose}"
+        const val Foundation = "androidx.compose.foundation:foundation:${Versions.Compose.Compose}"
+        const val Compiler = "androidx.compose.compiler:compiler:${Versions.Compose.Compiler}"
+        const val ConstraintLayout = "androidx.constraintlayout:constraintlayout-compose:${Versions.Compose.ConstraintLayout}"
+        const val ActivityKtx = "androidx.activity:activity-ktx:${Versions.Compose.ActivityKtx}"
+        const val Activity = "androidx.activity:activity-compose:${Versions.Compose.Activity}"
+        const val Navigation = "androidx.navigation:navigation-compose:${Versions.Compose.Navigation}"
+        const val HiltNavigation = "androidx.hilt:hilt-navigation:${Versions.Compose.Hilt.Navigation}"
+        const val Annotation = "androidx.annotation:annotation:${Versions.Compose.Annotation}"
+    }
+    object Accompanist {
+        const val SysUIController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.Accompanist}"
+        const val Insets = "com.google.accompanist:accompanist-insets:${Versions.Accompanist}"
+        const val InsetsUi = "com.google.accompanist:accompanist-insets-ui:${Versions.Accompanist}"
+        const val FlowLayout = "com.google.accompanist:accompanist-flowlayout:${Versions.Accompanist}"
+        const val HorizontalPager = "com.google.accompanist:accompanist-pager:${Versions.Accompanist}"
+    }
 }

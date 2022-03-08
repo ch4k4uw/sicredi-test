@@ -37,4 +37,19 @@ object Versions {
     const val Timber = "5.0.1"
     const val MockK = "1.12.2"
     const val DataStore = "1.0.0"
+    object Compose {
+        const val Compose = "1.1.0-rc01"
+        const val Compiler = "1.1.0-rc02"
+        const val ConstraintLayout = "1.0.0-rc01"
+        const val ActivityKtx = "1.3.1"
+        const val Activity = "1.3.1"
+        const val Icons = "1.0.5"
+        const val IconsExtended = "1.1.0-beta04"
+        const val Navigation = "2.4.0-beta02"
+        const val Annotation = "1.3.0"
+        object Hilt {
+            const val Navigation = "1.0.0-alpha03"
+        }
+    }
+    const val Accompanist = "0.20.3"
 }

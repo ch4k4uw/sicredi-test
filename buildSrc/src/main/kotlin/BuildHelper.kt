@@ -76,3 +76,16 @@ fun Project.configureAsAndroidLibrary() {
         }
     }
 }
+
+fun Project.configureComposeDependencies() = dependencies {
+    implementation(Libraries.Compose.Runtime)
+    implementation(Libraries.Compose.RuntimeLiveData)
+    implementation(Libraries.Compose.Ui)
+    implementation(Libraries.Compose.Material)
+    implementation(Libraries.Compose.UiTooling)
+    implementation(Libraries.Compose.Foundation)
+    implementation(Libraries.Compose.Compiler)
+    implementation(Libraries.Compose.ActivityKtx)
+    implementation(Libraries.Compose.Activity)
+    implementation(Libraries.Compose.ConstraintLayout)
+}
