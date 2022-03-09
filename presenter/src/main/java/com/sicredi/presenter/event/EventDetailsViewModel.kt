@@ -1,11 +1,9 @@
 package com.sicredi.presenter.event
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sicredi.core.data.LiveEvent
 import com.sicredi.core.network.domain.data.NoConnectivityException
+import com.sicredi.presenter.common.BaseViewModel
 import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.mapsIntent
 import com.sicredi.presenter.common.uc.PerformLogout
@@ -16,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,14 +23,10 @@ class EventDetailsViewModel @Inject constructor(
     private val performCheckIn: PerformCheckIn,
     private val shareEvent: ShareEvent,
     private val performLogout: PerformLogout,
-): ViewModel() {
-    private val mutableState = LiveEvent<EventDetailsState>()
-    val state: LiveData<EventDetailsState> = mutableState
-
+) : BaseViewModel<EventDetailsState>() {
     init {
         viewModelScope.launch {
-            while (!mutableState.hasObservers()) yield()
-            mutableState.value = EventDetailsState.DisplayDetails(
+            state emit EventDetailsState.DisplayDetails(
                 details = details
             )
         }
@@ -44,46 +37,46 @@ class EventDetailsViewModel @Inject constructor(
 
     fun performCheckIn() {
         viewModelScope.launch {
-            mutableState.value = EventDetailsState.Loading
+            state emit EventDetailsState.Loading
             performCheckIn(eventId = details.id)
                 .catch { cause ->
                     Timber.e(cause)
-                    mutableState.value = EventDetailsState.NotCheckedIn(
+                    state emit EventDetailsState.NotCheckedIn(
                         isMissingConnectivity = cause is NoConnectivityException
                     )
                 }
                 .collect {
-                    mutableState.value = EventDetailsState.SuccessfulCheckedIn
+                    state emit EventDetailsState.SuccessfulCheckedIn
                 }
         }
     }
 
     fun showGoogleMaps() {
-        mutableState.postValue(EventDetailsState.ShowGoogleMaps(action = details.mapsIntent))
+        state tryEmit EventDetailsState.ShowGoogleMaps(action = details.mapsIntent)
     }
 
     fun shareEvent() {
         viewModelScope.launch {
-            mutableState.value = EventDetailsState.Loading
+            state emit EventDetailsState.Loading
             shareEvent(eventId = details.id)
                 .catch { cause ->
                     Timber.e(cause)
-                    mutableState.value = EventDetailsState.EventNotShared(
+                    state emit EventDetailsState.EventNotShared(
                         isMissingConnectivity = cause is NoConnectivityException
                     )
                 }
                 .collect {
-                    mutableState.value = EventDetailsState.ShareEvent(action = it)
+                    state emit EventDetailsState.ShareEvent(action = it)
                 }
         }
     }
 
     fun logout() {
-        mutableState.value = EventDetailsState.Loading
         viewModelScope.launch {
+            state emit EventDetailsState.Loading
             performLogout()
                 .first()
-            mutableState.value = EventDetailsState.SuccessfulLoggedOut
+            state emit EventDetailsState.SuccessfulLoggedOut
         }
     }
 
