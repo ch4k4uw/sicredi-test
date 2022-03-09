@@ -6,11 +6,16 @@ import android.view.inputmethod.InputMethodManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.NavHostFragment
 import com.sicredi.core.extensions.showAppWarningFragment
 import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.showProfileBottomSheetFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 fun Fragment.navHostFragment(navHostId: Int): Lazy<NavHostFragment> = lazy {
     return@lazy childFragmentManager.findFragmentById(navHostId) as NavHostFragment
@@ -27,6 +32,12 @@ fun Fragment.hideKeyboard() {
 
 fun Fragment.showProfileBottomSheetFragment(name: String, email: String) {
     childFragmentManager.showProfileBottomSheetFragment(name = name, email = email)
+}
+
+fun Fragment.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
+    }
 }
 
 fun Fragment.showError(isGenericError: Boolean, requestKey: String, optionParams: Bundle? = null) {

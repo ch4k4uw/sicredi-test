@@ -14,6 +14,7 @@ import com.sicredi.core.extensions.dismissAppWarningFragment
 import com.sicredi.core.ui.component.hasAppWarningPrimaryAction
 import com.sicredi.core.ui.component.optionParams
 import com.sicredi.instacredi.common.extensions.gone
+import com.sicredi.instacredi.common.extensions.repeatOnStarted
 import com.sicredi.instacredi.common.extensions.showError
 import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
 import com.sicredi.instacredi.common.extensions.visible
@@ -111,8 +112,10 @@ class FeedFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.state.observe(viewLifecycleOwner) { status ->
-            handleStatus(status)
+        repeatOnStarted {
+            viewModel.state.collect { status ->
+                handleStatus(status)
+            }
         }
     }
 

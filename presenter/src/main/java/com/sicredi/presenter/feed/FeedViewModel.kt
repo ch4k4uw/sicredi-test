@@ -1,11 +1,9 @@
 package com.sicredi.presenter.feed
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sicredi.core.data.LiveEvent
 import com.sicredi.core.network.domain.data.NoConnectivityException
+import com.sicredi.presenter.common.BaseViewModel
 import com.sicredi.presenter.common.interaction.asEventDetailView
 import com.sicredi.presenter.common.uc.FindEventDetails
 import com.sicredi.presenter.common.uc.PerformLogout
@@ -17,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,10 +24,7 @@ class FeedViewModel @Inject constructor(
     private val findAllEvents: FindAllEvents,
     private val findEventDetails: FindEventDetails,
     private val performLogout: PerformLogout
-) : ViewModel() {
-    private val mutableState = LiveEvent<FeedState>()
-    val state: LiveData<FeedState> = mutableState
-
+) : BaseViewModel<FeedState>() {
     private var eventViews: List<EventHeadView>?
         get() = savedStateHandle.get<Array<EventHeadView>>("events")?.toList()
         set(events) {
@@ -40,23 +34,23 @@ class FeedViewModel @Inject constructor(
         }
 
     fun loadFeed() {
-        mutableState.value = FeedState.Loading
         viewModelScope.launch {
+            state emit FeedState.Loading
             if (eventViews == null) {
                 findAllEvents()
                     .catch { cause ->
                         Timber.e(cause)
-                        mutableState.value = FeedState
+                        state emit FeedState
                             .FeedNotLoaded(isMissingConnectivity = cause is NoConnectivityException)
                     }
                     .collect { events ->
-                        mutableState.value = FeedState
+                        state emit FeedState
                             .FeedSuccessfulLoaded(
                                 eventHeads = events.asEventHeadViews.apply { eventViews = this }
                             )
                     }
             } else {
-                mutableState.value = FeedState
+                state emit FeedState
                     .FeedSuccessfulLoaded(
                         eventHeads = eventViews!!
                     )
@@ -65,29 +59,29 @@ class FeedViewModel @Inject constructor(
     }
 
     fun findDetails(id: String) {
-        mutableState.value = FeedState.Loading
         viewModelScope.launch {
+            state emit FeedState.Loading
             findEventDetails(id = id)
                 .catch { cause ->
                     Timber.e(cause)
-                    mutableState.value = FeedState.EventDetailsNotLoaded(
+                    state emit FeedState.EventDetailsNotLoaded(
                         isMissingConnectivity = cause is NoConnectivityException,
                         id = id
                     )
                 }
                 .collect { event ->
-                    mutableState.value = FeedState
+                    state emit FeedState
                         .EventDetailsSuccessfulLoaded(details = event.asEventDetailView)
                 }
         }
     }
 
     fun logout() {
-        mutableState.value = FeedState.Loading
         viewModelScope.launch {
+            state emit FeedState.Loading
             performLogout()
                 .first()
-            mutableState.value = FeedState.SuccessfulLoggedOut
+            state emit FeedState.SuccessfulLoggedOut
         }
     }
 }
