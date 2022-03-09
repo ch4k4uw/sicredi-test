@@ -28,7 +28,7 @@ object Versions {
         const val CollectionKtx = "1.1.0"
         const val SwipeToRefresh = "1.1.0"
     }
-    const val LifeCycle = "2.3.1"
+    const val LifeCycle = "2.4.1"
     const val JavaDesugaring = "1.1.5"
     const val Glide = "4.12.0"
     const val Hilt = "2.38.1"
