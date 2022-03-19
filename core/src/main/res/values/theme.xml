@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Core" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="l">true</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-        <item name="buttonStyle">@style/RobotoButtonStyle</item>
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primaryVariant</item>
-        <item name="colorOnPrimary">@color/onPrimary</item>
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
-        <item name="colorOnSecondary">@color/onSecondary</item>
-        <item name="colorError">@color/error</item>
-        <item name="colorOnError">@color/onError</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/onSurface</item>
-        <item name="materialRoundedButtonStyle">@style/RoundedCornerButton</item>
-        <item name="materialRoundedButtonOutlinedStyle">@style/RoundedCornerOutlinedButton</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
-        <item name="collapsingToolbarLayoutStyle">@style/Widget.Design.CollapsingToolbar</item>
-        <item name="shapeAppearanceSmallComponent">@style/AppShapeAppearance.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/AppShapeAppearance.MediumComponent</item>
-        <item name="shapeAppearanceLargeComponent">@style/AppShapeAppearance.LargeComponent</item>
+    <style name="Theme.Core" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Core.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight">
@@ -34,10 +13,5 @@
 
     <style name="Theme.Core.AppBarOverlay.Primary" parent="Theme.Core.AppBarOverlay">
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
-    </style>
-
-    <style name="Theme.Core.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
-        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 </resources>
