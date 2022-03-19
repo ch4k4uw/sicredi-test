@@ -32,6 +32,10 @@ dependencies {
     // Networking
     implementation(Libraries.LoggingInterceptor)
 
+    // Accompanist
+    implementation(Libraries.Accompanist.Insets)
+    implementation(Libraries.Accompanist.InsetsUi)
+
     // Image download
     implementation(Libraries.Glide)
 

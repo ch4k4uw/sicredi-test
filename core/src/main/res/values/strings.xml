@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="generic_error_title">Unexpected error</string>
+    <string name="generic_error_message">An unexpected error has occurred.\nPlease try again later</string>
+    <string name="generic_error_positive_button">TRY AGAIN</string>
+    <string name="generic_error_negative_button">Cancel</string>
+    <string name="connectivity_error_title">Connectivity error</string>
+    <string name="connectivity_error_message">An unexpected error has occurred.\nPlease try again later</string>
+    <string name="connectivity_error_positive_button">TRY AGAIN</string>
+    <string name="connectivity_error_negative_button">Cancel</string>
+</resources>
