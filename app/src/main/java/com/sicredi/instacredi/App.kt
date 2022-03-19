@@ -12,13 +12,6 @@ import java.util.*
 
 @HiltAndroidApp
 class App : Application() {
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
-            MultiDex.install(this)
-        }
-    }
-
     override fun onCreate() {
         super.onCreate()
         setupTimber()

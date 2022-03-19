@@ -36,12 +36,17 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.Compose.Compose
     }
 
     kotlinOptions {
@@ -92,6 +97,7 @@ configurations {
 
 dependencies {
     configureBaseDependencies()
+    configureComposeDependencies()
     configureBaseUiDependencies()
 
     //Internal modules

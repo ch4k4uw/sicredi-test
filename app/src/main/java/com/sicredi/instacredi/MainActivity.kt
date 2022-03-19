@@ -1,5 +1,7 @@
 package com.sicredi.instacredi
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -75,6 +77,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+}
+
+fun Context.findAppCompatActivity(): AppCompatActivity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is AppCompatActivity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("It should be called in the context of an Activity")
 }
 
 fun AppCompatActivity.startMainActivityForFeedFragment(user: UserView) {

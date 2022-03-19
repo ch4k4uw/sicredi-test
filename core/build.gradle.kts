@@ -33,8 +33,9 @@ dependencies {
     implementation(Libraries.LoggingInterceptor)
 
     // Accompanist
-    implementation(Libraries.Accompanist.Insets)
-    implementation(Libraries.Accompanist.InsetsUi)
+    api(Libraries.Accompanist.Insets)
+    api(Libraries.Accompanist.InsetsUi)
+    api(Libraries.Accompanist.SysUIController)
 
     // Image download
     implementation(Libraries.Glide)

@@ -14,4 +14,9 @@
     <style name="Theme.Core.AppBarOverlay.Primary" parent="Theme.Core.AppBarOverlay">
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
     </style>
+
+    <style name="Theme.Core.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
+    </style>
 </resources>

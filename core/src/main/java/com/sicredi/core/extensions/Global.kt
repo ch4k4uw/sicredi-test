@@ -3,14 +3,19 @@ package com.sicredi.core.extensions
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.sicredi.core.ui.compose.AppTheme
 
 @Composable
 fun rememberBitmapResult(
@@ -39,4 +44,15 @@ fun rememberBitmapResult(
             })
     }
     return result
+}
+
+@Composable
+fun AppBackground(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = AppTheme.colors.material.background)
+    ) {
+        content()
+    }
 }

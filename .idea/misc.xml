@@ -26,7 +26,7 @@
         <entry key="app/src/main/res/drawable/ic_share_gray_300_24.xml" value="0.1045" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.21354166666666666" />
-        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.2518518518518518" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_bottom_sheet_event_options.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_bottom_sheet_profile.xml" value="0.1752136752136752" />
         <entry key="app/src/main/res/layout/fragment_event_details.xml" value="0.18" />
