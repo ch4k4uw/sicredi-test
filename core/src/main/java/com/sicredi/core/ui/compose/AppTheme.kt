@@ -1,16 +1,12 @@
 package com.sicredi.core.ui.compose
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.sicredi.core.ui.compose.color.ColorConstants
 import com.sicredi.core.ui.compose.component.AppModalBottomSheetHost
@@ -85,9 +81,7 @@ fun AppTheme(
         AppMaterialTheme {
             AppWindowInsets {
                 AppModalBottomSheetHost {
-                    AppBackground {
-                        content()
-                    }
+                    content()
                 }
             }
         }
@@ -116,17 +110,6 @@ private fun AppWindowInsets(content: @Composable () -> Unit) {
             LocalAppInsetsPaddingValues provides insetsPaddingValues,
             content = content
         )
-    }
-}
-
-@Composable
-private fun AppBackground(content: @Composable () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = AppTheme.colors.material.background)
-    ) {
-        content()
     }
 }
 
