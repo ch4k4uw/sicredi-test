@@ -2,12 +2,11 @@ package com.sicredi.instacredi.feed.stuff
 
 import com.sicredi.core.network.domain.data.AppHttpGenericException
 import com.sicredi.core.network.domain.data.NoConnectivityException
-import com.sicredi.instacredi.common.uc.FindEventDetails
-import com.sicredi.instacredi.feed.interaction.FeedState
+import com.sicredi.presenter.common.uc.FindEventDetails
+import com.sicredi.presenter.feed.interaction.FeedState
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 
 class FeedViewModelEventFetchingTestCases(
@@ -21,9 +20,9 @@ class FeedViewModelEventFetchingTestCases(
 
         coVerify(exactly = 1) { container.findAllEvents.invoke() }
         coVerify(exactly = 0) { container.performLogout.invoke() }
-        verify(exactly = 1) { container.viewModelObserver.onChanged(FeedState.Loading) }
-        verify(exactly = 1) {
-            container.viewModelObserver.onChanged(
+        coVerify(exactly = 1) { container.viewModelObserver.emit(FeedState.Loading) }
+        coVerify(exactly = 1) {
+            container.viewModelObserver.emit(
                 FeedState.FeedSuccessfulLoaded(EventsFixture.AllEventHeadViews)
             )
         }
@@ -36,9 +35,9 @@ class FeedViewModelEventFetchingTestCases(
 
         coVerify(exactly = 1) { container.findAllEvents.invoke() }
         coVerify(exactly = 0) { container.performLogout.invoke() }
-        verify(exactly = 1) { container.viewModelObserver.onChanged(FeedState.Loading) }
-        verify(exactly = 1) {
-            container.viewModelObserver.onChanged(FeedState.FeedNotLoaded(isMissingConnectivity = true))
+        coVerify(exactly = 1) { container.viewModelObserver.emit(FeedState.Loading) }
+        coVerify(exactly = 1) {
+            container.viewModelObserver.emit(FeedState.FeedNotLoaded(isMissingConnectivity = true))
         }
 
         clearMocks(container.viewModelObserver)
@@ -46,8 +45,8 @@ class FeedViewModelEventFetchingTestCases(
         container.findAllEvents.setup(exception = AppHttpGenericException(code = 501))
         viewModel.loadFeed()
         container.testRule.advanceUntilIdle()
-        verify(exactly = 1) {
-            container.viewModelObserver.onChanged(FeedState.FeedNotLoaded(isMissingConnectivity = false))
+        coVerify(exactly = 1) {
+            container.viewModelObserver.emit(FeedState.FeedNotLoaded(isMissingConnectivity = false))
         }
     }
 
@@ -59,9 +58,9 @@ class FeedViewModelEventFetchingTestCases(
 
         coVerify(exactly = 1) { container.findEventDetails.invoke(any()) }
         coVerify(exactly = 0) { container.performLogout.invoke() }
-        verify(exactly = 1) { container.viewModelObserver.onChanged(FeedState.Loading) }
-        verify(exactly = 1) {
-            container.viewModelObserver.onChanged(
+        coVerify(exactly = 1) { container.viewModelObserver.emit(FeedState.Loading) }
+        coVerify(exactly = 1) {
+            container.viewModelObserver.emit(
                 FeedState.EventDetailsSuccessfulLoaded(EventsFixture.AllEventDetailsView)
             )
         }
@@ -82,9 +81,9 @@ class FeedViewModelEventFetchingTestCases(
 
         coVerify(exactly = 1) { container.findEventDetails.invoke(any()) }
         coVerify(exactly = 0) { container.performLogout.invoke() }
-        verify(exactly = 1) { container.viewModelObserver.onChanged(FeedState.Loading) }
-        verify(exactly = 1) {
-            container.viewModelObserver.onChanged(
+        coVerify(exactly = 1) { container.viewModelObserver.emit(FeedState.Loading) }
+        coVerify(exactly = 1) {
+            container.viewModelObserver.emit(
                 FeedState.EventDetailsNotLoaded(isMissingConnectivity = true, id = "xxx")
             )
         }
@@ -94,9 +93,9 @@ class FeedViewModelEventFetchingTestCases(
         container.findEventDetails.setup(exception = AppHttpGenericException(code = 501))
         viewModel.findDetails(id = "xxx")
         container.testRule.advanceUntilIdle()
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             container.viewModelObserver
-                .onChanged(
+                .emit(
                     FeedState.EventDetailsNotLoaded(
                         isMissingConnectivity = false,
                         id = "xxx"

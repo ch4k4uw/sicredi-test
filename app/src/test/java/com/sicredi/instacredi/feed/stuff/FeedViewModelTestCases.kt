@@ -1,11 +1,14 @@
 package com.sicredi.instacredi.feed.stuff
 
-import com.sicredi.instacredi.common.uc.PerformLogout
-import com.sicredi.instacredi.feed.FeedViewModel
-import com.sicredi.instacredi.feed.uc.FindAllEvents
+import androidx.lifecycle.viewModelScope
+import com.sicredi.presenter.common.uc.PerformLogout
+import com.sicredi.presenter.feed.FeedViewModel
+import com.sicredi.presenter.feed.uc.FindAllEvents
 import io.mockk.coEvery
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 open class FeedViewModelTestCases(
     protected val container: FeedViewModelTestContainer
@@ -16,7 +19,9 @@ open class FeedViewModelTestCases(
         findEventDetails = container.findEventDetails,
         performLogout = container.performLogout
     ).apply {
-        state.observeForever(container.viewModelObserver)
+        viewModelScope.launch {
+            state.collect(container.viewModelObserver)
+        }
     }
 
     protected fun FindAllEvents.setup(exception: Throwable? = null) {
