@@ -2,6 +2,7 @@ package com.sicredi.instacredi.feed
 
 import android.content.Context
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +38,7 @@ import com.sicredi.presenter.feed.interaction.FeedState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import java.time.LocalDateTime
 
 @Composable
 fun FeedScreen(
@@ -110,7 +113,7 @@ private fun FeedScreen(
         }
     ) {
         val events = screenState.events
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(count = events.size, key = { events[it].id }) { index ->
                 val event = events[index]
                 FeedListItem(
@@ -126,88 +129,6 @@ private fun FeedScreen(
     AppContentLoadingProgressBar(visible = screenState.showLoading)
 
     EventHandlingEffect(state = state, handler = screenState::handleState)
-}
-
-@Composable
-private fun rememberScreenState(
-    onShowEventDetails: (EventDetailsView) -> Unit, onLoggedOut: () -> Unit
-) = rememberSaveable(
-    saver = FeedScreenState.saver(
-        onShowEventDetails = onShowEventDetails,
-        onLoggedOut = onLoggedOut
-    )
-) { FeedScreenState(onShowEventDetails = onShowEventDetails, onLoggedOut = onLoggedOut) }
-
-private class FeedScreenState(
-    private val onShowEventDetails: (EventDetailsView) -> Unit,
-    private val onLoggedOut: () -> Unit
-) {
-    var showLoading by mutableStateOf(true)
-    val events = mutableStateListOf<EventHeadView>()
-    var showEventsLoadingGenericError by mutableStateOf(false)
-    var showEventsLoadingConnectionError by mutableStateOf(false)
-    var showEventDetailsLoadingGenericError by mutableStateOf(false)
-    var showEventDetailsLoadingConnectionError by mutableStateOf(false)
-
-    fun handleState(state: FeedState) {
-        when (state) {
-            FeedState.Loading -> showLoading = true
-            is FeedState.FeedSuccessfulLoaded -> {
-                showLoading = false
-                events.clear()
-                events.addAll(state.eventHeads)
-            }
-            is FeedState.EventDetailsSuccessfulLoaded -> {
-                showLoading = false
-                onShowEventDetails(state.details)
-            }
-            FeedState.SuccessfulLoggedOut -> onLoggedOut()
-            is FeedState.FeedNotLoaded -> {
-                if (state.isMissingConnectivity) showEventsLoadingConnectionError = true
-                else showEventsLoadingGenericError = true
-            }
-            is FeedState.EventDetailsNotLoaded -> {
-                if (state.isMissingConnectivity) showEventDetailsLoadingConnectionError = true
-                else showEventDetailsLoadingGenericError = true
-            }
-            else -> Unit
-        }
-    }
-
-    companion object {
-        fun saver(
-            onShowEventDetails: (EventDetailsView) -> Unit,
-            onLoggedOut: () -> Unit
-        ): Saver<FeedScreenState, *> = Saver(
-            save = {
-                bundleOf(
-                    "ldn" to it.showLoading,
-                    "list" to it.events.toTypedArray(),
-                    "errEvts1" to it.showEventsLoadingGenericError,
-                    "errEvts2" to it.showEventsLoadingConnectionError,
-                    "errEvtD1" to it.showEventDetailsLoadingGenericError,
-                    "errEvtD2" to it.showEventDetailsLoadingConnectionError,
-                )
-            },
-            restore = {
-                FeedScreenState(
-                    onShowEventDetails = onShowEventDetails, onLoggedOut = onLoggedOut
-                ).apply {
-                    showLoading = it.getBoolean("ldn")
-                    events.addAll(
-                        it
-                            .getParcelableArray("list")
-                            ?.map { item -> item as EventHeadView }
-                            ?: listOf()
-                    )
-                    showEventsLoadingGenericError = it.getBoolean("errEvts1")
-                    showEventsLoadingConnectionError = it.getBoolean("errEvts2")
-                    showEventDetailsLoadingGenericError = it.getBoolean("errEvtD1")
-                    showEventDetailsLoadingConnectionError = it.getBoolean("errEvtD2")
-                }
-            }
-        )
-    }
 }
 
 @NonRestartableComposable
@@ -233,7 +154,31 @@ private fun FeedScreenPreviewLight() {
 
 @Composable
 private fun FeedScreenPreview() {
-    val state = FeedStateState.ChangeState(newState = FeedState.Loading)
+    val state = FeedStateState.ChangeState(
+        newState = FeedState.FeedSuccessfulLoaded(
+            eventHeads = listOf(
+                EventHeadView(
+                    id = "a",
+                    title = "Some huge text to see how some similar text will appear in this layout. Ok, " +
+                            "for smartphone it's already big enough.",
+                    price = 42.50,
+                    date = LocalDateTime.MIN,
+                    image = "",
+                    lat = Double.NaN,
+                    long = Double.NaN
+                ),
+                EventHeadView(
+                    id = "b",
+                    title = "Some other text, but now not so much huge.",
+                    price = 52.50,
+                    date = LocalDateTime.MIN,
+                    image = "",
+                    lat = Double.NaN,
+                    long = Double.NaN
+                )
+            ).dropLast(1)
+        )
+    )
     AppTheme {
         AppBackground {
             FeedScreen(state = flowOf(state))
