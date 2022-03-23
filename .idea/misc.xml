@@ -4,6 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/compose-model-1647651031374.xml" value="0.1935185185185185" />
+        <entry key="../../../../layout/compose-model-1647730542413.xml" value="0.18" />
+        <entry key="../../../../layout/compose-model-1647992550741.xml" value="0.2" />
+        <entry key="../../../../layout/compose-model-1648004369869.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1648053041621.xml" value="0.22" />
+        <entry key="../../../../layout/compose-model-1648053311975.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1648057573640.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1648057585983.xml" value="0.1935185185185185" />
+        <entry key="../../../../layout/compose-model-1648060540943.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1648060618577.xml" value="0.22" />
         <entry key="../../../../layout/custom_preview.xml" value="0.2" />
         <entry key="../../.gradle/caches/transforms-3/7db6e0dfb5a88e76799288da58f78899/transformed/material-1.4.0/res/drawable/mtrl_dialog_background.xml" value="0.1" />
         <entry key="../../.gradle/caches/transforms-3/90d59b0f4fc2691e76d6162966cb21b6/transformed/material-1.4.0/res/drawable/mtrl_dialog_background.xml" value="0.1045" />
@@ -35,7 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.3389473684210526" />
         <entry key="app/src/main/res/layout/fragment_signin.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/listitem_feed.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/listitem_feed.xml" value="0.22" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1045" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1045" />
         <entry key="core/src/main/res/drawable/rounded_line_green_background.xml" value="0.1045" />
