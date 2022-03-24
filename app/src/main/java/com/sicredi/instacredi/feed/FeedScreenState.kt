@@ -22,6 +22,7 @@ class FeedScreenState(
     var showEventsLoadingConnectionError by mutableStateOf(false)
     var showEventDetailsLoadingGenericError by mutableStateOf(false)
     var showEventDetailsLoadingConnectionError by mutableStateOf(false)
+    var showProfileDialog by mutableStateOf(false)
 
     fun handleState(state: FeedState) {
         when (state) {
@@ -35,7 +36,7 @@ class FeedScreenState(
                 showLoading = false
                 onShowEventDetails(state.details)
             }
-            FeedState.SuccessfulLoggedOut -> onLoggedOut()
+            FeedState.SuccessfulLoggedOut -> { showLoading = false; onLoggedOut() }
             is FeedState.FeedNotLoaded -> {
                 if (state.isMissingConnectivity) showEventsLoadingConnectionError = true
                 else showEventsLoadingGenericError = true
@@ -61,6 +62,7 @@ class FeedScreenState(
                     "errEvts2" to it.showEventsLoadingConnectionError,
                     "errEvtD1" to it.showEventDetailsLoadingGenericError,
                     "errEvtD2" to it.showEventDetailsLoadingConnectionError,
+                    "shwPflDlg" to it.showProfileDialog,
                 )
             },
             restore = {
@@ -78,6 +80,7 @@ class FeedScreenState(
                     showEventsLoadingConnectionError = it.getBoolean("errEvts2")
                     showEventDetailsLoadingGenericError = it.getBoolean("errEvtD1")
                     showEventDetailsLoadingConnectionError = it.getBoolean("errEvtD2")
+                    showProfileDialog = it.getBoolean("shwPflDlg")
                 }
             }
         )

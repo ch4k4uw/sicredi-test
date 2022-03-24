@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -28,9 +29,12 @@ import com.sicredi.core.extensions.AppBackground
 import com.sicredi.core.ui.component.AppScrollableTopBarScaffold
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
+import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
+import com.sicredi.instacredi.common.ProfileBottomSheet
 import com.sicredi.instacredi.feed.component.FeedListItem
 import com.sicredi.presenter.common.interaction.EventDetailsView
+import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.feed.FeedViewModel
 import com.sicredi.presenter.feed.interaction.EventHeadView
 import com.sicredi.presenter.feed.interaction.FeedState
@@ -43,6 +47,7 @@ import java.time.LocalDateTime
 @Composable
 fun FeedScreen(
     viewModel: FeedViewModel,
+    userView: UserView,
     onShowEventDetails: (EventDetailsView) -> Unit,
     onLoggedOut: () -> Unit,
     onNavigateBack: () -> Unit
@@ -52,6 +57,7 @@ fun FeedScreen(
     val state = remember { MutableSharedFlow<FeedStateState>(replay = 0) }
     FeedScreen(
         state = state,
+        userView = userView,
         onShowEventDetails = onShowEventDetails,
         onLoggedOut = onLoggedOut,
         onNavigateBack = onNavigateBack
@@ -91,6 +97,7 @@ private fun EventHandlingEffect(
 @Composable
 private fun FeedScreen(
     state: Flow<FeedStateState> = flowOf(FeedStateState.Idle),
+    userView: UserView = UserView(id = "", name = "", email = ""),
     onShowEventDetails: (EventDetailsView) -> Unit = {},
     onLoggedOut: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
@@ -109,7 +116,7 @@ private fun FeedScreen(
             }
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { screenState.showProfileDialog = true }) {
                 Icon(imageVector = Icons.Filled.Person, contentDescription = "")
             }
         }
@@ -124,6 +131,30 @@ private fun FeedScreen(
                     price = event.price,
                     onClick = { onIntent(FeedIntent.FindDetails(id = event.id)) }
                 )
+            }
+        }
+    }
+
+    if (screenState.showProfileDialog) {
+        LocalAppModalBottomSheetState.current.ProfileBottomSheet(
+            name = userView.name, email = userView.email, onLogoutClick = {
+                screenState.showProfileDialog = false
+                //onIntent(FeedIntent.Logout)
+            }, confirmStateChange = {
+                if (it == ModalBottomSheetValue.Hidden) {
+                    screenState.showProfileDialog = false
+                    false
+                } else {
+                    true
+                }
+            }
+        ) {
+            LaunchedEffect(screenState.showProfileDialog) {
+                if (screenState.showProfileDialog) {
+                    it.show()
+                } else {
+                    it.hide()
+                }
             }
         }
     }
@@ -188,7 +219,12 @@ private fun FeedScreenPreview() {
     )
     AppTheme {
         AppBackground {
-            FeedScreen(state = flowOf(state))
+            FeedScreen(
+                state = flowOf(state),
+                userView = UserView(
+                    id = "", name = "Pedro Motta", email = "pedro.motta@avenuecode.com"
+                )
+            )
         }
     }
 }

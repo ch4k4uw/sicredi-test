@@ -11,12 +11,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 import com.sicredi.instacredi.common.extensions.viewModel
 import com.sicredi.instacredi.feed.FeedConstants
 import com.sicredi.instacredi.feed.FeedScreen
@@ -65,11 +63,6 @@ fun MainNavigation() {
                         nullable = true
                         defaultValue = null
                     }
-                ),
-                deepLinks = listOf(
-                    navDeepLink {
-                        uriPattern = MainNavigationConstants.Route.Feed
-                    }
                 )
             ) { navBackStackEntry ->
                 val viewModel: FeedViewModel = navBackStackEntry.viewModel(
@@ -97,6 +90,7 @@ fun MainNavigation() {
 
                 FeedScreen(
                     viewModel = viewModel,
+                    userView = args.getParcelable(MainActivityConstants.Key.LoggedUser)!!,
                     onShowEventDetails = { },
                     onLoggedOut = { },
                     onNavigateBack = {
