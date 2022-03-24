@@ -113,9 +113,11 @@ dependencies {
     implementation(Libraries.AndroidX.NavigationUiKtx)
     implementation(Libraries.AndroidX.CollectionKtx)
     implementation(Libraries.AndroidX.SwipeToRefresh)
+    implementation(Libraries.Compose.Navigation)
 
     //Hilt
     implementation(Libraries.Google.Hilt.Android)
+    implementation(Libraries.Compose.HiltNavigation)
     kapt(Libraries.Google.Hilt.Compiler)
 
     //Multidex

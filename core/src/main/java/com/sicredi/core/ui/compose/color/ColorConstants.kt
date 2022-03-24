@@ -55,6 +55,7 @@ internal object ColorConstants {
             alertError = Light.DeepOrange600,
             alertInfo = Light.Green600,
             alertQuestion = Light.Amber600,
+            shimmer = White
         )
     }
 
@@ -78,6 +79,7 @@ internal object ColorConstants {
             alertError = Dark.DeepOrange300,
             alertInfo = Dark.Green300,
             alertQuestion = Dark.Amber200,
+            shimmer = DarkBackground
         )
     }
 

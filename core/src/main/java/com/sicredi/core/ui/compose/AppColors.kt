@@ -10,5 +10,6 @@ class AppColors(
     val alertWarning: Color,
     val alertError: Color,
     val alertInfo: Color,
-    val alertQuestion: Color
+    val alertQuestion: Color,
+    val shimmer: Color,
 )
