@@ -139,7 +139,7 @@ private fun FeedScreen(
         LocalAppModalBottomSheetState.current.ProfileBottomSheet(
             name = userView.name, email = userView.email, onLogoutClick = {
                 screenState.showProfileDialog = false
-                //onIntent(FeedIntent.Logout)
+                onIntent(FeedIntent.Logout)
             }, confirmStateChange = {
                 if (it == ModalBottomSheetValue.Hidden) {
                     screenState.showProfileDialog = false

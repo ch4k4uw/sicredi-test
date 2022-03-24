@@ -13,7 +13,7 @@
     <string name="email_hint">email</string>
     <string name="password_hint">password</string>
     <string name="password_confirmation_hint">password confirmation</string>
-    <string name="sigin_in_action">Sign-in</string>
+    <string name="sign_in_action">Sign-in</string>
     <string name="register_action">Register</string>
     <string name="name_hint">name</string>
     <string name="submit_action">Submit</string>
