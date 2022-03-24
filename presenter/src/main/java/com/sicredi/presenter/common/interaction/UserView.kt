@@ -6,14 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserView(
-    val id: String = "",
-    val name: String = "",
-    val email: String = ""
-) : Parcelable {
-    companion object {
-        val Empty = UserView()
-    }
-}
+    val id: String,
+    val name: String,
+    val email: String
+) : Parcelable
 
 val User.asView
     get() = UserView(
