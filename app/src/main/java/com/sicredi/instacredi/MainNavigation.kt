@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -18,30 +17,37 @@ import androidx.navigation.navArgument
 import com.sicredi.instacredi.common.extensions.viewModel
 import com.sicredi.instacredi.feed.FeedConstants
 import com.sicredi.instacredi.feed.FeedScreen
+import com.sicredi.instacredi.signin.SignInScreen
+import com.sicredi.presenter.common.extensions.marshall
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.feed.FeedViewModel
+import com.sicredi.presenter.signin.SignInViewModel
 import timber.log.Timber
 
 private object MainNavigationConstants {
-    object Navigation {
-        const val Feed = "feed"
-        const val SignIn = "sign/in"
-        const val SignUp = "sign/up"
+    object Nav {
+        object Feed {
+            const val StartingRoute = "feed"
+            const val Route = "$StartingRoute?" +
+                    "${FeedConstants.Key.LoggedUser}={${FeedConstants.Key.LoggedUser}}"
+            fun build(user: UserView): String =
+                "$StartingRoute?${FeedConstants.Key.LoggedUser}=${user.marshall()}"
+        }
+        object SignIn {
+            const val StartingRoute = "sign/in"
+            const val Route = StartingRoute
+        }
+        object SignUp {
+            const val StartingRoute = "sign/up"
+            const val Route = StartingRoute
+        }
+        fun idToStartingRoute(id: Int) = when (id) {
+            R.id.signInFragment -> SignIn.StartingRoute
+            R.id.signUpFragment -> SignUp.StartingRoute
+            R.id.feedFragment -> Feed.StartingRoute
+            else -> Feed.StartingRoute
+        }
     }
-    object Route {
-        const val Feed = "${Navigation.Feed}?" +
-                "${FeedConstants.Key.LoggedUser}={${FeedConstants.Key.LoggedUser}}"
-        const val SignIn = "sign/in"
-        const val SignUp = "sign/up"
-    }
-
-    fun idToComposeNavigation(id: Int) = when (id) {
-        R.id.signInFragment -> Navigation.SignIn
-        R.id.signUpFragment -> Navigation.SignUp
-        R.id.feedFragment -> Navigation.Feed
-        else -> Navigation.SignIn
-    }
-
 }
 
 @Composable
@@ -57,7 +63,57 @@ fun MainNavigation() {
             startDestination = navController.tryGraph()?.startDestinationRoute ?: startNavigation
         ) {
             composable(
-                route = MainNavigationConstants.Navigation.Feed,
+                route = MainNavigationConstants.Nav.SignIn.Route,
+            ) { navBackStackEntry ->
+                val viewModel: SignInViewModel = navBackStackEntry.viewModel()
+
+                fun navToFeed(user: UserView) {
+                    navController
+                        .navigate(route = MainNavigationConstants.Nav.Feed.build(user = user)) {
+                            popUpTo(route = MainNavigationConstants.Nav.SignIn.Route) {
+                                inclusive = true
+                            }
+                        }
+                }
+
+                fun navToSignUp() {
+                    navController
+                        .navigate(route = MainNavigationConstants.Nav.SignUp.Route)
+                }
+
+                SignInScreen(
+                    viewModel = viewModel,
+                    onSignedIn = ::navToFeed,
+                    onAlreadySignedIn = ::navToFeed,
+                    onNavigateToSignUp = ::navToSignUp
+                )
+            }
+            composable(
+                route = MainNavigationConstants.Nav.SignUp.Route,
+            ) { _ ->
+
+            }
+            composable(
+                route = MainNavigationConstants.Nav.Feed.StartingRoute
+            ) {
+                val loggedUser = with(context.findAppCompatActivity()) {
+                        intent.extras?.getParcelable<UserView>(MainActivityConstants.Key.LoggedUser)
+                            ?: throw RuntimeException("null logged user")
+                }
+
+                LaunchedEffect(Unit) {
+                    navController
+                        .navigate(
+                            route = MainNavigationConstants.Nav.Feed.build(user = loggedUser)
+                        ) {
+                            popUpTo(route = MainNavigationConstants.Nav.Feed.StartingRoute) {
+                                inclusive = true
+                            }
+                        }
+                }
+            }
+            composable(
+                route = MainNavigationConstants.Nav.Feed.Route,
                 arguments = listOf(
                     navArgument(name = FeedConstants.Key.LoggedUser) {
                         nullable = true
@@ -68,31 +124,23 @@ fun MainNavigation() {
                 val viewModel: FeedViewModel = navBackStackEntry.viewModel(
                     marshalledArgs = arrayOf(Pair(FeedConstants.Key.LoggedUser, UserView::class))
                 )
-                val args = navBackStackEntry.arguments
-                val containsKey = remember {
-                    args?.containsKey(FeedConstants.Key.LoggedUser) == true
-                }
-                if (args != null && !containsKey) {
-                    with(context.findAppCompatActivity()) {
-                        val loggedUser: UserView? =
-                            intent.extras?.getParcelable(MainActivityConstants.Key.LoggedUser)
-                        if (loggedUser != null) {
-                            args.putParcelable(MainActivityConstants.Key.LoggedUser, loggedUser)
-                        } else {
-                            throw RuntimeException("null logged user")
-                        }
-                    }
-                } else if (args == null) {
-                    throw RuntimeException("null args")
-                }
-
+                val args = navBackStackEntry.arguments ?: throw RuntimeException("null args")
                 val onBackPressDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
+
+                fun navToSignIn() {
+                    navController
+                        .navigate(route = MainNavigationConstants.Nav.SignIn.Route) {
+                            popUpTo(route = MainNavigationConstants.Nav.Feed.Route) {
+                                inclusive = true
+                            }
+                        }
+                }
 
                 FeedScreen(
                     viewModel = viewModel,
-                    userView = args.getParcelable(MainActivityConstants.Key.LoggedUser)!!,
-                    onShowEventDetails = { },
-                    onLoggedOut = { },
+                    userView = args.getParcelable(FeedConstants.Key.LoggedUser)!!,
+                    onShowEventDetails = { Timber.i(it.toString()) },
+                    onLoggedOut = ::navToSignIn,
                     onNavigateBack = {
                         onBackPressDispatcherOwner
                             ?.onBackPressedDispatcher
@@ -116,8 +164,8 @@ fun MainNavigation() {
                     ?.getInt(
                         MainActivityConstants.Key.DestinationId, R.id.signInFragment
                     )
-                    ?.run(MainNavigationConstants::idToComposeNavigation)
-                    ?: MainNavigationConstants.Navigation.SignIn
+                    ?.run(MainNavigationConstants.Nav::idToStartingRoute)
+                    ?: MainNavigationConstants.Nav.SignIn.StartingRoute
             }
         }
     }
