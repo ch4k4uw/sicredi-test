@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.sicredi.core.extensions.AppBackground
@@ -33,7 +34,8 @@ fun FeedListItem(
             Column {
                 AppImage(
                     modifier = Modifier.aspectRatio(ratio = 1f, matchHeightConstraintsFirst = true),
-                    uri = Uri.parse(image)
+                    uri = Uri.parse(image),
+                    contentScale = ContentScale.Crop
                 )
                 Row(verticalAlignment = Alignment.Bottom) {
                     Text(

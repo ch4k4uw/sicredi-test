@@ -1,21 +1,23 @@
-package com.sicredi.domain.credential.infra.extensions
+package com.sicredi.presenter.common.extensions
 
+import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Base64
 
-internal fun Parcelable.marshall(): String {
+fun Parcelable.marshall(): String {
     val parcel = Parcel.obtain()
     writeToParcel(parcel, 0)
     val result = parcel.marshall().let { Base64.encodeToString(it, Base64.NO_WRAP) }
     parcel.recycle()
-    return result
+    return Uri.encode(result)
 }
 
-internal inline fun <reified T> Parcelable.Creator<*>.unmarshall(
-    data: ByteArray,
-    defaultValue: T
-): T = if (data.isNotEmpty()) {
+@Suppress("UNCHECKED_CAST")
+fun <T : Parcelable> Parcelable.Creator<*>.unmarshall(
+    source: String
+): T = if (source.isNotEmpty()) {
+    val data = Base64.decode(Uri.decode(source), Base64.NO_WRAP)
     val parcel = Parcel.obtain()
     parcel.unmarshall(data, 0, data.size)
     parcel.setDataPosition(0)
@@ -23,5 +25,5 @@ internal inline fun <reified T> Parcelable.Creator<*>.unmarshall(
     parcel.recycle()
     result
 } else {
-    defaultValue
+    throw RuntimeException("Unable to unmarshall empty value")
 }

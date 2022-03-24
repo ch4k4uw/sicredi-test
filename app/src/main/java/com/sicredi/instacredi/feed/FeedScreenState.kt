@@ -16,7 +16,7 @@ class FeedScreenState(
     private val onShowEventDetails: (EventDetailsView) -> Unit,
     private val onLoggedOut: () -> Unit
 ) {
-    var showLoading by mutableStateOf(true)
+    var showLoading by mutableStateOf(false)
     val events = mutableStateListOf<EventHeadView>()
     var showEventsLoadingGenericError by mutableStateOf(false)
     var showEventsLoadingConnectionError by mutableStateOf(false)
