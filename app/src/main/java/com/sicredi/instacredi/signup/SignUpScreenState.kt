@@ -73,9 +73,9 @@ class SignUpScreenState(
                         showInvalidPasswordError = it[4] as Boolean
                         showPasswordMatchError = it[5] as Boolean
                         name = restore(it[6], TextFieldValue.Saver)
-                        email = restore(it[6], TextFieldValue.Saver)
-                        password1 = restore(it[6], TextFieldValue.Saver)
-                        password2 = restore(it[6], TextFieldValue.Saver)
+                        email = restore(it[7], TextFieldValue.Saver)
+                        password1 = restore(it[8], TextFieldValue.Saver)
+                        password2 = restore(it[9], TextFieldValue.Saver)
                     }
                 }
             )
