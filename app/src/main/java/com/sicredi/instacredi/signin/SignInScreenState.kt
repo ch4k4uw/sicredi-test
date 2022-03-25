@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
+import com.sicredi.instacredi.common.extensions.restore
+import com.sicredi.instacredi.common.extensions.save
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.signin.interaction.SignInState
 
@@ -63,21 +64,6 @@ class SignInScreenState(
                 }
             )
     }
-}
-
-private fun <T : Saver<Original, Saveable>, Original, Saveable> save(
-    value: Original,
-    saver: T,
-    scope: SaverScope
-): Any {
-    return with(saver) { scope.save(value) } ?: false
-}
-
-private inline fun <T : Saver<Original, Saveable>, Original, Saveable, reified Result> restore(
-    value: Saveable?,
-    saver: T
-): Result {
-    return value?.let { with(saver) { restore(value) } as Result }!!
 }
 
 @Composable

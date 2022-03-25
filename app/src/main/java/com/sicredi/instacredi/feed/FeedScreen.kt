@@ -1,6 +1,5 @@
 package com.sicredi.instacredi.feed
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +31,7 @@ import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.ProfileBottomSheet
+import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
 import com.sicredi.instacredi.feed.component.FeedListItem
 import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.UserView
@@ -68,7 +68,7 @@ fun FeedScreen(
             FeedIntent.Logout -> viewModel.logout()
         }
     }
-    EventHandlingEffect(viewModel = viewModel, context = context) { event ->
+    ViewModelEventHandlingEffect(viewModel = viewModel, context = context) { event ->
         scope.launch { state.emit(FeedStateState.ChangeState(newState = event)) }
     }
 }
@@ -82,16 +82,6 @@ private sealed class FeedIntent {
     object Load : FeedIntent()
     data class FindDetails(val id: String) : FeedIntent()
     object Logout : FeedIntent()
-}
-
-@NonRestartableComposable
-@Composable
-private fun EventHandlingEffect(
-    viewModel: FeedViewModel, context: Context, handler: (FeedState) -> Unit
-) {
-    LaunchedEffect(context) {
-        viewModel.state.collect(handler)
-    }
 }
 
 @Composable

@@ -18,10 +18,12 @@ import com.sicredi.instacredi.common.extensions.viewModel
 import com.sicredi.instacredi.feed.FeedConstants
 import com.sicredi.instacredi.feed.FeedScreen
 import com.sicredi.instacredi.signin.SignInScreen
+import com.sicredi.instacredi.signup.SignUpScreen
 import com.sicredi.presenter.common.extensions.marshall
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.feed.FeedViewModel
 import com.sicredi.presenter.signin.SignInViewModel
+import com.sicredi.presenter.signup.SignUpViewModel
 import timber.log.Timber
 
 private object MainNavigationConstants {
@@ -90,8 +92,23 @@ fun MainNavigation() {
             }
             composable(
                 route = MainNavigationConstants.Nav.SignUp.Route,
-            ) { _ ->
-
+            ) { navBackStackEntry ->
+                val viewModel: SignUpViewModel = navBackStackEntry.viewModel()
+                fun navToFeed(user: UserView) {
+                    navController
+                        .navigate(route = MainNavigationConstants.Nav.Feed.build(user = user)) {
+                            popUpTo(route = MainNavigationConstants.Nav.SignUp.Route) {
+                                inclusive = true
+                            }
+                        }
+                }
+                SignUpScreen(
+                    viewModel = viewModel,
+                    onSignedUp = { navToFeed(user = it) },
+                    onNavigationBack = {
+                        navController.navigateUp()
+                    }
+                )
             }
             composable(
                 route = MainNavigationConstants.Nav.Feed.StartingRoute
