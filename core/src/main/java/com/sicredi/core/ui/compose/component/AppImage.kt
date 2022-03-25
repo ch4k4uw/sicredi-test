@@ -22,28 +22,23 @@ fun AppImage(
 ) {
     val rawImageResult = rememberBitmapResult(uri = uri)
     val imageResultValue = rawImageResult.value
-    if (imageResultValue != null) {
-        val image = imageResultValue.getOrNull()
-        if(image != null) {
-            Image(
-                modifier = modifier,
-                bitmap = image.asImageBitmap(),
-                contentScale = contentScale,
-                contentDescription = null
-            )
-        } else {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = modifier
-            ) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+    ) {
+        if (imageResultValue != null) {
+            val image = imageResultValue.getOrNull()
+            if(image != null) {
+                Image(
+                    modifier = modifier,
+                    bitmap = image.asImageBitmap(),
+                    contentScale = contentScale,
+                    contentDescription = null
+                )
+            } else {
                 Icon(imageVector = Icons.Default.BrokenImage, contentDescription = null)
             }
-        }
-    } else {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = modifier
-        ) {
+        } else {
             Icon(imageVector = Icons.Default.Image, contentDescription = null)
         }
     }

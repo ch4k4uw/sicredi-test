@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,26 +23,30 @@ fun rememberBitmapResult(
     uri: Uri
 ): State<Result<Bitmap>?> {
     val result = remember { mutableStateOf(null as Result<Bitmap>?) }
-    if (uri.toString().isNotBlank()) {
-        Glide
-            .with(LocalContext.current)
-            .asBitmap()
-            .load(uri)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    result.value = Result.success(resource)
-                }
 
-                override fun onLoadCleared(placeholder: Drawable?) {
-                }
+    val context = LocalContext.current
+    LaunchedEffect(uri, context) {
+        if (uri.toString().isNotBlank()) {
+            Glide
+                .with(context)
+                .asBitmap()
+                .load(uri)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        result.value = Result.success(resource)
+                    }
 
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    result.value = Result.failure(Exception())
-                }
-            })
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
+
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        result.value = Result.failure(Exception())
+                    }
+                })
+        }
     }
     return result
 }
