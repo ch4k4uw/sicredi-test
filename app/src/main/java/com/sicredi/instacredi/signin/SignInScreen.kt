@@ -1,6 +1,5 @@
 package com.sicredi.instacredi.signin
 
-import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -43,6 +42,7 @@ import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
+import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.signin.SignInViewModel
 import com.sicredi.presenter.signin.interaction.SignInState
@@ -72,7 +72,7 @@ fun SignInScreen(
                 .signIn(email = intent.email, password = intent.password)
         }
     }
-    EventHandlingEffect(viewModel = viewModel, context = context) { event ->
+    ViewModelEventHandlingEffect(viewModel = viewModel, context = context) { event ->
         scope.launch { state.emit(SignInStateState.ChangeState(newState = event)) }
     }
 }
@@ -84,16 +84,6 @@ private sealed class SignInStateState {
 
 private sealed class SignInIntent {
     data class SignIn(val email: String, val password: String) : SignInIntent()
-}
-
-@NonRestartableComposable
-@Composable
-private fun EventHandlingEffect(
-    viewModel: SignInViewModel, context: Context, handler: (SignInState) -> Unit
-) {
-    LaunchedEffect(context) {
-        viewModel.state.collect(handler)
-    }
 }
 
 @Composable
