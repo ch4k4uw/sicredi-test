@@ -27,7 +27,7 @@ import androidx.core.os.bundleOf
 import com.sicredi.core.extensions.AppBackground
 import com.sicredi.core.ui.compose.AppTheme
 
-private object AppScrollableTopBarDefaults {
+private object AppScrollableTopBarScaffold {
     enum class LayoutId {
         TopBar, Content
     }
@@ -53,8 +53,8 @@ fun AppScrollableTopBarScaffold(
     ) { constraints ->
         val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
 
-        val topBarId = AppScrollableTopBarDefaults.LayoutId.TopBar
-        val contentId = AppScrollableTopBarDefaults.LayoutId.Content
+        val topBarId = AppScrollableTopBarScaffold.LayoutId.TopBar
+        val contentId = AppScrollableTopBarScaffold.LayoutId.Content
 
         val topBarPlaceable = subcompose(slotId = topBarId) {
             TopAppBar(title = title, navigationIcon = navigationIcon, actions = actions)
