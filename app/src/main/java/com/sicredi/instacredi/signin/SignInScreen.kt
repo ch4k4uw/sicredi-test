@@ -2,6 +2,7 @@ package com.sicredi.instacredi.signin
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -22,12 +23,14 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -38,9 +41,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.extensions.errorContent
 import com.sicredi.core.ui.compose.AppTheme
+import com.sicredi.core.ui.compose.LocalAppInsetsPaddingValues
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
@@ -148,6 +153,20 @@ private fun SignInScreen(
     }
     AppContentLoadingProgressBar(visible = screenState.showLoading)
     EventHandlingEffect(state = state, handler = screenState::handleState)
+
+    val insetsPaddingValues = LocalAppInsetsPaddingValues.current
+    val systemUiController = rememberSystemUiController()
+    val isDark = isSystemInDarkTheme()
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = !isDark
+        )
+        insetsPaddingValues.enableInsets(
+            statusBar = false,
+            navBar = false
+        )
+    }
 }
 
 @Composable
