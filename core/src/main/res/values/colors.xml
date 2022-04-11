@@ -10,20 +10,22 @@
     <color name="yellow_300">#FFFFF176</color>
     <color name="red_300">#FFE57373</color>
     <color name="gray_900">#FF212121</color>
+    <color name="amber_600">#FFFFB300</color>
+    <color name="light_green_600">#FF7CB342</color>
+    <color name="red_900">#FFB71C1C</color>
+    <color name="gray_50">#FFFAFAFA</color>
+    <color name="deep_orange_600">#FFF4511E</color>
+    <color name="green_600">#FF43A047</color>
 
-    <color name="primary">@color/light_green_300</color>
+    <color name="primary">@color/light_green_600</color>
     <color name="primaryVariant">@color/light_green_800</color>
-    <color name="onPrimary">@color/black</color>
-    <color name="secondary">@color/amber_300</color>
+    <color name="onPrimary">@color/white</color>
+    <color name="secondary">@color/amber_600</color>
     <color name="secondaryVariant">@color/amber_800</color>
-    <color name="onSecondary">@color/black</color>
-    <color name="error">#ffcf6679</color>
-    <color name="onError">@color/black</color>
-    <color name="surface">@color/gray_900</color>
-    <color name="onSurface">#ffffffff</color>
-    
-    <color name="warningDialogGreenLine">@color/gree_300</color>
-    <color name="warningDialogYellowLine">@color/yellow_300</color>
-    <color name="warningDialogRedLine">@color/red_300</color>
+    <color name="onSecondary">@color/white</color>
+    <color name="error">@color/red_900</color>
+    <color name="onError">@color/white</color>
+    <color name="surface">@color/gray_50</color>
+    <color name="onSurface">@color/black</color>
 
 </resources>

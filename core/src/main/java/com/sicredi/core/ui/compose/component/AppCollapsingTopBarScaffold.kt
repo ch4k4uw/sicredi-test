@@ -1,4 +1,4 @@
-package com.sicredi.core.ui.component
+package com.sicredi.core.ui.compose.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
-import com.sicredi.core.extensions.AppBackground
 import com.sicredi.core.extensions.measureFirst
 import com.sicredi.core.extensions.toPx
 import com.sicredi.core.ui.compose.AppTheme

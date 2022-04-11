@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
@@ -35,11 +34,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.sicredi.core.extensions.AppBackground
+import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.extensions.ConnectivityErrorContent
 import com.sicredi.core.extensions.GenericErrorContent
 import com.sicredi.core.extensions.infoContent
-import com.sicredi.core.ui.component.AppCollapsingTopBarScaffold
+import com.sicredi.core.ui.compose.component.AppCollapsingTopBarScaffold
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.AppImage

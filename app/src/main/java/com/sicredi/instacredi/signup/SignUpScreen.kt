@@ -41,7 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.sicredi.core.extensions.AppBackground
+import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.instacredi.R

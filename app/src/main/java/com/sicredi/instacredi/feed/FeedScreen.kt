@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sicredi.core.extensions.AppBackground
-import com.sicredi.core.ui.component.AppScrollableTopBarScaffold
+import com.sicredi.core.ui.compose.component.AppBackground
+import com.sicredi.core.ui.compose.component.AppScrollableTopBarScaffold
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState

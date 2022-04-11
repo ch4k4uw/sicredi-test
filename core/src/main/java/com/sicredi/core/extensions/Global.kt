@@ -50,14 +50,3 @@ fun rememberBitmapResult(
     }
     return result
 }
-
-@Composable
-fun AppBackground(content: @Composable () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = AppTheme.colors.material.background)
-    ) {
-        content()
-    }
-}
