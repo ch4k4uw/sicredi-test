@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.sicredi.core.R
 import com.sicredi.instacredi.databinding.FragmentBottomSheetEventOptionsBinding
+import com.sicredi.presenter.event.EventDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

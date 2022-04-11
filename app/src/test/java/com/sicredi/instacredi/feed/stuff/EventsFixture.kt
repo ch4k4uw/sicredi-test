@@ -1,8 +1,8 @@
 package com.sicredi.instacredi.feed.stuff
 
 import com.sicredi.domain.feed.domain.entity.Event
-import com.sicredi.instacredi.common.interaction.asEventDetailView
-import com.sicredi.instacredi.feed.interaction.asEventHeadViews
+import com.sicredi.presenter.common.interaction.asEventDetailView
+import com.sicredi.presenter.feed.interaction.asEventHeadViews
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

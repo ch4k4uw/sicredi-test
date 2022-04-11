@@ -4,13 +4,18 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.sicredi.instacredi.databinding.ActivitySplashScreenBinding
-import com.sicredi.instacredi.splash.interaction.SplashScreenState
+import com.sicredi.presenter.splash.interaction.SplashScreenState
 import com.sicredi.instacredi.startMainActivityForEventDetails
 import com.sicredi.instacredi.startMainActivityForFeedFragment
 import com.sicredi.instacredi.startMainActivityForSignInFragment
+import com.sicredi.presenter.splash.SplashScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -19,8 +24,10 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ActivitySplashScreenBinding.inflate(layoutInflater).root)
-        lifecycleScope.launchWhenResumed {
-            viewModel.state.observe(this@SplashScreenActivity, ::handleState)
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect(::handleState)
+            }
         }
     }
 

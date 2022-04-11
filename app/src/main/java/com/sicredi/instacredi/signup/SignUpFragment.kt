@@ -13,10 +13,12 @@ import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.extensions.disable
 import com.sicredi.instacredi.common.extensions.enable
 import com.sicredi.instacredi.common.extensions.gone
+import com.sicredi.instacredi.common.extensions.repeatOnStarted
 import com.sicredi.instacredi.common.extensions.sText
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentSignUpBinding
-import com.sicredi.instacredi.signup.interaction.SignUpState
+import com.sicredi.presenter.signup.SignUpViewModel
+import com.sicredi.presenter.signup.interaction.SignUpState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -88,8 +90,10 @@ class SignUpFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            handleState(state)
+        repeatOnStarted {
+            viewModel.state.collect { state ->
+                handleState(state)
+            }
         }
     }
 

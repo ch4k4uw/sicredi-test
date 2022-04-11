@@ -16,12 +16,14 @@ import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.core.ui.component.hasAppWarningPrimaryAction
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.extensions.gone
+import com.sicredi.instacredi.common.extensions.repeatOnStarted
 import com.sicredi.instacredi.common.extensions.showError
 import com.sicredi.instacredi.common.extensions.showProfileBottomSheetFragment
 import com.sicredi.instacredi.common.extensions.visible
 import com.sicredi.instacredi.databinding.FragmentEventDetailsBinding
-import com.sicredi.instacredi.event.interaction.EventDetailsErrorState
-import com.sicredi.instacredi.event.interaction.EventDetailsState
+import com.sicredi.presenter.event.EventDetailsViewModel
+import com.sicredi.presenter.event.interaction.EventDetailsErrorState
+import com.sicredi.presenter.event.interaction.EventDetailsState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -125,8 +127,10 @@ class EventDetailsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            handleState(state)
+        repeatOnStarted {
+            viewModel.state.collect { state ->
+                handleState(state)
+            }
         }
     }
 

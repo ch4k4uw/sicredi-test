@@ -15,15 +15,17 @@ import com.sicredi.core.ui.component.AppWarningFragment
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.extensions.dataStore
 import com.sicredi.instacredi.common.extensions.gone
+import com.sicredi.instacredi.common.extensions.repeatOnStarted
 import com.sicredi.instacredi.common.extensions.requestSelection
 import com.sicredi.instacredi.common.extensions.restoreLastLogin
 import com.sicredi.instacredi.common.extensions.sText
 import com.sicredi.instacredi.common.extensions.storeLastLogin
 import com.sicredi.instacredi.common.extensions.visible
-import com.sicredi.instacredi.common.interaction.UserView
 import com.sicredi.instacredi.databinding.FragmentSignInBinding
-import com.sicredi.instacredi.signin.interaction.SignInState
-import com.sicredi.instacredi.signin.interaction.SignInUserState
+import com.sicredi.presenter.common.interaction.UserView
+import com.sicredi.presenter.signin.SignInViewModel
+import com.sicredi.presenter.signin.interaction.SignInState
+import com.sicredi.presenter.signin.interaction.SignInUserState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -78,15 +80,17 @@ class SignInFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                SignInState.Loading -> viewBinding.progressBarHolder.visible()
-                SignInState.Loaded -> viewBinding.progressBarHolder.gone()
-                is SignInUserState -> {
-                    handleLoggedUser(state)
-                }
-                SignInState.UserNotSignedIn -> {
-                    handleUserNotSignedIn()
+        repeatOnStarted {
+            viewModel.state.collect { state ->
+                when (state) {
+                    SignInState.Loading -> viewBinding.progressBarHolder.visible()
+                    SignInState.Loaded -> viewBinding.progressBarHolder.gone()
+                    is SignInUserState -> {
+                        handleLoggedUser(state)
+                    }
+                    SignInState.UserNotSignedIn -> {
+                        handleUserNotSignedIn()
+                    }
                 }
             }
         }
