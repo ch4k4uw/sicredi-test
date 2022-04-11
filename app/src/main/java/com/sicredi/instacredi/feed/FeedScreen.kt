@@ -2,6 +2,7 @@ package com.sicredi.instacredi.feed
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -27,10 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.ui.compose.component.AppScrollableTopBarScaffold
 import com.sicredi.core.ui.compose.AppTheme
+import com.sicredi.core.ui.compose.LocalAppInsetsPaddingValues
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.ProfileBottomSheet
+import com.sicredi.instacredi.common.extensions.RestoreWindowBarsEffect
 import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
 import com.sicredi.instacredi.feed.component.FeedListItem
 import com.sicredi.presenter.common.interaction.EventDetailsView
@@ -99,7 +102,10 @@ private fun FeedScreen(
     )
 
     AppScrollableTopBarScaffold(
+        modifier = Modifier
+            .padding(LocalAppInsetsPaddingValues.current.paddingValues.value),
         title = { Text(text = stringResource(id = R.string.app_name)) },
+        backgroundColor = AppTheme.colors.material.primary,
         navigationIcon = {
             IconButton(onClick = { onNavigateBack() }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
@@ -151,6 +157,7 @@ private fun FeedScreen(
 
     AppContentLoadingProgressBar(visible = screenState.showLoading)
     EventHandlingEffect(state = state, handler = screenState::handleState)
+    RestoreWindowBarsEffect()
     SideEffect {
         if (loadFeed) {
             loadFeed = false

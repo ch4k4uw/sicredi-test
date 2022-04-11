@@ -59,6 +59,7 @@ import kotlin.math.roundToInt
 fun AppCollapsingTopBarScaffold(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    backgroundColor: Color = AppTheme.colors.material.primarySurface,
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     fab: @Composable (() -> Unit)? = null,
@@ -93,7 +94,6 @@ fun AppCollapsingTopBarScaffold(
 
     topBarState.maxHeight = barContentHeight.toPx().roundToInt()
 
-    val backgroundColor = AppTheme.colors.material.primarySurface
     CompositionLocalProvider(
         AppCollapsingTopBar.LocalBackgroundColor provides backgroundColor
     ) {

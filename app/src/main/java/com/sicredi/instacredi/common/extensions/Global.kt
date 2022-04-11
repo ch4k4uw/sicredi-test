@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.sicredi.core.ui.compose.AppTheme
+import com.sicredi.core.ui.compose.LocalAppInsetsPaddingValues
 import com.sicredi.presenter.common.BaseViewModel
 
 internal fun <T : Saver<Original, Saveable>, Original, Saveable> save(
@@ -30,5 +35,20 @@ internal fun <ViewModel, State> ViewModelEventHandlingEffect(
 ) where ViewModel : BaseViewModel<State> {
     LaunchedEffect(context) {
         viewModel.state.collect(handler)
+    }
+}
+
+@NonRestartableComposable
+@Composable
+fun RestoreWindowBarsEffect(
+    systemUiController: SystemUiController = rememberSystemUiController()
+) {
+    val barColor = AppTheme.colors.material.primaryVariant
+    val insetsPaddingValues = LocalAppInsetsPaddingValues.current
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = barColor
+        )
+        insetsPaddingValues.enableInsets()
     }
 }

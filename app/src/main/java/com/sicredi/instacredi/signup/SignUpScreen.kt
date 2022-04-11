@@ -43,8 +43,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.ui.compose.AppTheme
+import com.sicredi.core.ui.compose.LocalAppInsetsPaddingValues
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.instacredi.R
+import com.sicredi.instacredi.common.extensions.RestoreWindowBarsEffect
 import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.signup.SignUpViewModel
@@ -210,6 +212,7 @@ private fun SignUpScreen(
         }
         AppContentLoadingProgressBar(visible = screenState.showLoading)
         EventHandlingEffect(state = state, handler = ::handleState)
+        RestoreWindowBarsEffect()
     }
 }
 
@@ -218,9 +221,14 @@ private fun SignUpScreenHeader(
     onNavigateBack: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(LocalAppInsetsPaddingValues.current.paddingValues.value)
+    ) {
         TopAppBar(
             title = { Text(text = stringResource(id = R.string.app_name)) },
+            backgroundColor = AppTheme.colors.material.primary,
             navigationIcon = {
                 IconButton(onClick = { onNavigateBack() }) {
                     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")

@@ -40,11 +40,13 @@ import com.sicredi.core.extensions.GenericErrorContent
 import com.sicredi.core.extensions.infoContent
 import com.sicredi.core.ui.compose.component.AppCollapsingTopBarScaffold
 import com.sicredi.core.ui.compose.AppTheme
+import com.sicredi.core.ui.compose.LocalAppInsetsPaddingValues
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.AppImage
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.ProfileBottomSheet
+import com.sicredi.instacredi.common.extensions.RestoreWindowBarsEffect
 import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
 import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.UserView
@@ -115,7 +117,10 @@ private fun EventDetailsScreen(
         onLoggedOut = onLoggedOut
     )
 
-    BoxWithConstraints {
+    BoxWithConstraints(
+        modifier = Modifier
+            .padding(LocalAppInsetsPaddingValues.current.paddingValues.value),
+    ) {
         AppCollapsingTopBarScaffold(
             title = {
                 Text(
@@ -125,6 +130,7 @@ private fun EventDetailsScreen(
                     softWrap = false
                 )
             },
+            backgroundColor = AppTheme.colors.material.primary,
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
                     Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
@@ -189,6 +195,7 @@ private fun EventDetailsScreen(
     EventDetailsEventOptions(screenState = screenState, onIntent = onIntent)
     AppContentLoadingProgressBar(visible = screenState.showLoading)
     EventHandlingEffect(state = state, handler = screenState::handleState)
+    RestoreWindowBarsEffect()
 }
 
 @Composable
