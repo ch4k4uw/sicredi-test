@@ -63,8 +63,8 @@ fun AppCollapsingTopBarScaffold(
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     fab: @Composable (() -> Unit)? = null,
-    fixedTopBar: Boolean = fab == null,
-    saveScrollStateEnabled: Boolean = false,
+    fixedTopBar: Boolean = fab != null,
+    saveStateEnabled: Boolean = false,
     barContentHeight: Dp,
     barContent: @Composable () -> Unit,
     content: @Composable ColumnScope.() -> Unit
@@ -72,7 +72,7 @@ fun AppCollapsingTopBarScaffold(
     val barAttrs = object {
         val height = AppCollapsingTopBarDefaults.BarHeight
         val heightPx = height.toPx().roundToInt()
-        val enableScroll = fixedTopBar
+        val enableScroll = !fixedTopBar
         val contentPadding = AppCollapsingTopBarDefaults.BarHorizontalPadding
         val contentPaddingPx = AppCollapsingTopBarDefaults.BarHorizontalPadding.toPx()
         val fabSpacing = AppTheme.Dimens.spacing.normal
@@ -80,7 +80,7 @@ fun AppCollapsingTopBarScaffold(
         val iconWidth = AppCollapsingTopBarDefaults.TitleIconWidth
         val iconInsetWidth = AppCollapsingTopBarDefaults.IconInsetWidth
     }
-    val topBarState = if (saveScrollStateEnabled) {
+    val topBarState = if (saveStateEnabled) {
         rememberSaveableAppCollapsingTopBarState(
             minHeight = barAttrs.heightPx,
             enableTopBarScroll = barAttrs.enableScroll
@@ -117,7 +117,7 @@ fun AppCollapsingTopBarScaffold(
 
             val topBarPlaceable = subcompose(slotId = topBarId) {
                 AppCollapsingTopBarTopBar(
-                    modifier = Modifier.alpha(alpha = collapsingTransition),
+                    modifier = Modifier.alpha(alpha = collapsingAlphaTransition),
                     elevation = barAttrs.elevation,
                     height = topBarState.height.toDp(),
                     content = barContent
@@ -149,7 +149,7 @@ fun AppCollapsingTopBarScaffold(
 
             val titlePlaceable = subcompose(slotId = titleId) {
                 AppCollapsingTopBarTitle(
-                    height = barAttrs.height, transition = collapsingTransition, title = title
+                    height = barAttrs.height, fontSizeTransition = collapsingTransition, title = title
                 )
             }.measureFirst(
                 constraints = looseConstraints.copy(
@@ -195,12 +195,12 @@ fun AppCollapsingTopBarScaffold(
                 actionsPlaceable.placeRelative(
                     x = topBarPlaceable.width - actionsPlaceable.width, y = baseY
                 )
-                val topBarContentPading = barAttrs.contentPaddingPx.roundToInt()
+                val topBarContentPadding = barAttrs.contentPaddingPx.roundToInt()
                 val maxTitleWidth =
-                    titlePlaceable.width + topBarContentPading * 2
+                    titlePlaceable.width + topBarContentPadding * 2
                 val titleStopStartPadding = (topBarPlaceable.width - (maxTitleWidth))
                     .coerceIn(
-                        topBarContentPading..topBarPlaceable.width
+                        topBarContentPadding..topBarPlaceable.width
                     )
                 val titleStartPadding = lerp(
                     start = Dp(value = navButtonPlaceable.width.toFloat()),
@@ -214,7 +214,7 @@ fun AppCollapsingTopBarScaffold(
                 ).value.roundToInt()
                 titlePlaceable.placeRelative(
                     x = titleStartPadding.let {
-                        val maxX = topBarPlaceable.width - topBarContentPading
+                        val maxX = topBarPlaceable.width - topBarContentPadding
                         val end = it + titlePlaceable.width
                         if (end > maxX) {
                              -end + maxX + it
@@ -334,14 +334,14 @@ private fun AppCollapsingTopBarActions(
 @Composable
 private fun AppCollapsingTopBarTitle(
     height: Dp,
-    transition: Float,
+    fontSizeTransition: Float,
     title: @Composable () -> Unit
 ) {
     @Composable
     fun calculateFontSize(): TextUnit {
         val small = AppTheme.typography.material.h6.fontSize
         val large = AppTheme.typography.material.h4.fontSize
-        return lerp(start = small, stop = large, fraction = transition)
+        return lerp(start = small, stop = large, fraction = fontSizeTransition)
     }
 
     val titleFont = AppTheme.typography.material.h6.copy(
