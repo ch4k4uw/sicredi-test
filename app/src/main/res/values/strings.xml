@@ -31,4 +31,5 @@
     <string name="event_details_successful_checked_in_message_primary_button">OK</string>
     <string name="event_options_check_in_action">Check-in</string>
     <string name="event_options_share_action">Share</string>
+    <string name="event_options_maps_action">Maps</string>
 </resources>

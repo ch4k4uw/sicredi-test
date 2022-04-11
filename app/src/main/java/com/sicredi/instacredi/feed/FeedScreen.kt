@@ -94,7 +94,7 @@ private fun FeedScreen(
     onIntent: (FeedIntent) -> Unit = {},
 ) {
     var loadFeed by rememberSaveable { mutableStateOf(true) }
-    val screenState = rememberScreenState(
+    val screenState = rememberFeedScreenState(
         onShowEventDetails = onShowEventDetails, onLoggedOut = onLoggedOut
     )
 

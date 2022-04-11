@@ -52,7 +52,9 @@ class EventDetailsViewModel @Inject constructor(
     }
 
     fun showGoogleMaps() {
-        state tryEmit EventDetailsState.ShowGoogleMaps(action = details.mapsIntent)
+        viewModelScope.launch {
+            state emit EventDetailsState.ShowGoogleMaps(action = details.mapsIntent)
+        }
     }
 
     fun shareEvent() {

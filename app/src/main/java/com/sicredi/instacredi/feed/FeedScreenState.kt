@@ -88,7 +88,7 @@ class FeedScreenState(
 }
 
 @Composable
-fun rememberScreenState(
+fun rememberFeedScreenState(
     onShowEventDetails: (EventDetailsView) -> Unit, onLoggedOut: () -> Unit
 ) = rememberSaveable(
     saver = FeedScreenState.saver(

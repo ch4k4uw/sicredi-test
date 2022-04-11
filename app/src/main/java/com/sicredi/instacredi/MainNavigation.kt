@@ -15,16 +15,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.sicredi.instacredi.common.extensions.viewModel
+import com.sicredi.instacredi.event.EventDetailsConstants
+import com.sicredi.instacredi.event.EventDetailsScreen
 import com.sicredi.instacredi.feed.FeedConstants
 import com.sicredi.instacredi.feed.FeedScreen
 import com.sicredi.instacredi.signin.SignInScreen
 import com.sicredi.instacredi.signup.SignUpScreen
 import com.sicredi.presenter.common.extensions.marshall
+import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.UserView
+import com.sicredi.presenter.event.EventDetailsViewModel
 import com.sicredi.presenter.feed.FeedViewModel
 import com.sicredi.presenter.signin.SignInViewModel
 import com.sicredi.presenter.signup.SignUpViewModel
-import timber.log.Timber
 
 private object MainNavigationConstants {
     object Nav {
@@ -32,22 +35,39 @@ private object MainNavigationConstants {
             const val StartingRoute = "feed"
             const val Route = "$StartingRoute?" +
                     "${FeedConstants.Key.LoggedUser}={${FeedConstants.Key.LoggedUser}}"
+
             fun build(user: UserView): String =
                 "$StartingRoute?${FeedConstants.Key.LoggedUser}=${user.marshall()}"
         }
+
+        object EventDetails {
+            private const val loggedUserArg = EventDetailsConstants.Key.LoggedUser
+            private const val detailsArg = EventDetailsConstants.Key.Details
+            const val StartingRoute = "event/details"
+            const val Route = "$StartingRoute?" +
+                    "$loggedUserArg={$loggedUserArg}&$detailsArg={$detailsArg}"
+
+            fun build(user: UserView, details: EventDetailsView): String =
+                "$StartingRoute?" +
+                        "$loggedUserArg={${user.marshall()}}&$detailsArg={${details.marshall()}}"
+        }
+
         object SignIn {
             const val StartingRoute = "sign/in"
             const val Route = StartingRoute
         }
+
         object SignUp {
             const val StartingRoute = "sign/up"
             const val Route = StartingRoute
         }
+
         fun idToStartingRoute(id: Int) = when (id) {
             R.id.signInFragment -> SignIn.StartingRoute
             R.id.signUpFragment -> SignUp.StartingRoute
             R.id.feedFragment -> Feed.StartingRoute
-            else -> Feed.StartingRoute
+            R.id.eventDetailsFragment -> EventDetails.StartingRoute
+            else -> SignIn.StartingRoute
         }
     }
 }
@@ -57,9 +77,15 @@ fun MainNavigation() {
     val context = LocalContext.current
     val navController = rememberNavController()
     var startNavigation by rememberSaveable { mutableStateOf("") }
+    val onBackPressDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
+
+    fun performBackPressed() {
+        onBackPressDispatcherOwner
+            ?.onBackPressedDispatcher
+            ?.onBackPressed()
+    }
 
     if (startNavigation.isNotEmpty()) {
-        Timber.d(startNavigation)
         NavHost(
             navController = navController,
             startDestination = navController.tryGraph()?.startDestinationRoute ?: startNavigation
@@ -114,8 +140,8 @@ fun MainNavigation() {
                 route = MainNavigationConstants.Nav.Feed.StartingRoute
             ) {
                 val loggedUser = with(context.findAppCompatActivity()) {
-                        intent.extras?.getParcelable<UserView>(MainActivityConstants.Key.LoggedUser)
-                            ?: throw RuntimeException("null logged user")
+                    intent.extras?.getParcelable<UserView>(MainActivityConstants.Key.LoggedUser)
+                        ?: throw RuntimeException("null logged user")
                 }
 
                 LaunchedEffect(Unit) {
@@ -142,7 +168,6 @@ fun MainNavigation() {
                     marshalledArgs = arrayOf(Pair(FeedConstants.Key.LoggedUser, UserView::class))
                 )
                 val args = navBackStackEntry.arguments ?: throw RuntimeException("null args")
-                val onBackPressDispatcherOwner = LocalOnBackPressedDispatcherOwner.current
 
                 fun navToSignIn() {
                     navController
@@ -156,13 +181,82 @@ fun MainNavigation() {
                 FeedScreen(
                     viewModel = viewModel,
                     userView = args.getParcelable(FeedConstants.Key.LoggedUser)!!,
-                    onShowEventDetails = { Timber.i(it.toString()) },
+                    onShowEventDetails = {
+                        val destination = MainNavigationConstants.Nav.EventDetails.build(
+                            user = args.getParcelable(FeedConstants.Key.LoggedUser)!!,
+                            details = it
+                        )
+                        navController.navigate(route = destination)
+                    },
                     onLoggedOut = ::navToSignIn,
-                    onNavigateBack = {
-                        onBackPressDispatcherOwner
-                            ?.onBackPressedDispatcher
-                            ?.onBackPressed()
+                    onNavigateBack = ::performBackPressed
+                )
+            }
+            composable(
+                route = MainNavigationConstants.Nav.EventDetails.StartingRoute,
+            ) {
+                val intentData = with(context.findAppCompatActivity()) {
+                    object {
+                        val loggedUser = intent
+                            .extras
+                            ?.getParcelable<UserView>(MainActivityConstants.Key.LoggedUser)
+                            ?: throw RuntimeException("null logged user")
+                        val details = intent
+                            .extras
+                            ?.getParcelable<EventDetailsView>(MainActivityConstants.Key.EventDetails)
+                            ?: throw RuntimeException("null event details")
                     }
+                }
+                LaunchedEffect(Unit) {
+                    navController
+                        .navigate(
+                            route = MainNavigationConstants.Nav.EventDetails.build(
+                                user = intentData.loggedUser,
+                                details = intentData.details
+                            )
+                        ) {
+                            val currRoute = MainNavigationConstants.Nav.EventDetails.StartingRoute
+                            popUpTo(route = currRoute) {
+                                inclusive = true
+                            }
+                        }
+                }
+            }
+            composable(
+                route = MainNavigationConstants.Nav.EventDetails.Route,
+                arguments = listOf(
+                    navArgument(name = EventDetailsConstants.Key.LoggedUser) {
+                        nullable = true
+                        defaultValue = null
+                    },
+                    navArgument(name = EventDetailsConstants.Key.Details) {
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { navBackStackEntry ->
+                val viewModel: EventDetailsViewModel = navBackStackEntry.viewModel(
+                    marshalledArgs = arrayOf(
+                        Pair(EventDetailsConstants.Key.LoggedUser, UserView::class),
+                        Pair(EventDetailsConstants.Key.Details, EventDetailsView::class),
+                    )
+                )
+                val args = navBackStackEntry.arguments ?: throw RuntimeException("null args")
+
+                fun navToSignIn() {
+                    navController
+                        .navigate(route = MainNavigationConstants.Nav.SignIn.Route) {
+                            popUpTo(route = MainNavigationConstants.Nav.EventDetails.Route) {
+                                inclusive = true
+                            }
+                        }
+                }
+
+                EventDetailsScreen(
+                    viewModel = viewModel,
+                    userView = args.getParcelable(EventDetailsConstants.Key.LoggedUser)!!,
+                    onLoggedOut = ::navToSignIn,
+                    onNavigateBack = ::performBackPressed
                 )
             }
         }
@@ -171,12 +265,6 @@ fun MainNavigation() {
     LaunchedEffect(Unit) {
         if (startNavigation.isEmpty()) {
             with(context.findAppCompatActivity()) {
-                /*val loggedUser: UserView? =
-                    intent.extras?.getParcelable(MainActivityConstants.Key.LoggedUser)
-
-                val eventDetails: EventDetailsView? =
-                    intent.extras?.getParcelable(MainActivityConstants.Key.EventDetails)*/
-
                 startNavigation = intent.extras
                     ?.getInt(
                         MainActivityConstants.Key.DestinationId, R.id.signInFragment
