@@ -35,7 +35,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 
@@ -108,11 +107,7 @@ dependencies {
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.Google.Material)
     implementation(Libraries.AndroidX.ActivityKtx)
-    implementation(Libraries.AndroidX.FragmentKtx)
-    implementation(Libraries.AndroidX.NavigationKtx)
-    implementation(Libraries.AndroidX.NavigationUiKtx)
     implementation(Libraries.AndroidX.CollectionKtx)
-    implementation(Libraries.AndroidX.SwipeToRefresh)
     implementation(Libraries.Compose.Navigation)
 
     //Hilt

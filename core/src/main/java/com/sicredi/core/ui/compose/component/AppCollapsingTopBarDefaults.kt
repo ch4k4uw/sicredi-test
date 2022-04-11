@@ -1,4 +1,4 @@
-package com.sicredi.core.ui.component
+package com.sicredi.core.ui.compose.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

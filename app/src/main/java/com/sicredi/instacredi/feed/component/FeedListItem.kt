@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.sicredi.core.extensions.AppBackground
+import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.extensions.asFormattedPrice
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppImage

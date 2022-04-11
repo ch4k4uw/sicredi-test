@@ -31,25 +31,32 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.sicredi.core.extensions.AppBackground
+import androidx.lifecycle.lifecycleScope
+import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.extensions.errorContent
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.core.ui.compose.component.AppContentLoadingProgressBar
 import com.sicredi.core.ui.compose.component.LocalAppModalBottomSheetState
 import com.sicredi.instacredi.R
 import com.sicredi.instacredi.common.extensions.ViewModelEventHandlingEffect
+import com.sicredi.instacredi.common.extensions.dataStore
+import com.sicredi.instacredi.common.extensions.restoreLastLogin
+import com.sicredi.instacredi.common.extensions.storeLastLogin
 import com.sicredi.presenter.common.interaction.UserView
 import com.sicredi.presenter.signin.SignInViewModel
 import com.sicredi.presenter.signin.interaction.SignInState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SignInScreen(
@@ -94,8 +101,19 @@ private fun SignInScreen(
     onNavigateToSignUp: () -> Unit = {},
     onIntent: (SignInIntent) -> Unit = {},
 ) {
+    val lifecycleScope = LocalLifecycleOwner.current.lifecycleScope
+    val context = LocalContext.current
+    val signedInHook = { user: UserView ->
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                context.dataStore.storeLastLogin(login = user.email)
+            }
+            onSignedIn(user)
+        }
+        Unit
+    }
     val screenState = rememberSignInScreenState(
-        onSignedIn = onSignedIn, onAlreadySignedIn = onAlreadySignedIn
+        onSignedIn = signedInHook, onAlreadySignedIn = onAlreadySignedIn
     )
     SignInScreenHeader {
         SignInScreenBodyContainer {
@@ -213,6 +231,18 @@ private fun SignInScreenFormTextFields(
         }),
         singleLine = true,
     )
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            context.dataStore.restoreLastLogin()
+        }?.apply {
+            if(isNotBlank()) {
+                screenState.email = screenState.email.copy(text = this)
+                passwordFocusRequester
+                    .requestFocus()
+            }
+        }
+    }
 }
 
 @Composable

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.sicredi.core.extensions.AppBackground
+import com.sicredi.core.ui.compose.component.AppBackground
 import com.sicredi.core.ui.compose.AppTheme
 import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.UserView
@@ -38,7 +38,8 @@ fun Context.findAppCompatActivity(): AppCompatActivity {
 fun AppCompatActivity.startMainActivityForFeedFragment(user: UserView) {
     startActivity(
         Intent(this, MainActivity::class.java).apply {
-            putExtra(MainActivityConstants.Key.DestinationId, R.id.feedFragment)
+            val feedRoute = MainNavigationConstants.Nav.Feed.StartingRoute
+            putExtra(MainActivityConstants.Key.DestinationId, feedRoute)
             putExtra(MainActivityConstants.Key.LoggedUser, user)
         }
     )
@@ -53,7 +54,8 @@ fun AppCompatActivity.startMainActivityForEventDetails(
 ) {
     startActivity(
         Intent(this, MainActivity::class.java).apply {
-            putExtra(MainActivityConstants.Key.DestinationId, R.id.eventDetailsFragment)
+            val eventDetailsRoute = MainNavigationConstants.Nav.EventDetails.StartingRoute
+            putExtra(MainActivityConstants.Key.DestinationId, eventDetailsRoute)
             putExtra(MainActivityConstants.Key.EventDetails, eventDetails)
             putExtra(MainActivityConstants.Key.LoggedUser, user)
         }

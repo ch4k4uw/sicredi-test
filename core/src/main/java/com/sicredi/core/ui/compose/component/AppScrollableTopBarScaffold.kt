@@ -1,4 +1,4 @@
-package com.sicredi.core.ui.component
+package com.sicredi.core.ui.compose.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.bundleOf
-import com.sicredi.core.extensions.AppBackground
 import com.sicredi.core.ui.compose.AppTheme
 
 private object AppScrollableTopBarScaffold {

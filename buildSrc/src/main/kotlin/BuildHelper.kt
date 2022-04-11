@@ -21,7 +21,6 @@ fun Project.configureBaseDependencies() = dependencies {
 
 fun Project.configureBaseUiDependencies() = dependencies {
     implementation(Libraries.LifeCycle.Runtime)
-    implementation(Libraries.LifeCycle.LiveData)
     implementation(Libraries.LifeCycle.ViewModel)
     implementation(Libraries.LifeCycle.Compiler)
 }
@@ -79,7 +78,6 @@ fun Project.configureAsAndroidLibrary() {
 
 fun Project.configureComposeDependencies() = dependencies {
     implementation(Libraries.Compose.Runtime)
-    implementation(Libraries.Compose.RuntimeLiveData)
     implementation(Libraries.Compose.Ui)
     implementation(Libraries.Compose.Material)
     implementation(Libraries.Compose.UiTooling)
@@ -87,5 +85,4 @@ fun Project.configureComposeDependencies() = dependencies {
     implementation(Libraries.Compose.Compiler)
     implementation(Libraries.Compose.ActivityKtx)
     implementation(Libraries.Compose.Activity)
-    implementation(Libraries.Compose.ConstraintLayout)
 }
