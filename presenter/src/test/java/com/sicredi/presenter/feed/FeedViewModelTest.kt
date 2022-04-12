@@ -1,10 +1,10 @@
-package com.sicredi.instacredi.feed
+package com.sicredi.presenter.feed
 
 import androidx.lifecycle.SavedStateHandle
-import com.sicredi.instacredi.AppInstantTaskExecutorRule
-import com.sicredi.instacredi.feed.stuff.FeedViewModelEventFetchingTestCases
-import com.sicredi.instacredi.feed.stuff.FeedViewModelLogoutTestCases
-import com.sicredi.instacredi.feed.stuff.FeedViewModelTestContainer
+import com.sicredi.presenter.feed.stuff.FeedViewModelEventFetchingTestCases
+import com.sicredi.presenter.feed.stuff.FeedViewModelLogoutTestCases
+import com.sicredi.presenter.feed.stuff.FeedViewModelTestContainer
+import com.sicredi.presenter.AppInstantTaskExecutorRule
 import com.sicredi.presenter.common.uc.FindEventDetails
 import com.sicredi.presenter.common.uc.PerformLogout
 import com.sicredi.presenter.feed.interaction.FeedState
