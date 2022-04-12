@@ -1,11 +1,10 @@
-package com.sicredi.instacredi.feed.stuff
+package com.sicredi.presenter.feed.stuff
 
 import androidx.lifecycle.viewModelScope
 import com.sicredi.presenter.common.uc.PerformLogout
 import com.sicredi.presenter.feed.FeedViewModel
 import com.sicredi.presenter.feed.uc.FindAllEvents
 import io.mockk.coEvery
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
