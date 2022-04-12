@@ -1,15 +1,12 @@
 package com.sicredi.presenter.signin
 
 import androidx.lifecycle.viewModelScope
-import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.presenter.AppInstantTaskExecutorRule
 import com.sicredi.presenter.common.uc.FindLoggedUser
-import com.sicredi.presenter.feed.common.stuff.CommonFixture
-import com.sicredi.presenter.feed.interaction.FeedState
+import com.sicredi.presenter.common.stuff.CommonFixture
 import com.sicredi.presenter.signin.interaction.SignInState
 import com.sicredi.presenter.signin.uc.PerformSignIn
-import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -17,7 +14,6 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Rule

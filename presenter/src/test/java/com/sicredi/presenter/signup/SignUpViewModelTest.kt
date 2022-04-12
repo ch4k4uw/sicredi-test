@@ -6,7 +6,7 @@ import com.sicredi.domain.credential.domain.data.AppInvalidEmailException
 import com.sicredi.domain.credential.domain.data.AppInvalidNameException
 import com.sicredi.domain.credential.domain.data.AppInvalidPasswordException
 import com.sicredi.presenter.AppInstantTaskExecutorRule
-import com.sicredi.presenter.feed.common.stuff.CommonFixture
+import com.sicredi.presenter.common.stuff.CommonFixture
 import com.sicredi.presenter.signup.interaction.SignUpState
 import com.sicredi.presenter.signup.uc.PerformSignUp
 import io.mockk.MockKAnnotations
