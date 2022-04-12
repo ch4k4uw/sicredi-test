@@ -3,6 +3,7 @@ package com.sicredi.presenter.signin
 import androidx.lifecycle.viewModelScope
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.presenter.AppInstantTaskExecutorRule
+import com.sicredi.presenter.common.extensions.setup
 import com.sicredi.presenter.common.uc.FindLoggedUser
 import com.sicredi.presenter.common.stuff.CommonFixture
 import com.sicredi.presenter.signin.interaction.SignInState
@@ -115,12 +116,6 @@ class SignInViewModelTest {
             viewModelObserver.emit(SignInState.UserNotSignedIn)
         }
 
-    }
-
-    private fun FindLoggedUser.setup(hasLoggedUser: Boolean = false) {
-        coEvery { this@setup() } returns flow {
-            emit(if (hasLoggedUser) CommonFixture.Domain.User else User.Empty)
-        }
     }
 
     private fun PerformSignIn.setup(exception: Throwable? = null) {
