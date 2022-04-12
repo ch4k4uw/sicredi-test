@@ -1,4 +1,4 @@
-package com.sicredi.instacredi.feed.stuff
+package com.sicredi.presenter.feed.stuff
 
 import com.sicredi.domain.feed.domain.entity.Event
 import com.sicredi.presenter.common.interaction.asEventDetailView
