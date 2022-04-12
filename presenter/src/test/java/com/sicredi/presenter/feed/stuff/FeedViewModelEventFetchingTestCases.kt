@@ -2,6 +2,7 @@ package com.sicredi.presenter.feed.stuff
 
 import com.sicredi.core.network.domain.data.AppHttpGenericException
 import com.sicredi.core.network.domain.data.NoConnectivityException
+import com.sicredi.presenter.common.extensions.setup
 import com.sicredi.presenter.common.uc.FindEventDetails
 import com.sicredi.presenter.feed.interaction.FeedState
 import io.mockk.clearMocks
@@ -63,13 +64,6 @@ class FeedViewModelEventFetchingTestCases(
             container.viewModelObserver.emit(
                 FeedState.EventDetailsSuccessfulLoaded(EventsFixture.AllEventDetailsView)
             )
-        }
-    }
-
-    private fun FindEventDetails.setup(exception: Throwable? = null) {
-        coEvery { this@setup.invoke(any()) } returns flow {
-            if (exception != null) throw exception
-            emit(EventsFixture.AnEvent)
         }
     }
 
