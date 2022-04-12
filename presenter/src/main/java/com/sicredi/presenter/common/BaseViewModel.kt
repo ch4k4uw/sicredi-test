@@ -29,7 +29,4 @@ abstract class BaseViewModel<State> : ViewModel() {
         while(!isActivated) yield()
         mutableState.emit(value = state)
     }
-
-    protected infix fun Flow<State>.tryEmit(state: State): Boolean =
-        mutableState.tryEmit(state)
 }
