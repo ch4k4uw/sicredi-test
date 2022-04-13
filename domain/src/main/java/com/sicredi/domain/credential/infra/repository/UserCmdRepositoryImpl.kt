@@ -7,6 +7,7 @@ import com.sicredi.domain.credential.domain.data.AppInvalidNameException
 import com.sicredi.domain.credential.domain.data.AppInvalidPasswordException
 import com.sicredi.domain.credential.domain.entity.User
 import com.sicredi.domain.credential.domain.repository.UserCmdRepository
+import com.sicredi.domain.credential.infra.service.EmailValidator
 import com.sicredi.domain.credential.infra.service.PasswordHashing
 import com.sicredi.domain.credential.infra.service.UserStorage
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class UserCmdRepositoryImpl @Inject constructor(
     private val userStorage: UserStorage,
     private val passwordHashing: PasswordHashing,
+    private val emailValidator: EmailValidator,
     private val appDispatchers: AppDispatchers
 ) : UserCmdRepository {
     override suspend fun signUp(user: User, password: String): Flow<User> = flow {
@@ -36,14 +38,14 @@ class UserCmdRepositoryImpl @Inject constructor(
         if (user.email.isBlank() || !isEmailValid(user.email)) {
             throw AppInvalidEmailException
         }
-        if (password.length <= 5) {
+        if (password.length <= UserCmdRepositoryConstants.PasswordLength) {
             throw AppInvalidPasswordException
         }
         assertUserNotExists(user = user)
     }
 
     private fun isEmailValid(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return emailValidator.isValid(email = email)
     }
 
     private suspend fun assertUserNotExists(user: User) {
@@ -63,10 +65,13 @@ class UserCmdRepositoryImpl @Inject constructor(
 
     override suspend fun signIn(email: String, password: String): Flow<User> = flow {
         val currUser = userStorage.findUserByEmail(email = email)
-        val currPass = userStorage.findPasswordByEmail(email = email)
         val isValidUser = currUser != User.Empty
-        val isRequiredUser = isValidUser && currUser.email == email.lowercase()
-        val isPasswordNotBlank = isRequiredUser && currPass.isNotBlank()
+        val currPass = if(isValidUser) {
+            userStorage.findPasswordByEmail(email = email)
+        } else {
+            ""
+        }
+        val isPasswordNotBlank = isValidUser && currPass.isNotBlank()
         val isValidPassword = isPasswordNotBlank && passwordHashing
             .compare(password = password, hash = currPass)
         if (isValidPassword) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.presenter.AppInstantTaskExecutorRule
+import com.sicredi.presenter.common.extensions.setup
 import com.sicredi.presenter.common.interaction.EventDetailsView
 import com.sicredi.presenter.common.interaction.mapsIntent
 import com.sicredi.presenter.common.stuff.CommonFixture
@@ -22,7 +23,6 @@ import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Rule
@@ -255,10 +255,6 @@ class EventDetailsViewModelTest {
             viewModelObserver.emit(value = EventDetailsState.SuccessfulLoggedOut)
         }
 
-    }
-
-    private fun PerformLogout.setup() {
-        coEvery { this@setup.invoke() } returns flowOf(Unit)
     }
 
 }
