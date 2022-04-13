@@ -1,12 +1,10 @@
 package com.sicredi.presenter.feed.stuff
 
 import androidx.lifecycle.viewModelScope
-import com.sicredi.presenter.common.uc.PerformLogout
 import com.sicredi.presenter.feed.FeedViewModel
 import com.sicredi.presenter.feed.uc.FindAllEvents
 import io.mockk.coEvery
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 open class FeedViewModelTestCases(
@@ -28,9 +26,5 @@ open class FeedViewModelTestCases(
             if (exception != null) throw exception
             emit(EventsFixture.AllEvents)
         }
-    }
-
-    protected fun PerformLogout.setup() {
-        coEvery { this@setup.invoke() } returns flowOf(Unit)
     }
 }
