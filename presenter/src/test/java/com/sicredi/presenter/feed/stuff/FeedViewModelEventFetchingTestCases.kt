@@ -3,12 +3,9 @@ package com.sicredi.presenter.feed.stuff
 import com.sicredi.core.network.domain.data.AppHttpGenericException
 import com.sicredi.core.network.domain.data.NoConnectivityException
 import com.sicredi.presenter.common.extensions.setup
-import com.sicredi.presenter.common.uc.FindEventDetails
 import com.sicredi.presenter.feed.interaction.FeedState
 import io.mockk.clearMocks
-import io.mockk.coEvery
 import io.mockk.coVerify
-import kotlinx.coroutines.flow.flow
 
 class FeedViewModelEventFetchingTestCases(
     container: FeedViewModelTestContainer
