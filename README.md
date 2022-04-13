@@ -1,4 +1,4 @@
-# Instacredi, a SICRED test
+# Instacredi
 - [Features](#features)
 - [Architecture](#architecture)
 - [Module arrangement](#module-arrangement)
