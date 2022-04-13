@@ -1,4 +1,10 @@
 # Instacredi, a SICRED test
+- [Features](#features)
+- [Architecture](#architecture)
+- [Module arrangement](#module-arrangement)
+- [Package pattern](#package-pattern)
+- [Technologies](#technologies)
+- [Remarks](#remarks)
 ## Features
 * User sign-in and sign-up
     * With safe password storing through SHA512 pass hashing implementation
@@ -56,3 +62,6 @@ To make all of this work as required, to manage and set up all of the dependency
 8. `Kotlin parcelize` - Android parcelable objects implementation compile helper (`core` and `app` modules).
 9. `Safe navigation args` - AndroidX navigation arguments helper (`app` module).
 10. `AndroidX navigation` - Android fragment navigation helper (`app` module).
+
+## Remarks
+Click [here](bin/app-release.apk) to download the generated bin file. 
