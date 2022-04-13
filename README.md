@@ -1,0 +1,1 @@
+This repository has been moved to [instacredi](https://github.com/ch4k4uw/instacredi).
