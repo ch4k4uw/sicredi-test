@@ -11,6 +11,7 @@
 * Feed of events
 * Event check-in
 * Event sharing
+* Event location (google maps)
 
 ## Architecture
 This app implements the `MVVM` design pattern for the presenter module (`app`) and its macro architecture is based on the `separation of concerns` (view, view-model, domain and infrastructure).
@@ -52,16 +53,16 @@ To make all of this work as required, to manage and set up all of the dependency
     * `Feature` - General app required feature.
     
 ## Technologies
-1. `Retrofit` - Http requests (`core` module).
-2. `Dagger-Hilt` - Dependency injection management (`core`, `domain` and `app` modules).
-3. `DataStore` - AndroidX data store to mock the user auth features (`core` and `domain` modules).
-4. `Timber` - App loggin helper (`core`, `domain` and `app` modules).
-5. `Glide` - Async image download (`core`).
-6. `Material design` - App design identity (`core` and `app` modules).
-7. `Kotlin-Coroutines` - Every async operation (`core`, `domain` and `app` modules).
-8. `Kotlin parcelize` - Android parcelable objects implementation compile helper (`core` and `app` modules).
-9. `Safe navigation args` - AndroidX navigation arguments helper (`app` module).
-10. `AndroidX navigation` - Android fragment navigation helper (`app` module).
+1. `Jetpack Compose` - UI rendering (`app` module) 
+2. `Retrofit` - Http requests (`core` module).
+3. `Dagger-Hilt` - Dependency injection management (`core`, `domain` and `app` modules).
+4. `DataStore` - AndroidX data store to mock the user auth features (`core` and `domain` modules).
+5. `Timber` - App loggin helper (`core`, `domain` and `app` modules).
+6. `Glide` - Async image download (`core`).
+7. `Compose material design` - App design identity (`core` and `app` modules).
+8. `Kotlin-Coroutines` - Every async operation (`core`, `domain` and `app` modules).
+9. `Kotlin parcelize` - Android parcelable objects implementation compile helper (`core` and `app` modules).
+10. `AndroidX-Comppose navigation` - Android fragment navigation helper (`app` module).
 
 ## Remarks
 Click [here](bin/app-release.apk) to download the generated bin file. 
