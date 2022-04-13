@@ -1,4 +1,4 @@
-package com.sicredi.instacredi
+package com.sicredi.domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.Dispatchers

@@ -1,5 +1,6 @@
-package com.sicredi.instacredi.feed.stuff
+package com.sicredi.presenter.feed.stuff
 
+import com.sicredi.presenter.common.extensions.setup
 import com.sicredi.presenter.feed.interaction.FeedState
 import io.mockk.coVerify
 

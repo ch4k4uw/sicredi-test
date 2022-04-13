@@ -1,8 +1,7 @@
-package com.sicredi.instacredi.feed.stuff
+package com.sicredi.presenter.feed.stuff
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
-import com.sicredi.instacredi.AppInstantTaskExecutorRule
+import com.sicredi.presenter.AppInstantTaskExecutorRule
 import com.sicredi.presenter.common.uc.FindEventDetails
 import com.sicredi.presenter.common.uc.PerformLogout
 import com.sicredi.presenter.feed.interaction.FeedState
